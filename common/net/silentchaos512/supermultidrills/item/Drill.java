@@ -171,10 +171,11 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
     
-    if (ForgeHooks.isToolEffective(stack, block, meta)) {
+    if (ForgeHooks.isToolEffective(stack, block, meta) && this.getEnergyStored(stack) > 0) {
       return this.getDrillMaterial(stack).getEfficiency();
+    } else {
+      return 1.0f;
     }
-    return super.getDigSpeed(stack, block, meta);
   }
 
   public int getEnergyToBreakBlock(ItemStack stack, float hardness) {
@@ -277,24 +278,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
             : this.toolMaterial.getHarvestLevel() >= 2)
             : this.toolMaterial.getHarvestLevel() >= 2)
             : this.toolMaterial.getHarvestLevel() >= 2);
-  }
-
-  // Efficiency vs block?
-  @Override
-  public float func_150893_a(ItemStack stack, Block block) {
-
-    boolean isEffective = effectiveMaterialsBasic.contains(block.getMaterial());
-    if (!isEffective && this.getTagBoolean(stack, NBT_SAW)) {
-      isEffective = effectiveMaterialsExtra.contains(block.getMaterial());
-    }
-
-    if (isEffective && this.getEnergyStored(stack) > 0) {
-      LogHelper.derp();
-      return this.getDigSpeed(stack);
-    }
-
-    LogHelper.yay();
-    return 1.0f;
   }
 
   @Override
