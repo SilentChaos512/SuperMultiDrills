@@ -1,0 +1,21 @@
+[
+{
+  "modid": "SuperMultiDrills",
+  "name": "Super Multi-Drills",
+  "description": "Pickaxes are so last era.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "SilentChaos512"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]

@@ -1,0 +1,75 @@
+# Creative tabs
+
+itemGroup.tabSuperMultiDrills=Super Multi-Drills
+
+# Item localizations
+
+item.supermultidrills:Drill.name=Multi-Drill
+item.supermultidrills:Drill.desc1=The exact appearance and stats
+item.supermultidrills:Drill.desc2=will depend on the parts used.
+
+item.supermultidrills:DrillBattery0.name=Drill Battery: Tater
+item.supermultidrills:DrillBattery1.name=Drill Battery: Small
+item.supermultidrills:DrillBattery2.name=Drill Battery: Medium
+item.supermultidrills:DrillBattery3.name=Drill Battery: Large
+item.supermultidrills:DrillBattery4.name=Drill Battery: Extreme
+
+item.supermultidrills:DrillChassis0.name=White Drill Chassis
+item.supermultidrills:DrillChassis1.name=Orange Drill Chassis
+item.supermultidrills:DrillChassis2.name=Magenta Drill Chassis
+item.supermultidrills:DrillChassis3.name=Light Blue Drill Chassis
+item.supermultidrills:DrillChassis4.name=Yellow Drill Chassis
+item.supermultidrills:DrillChassis5.name=Lime Drill Chassis
+item.supermultidrills:DrillChassis6.name=Pink Drill Chassis
+item.supermultidrills:DrillChassis7.name=Gray Drill Chassis
+item.supermultidrills:DrillChassis8.name=Silver Drill Chassis
+item.supermultidrills:DrillChassis9.name=Cyan Drill Chassis
+item.supermultidrills:DrillChassis10.name=Purple Drill Chassis
+item.supermultidrills:DrillChassis11.name=Blue Drill Chassis
+item.supermultidrills:DrillChassis12.name=Brown Drill Chassis
+item.supermultidrills:DrillChassis13.name=Green Drill Chassis
+item.supermultidrills:DrillChassis14.name=Red Drill Chassis
+item.supermultidrills:DrillChassis15.name=Black Drill Chassis
+
+item.supermultidrills:DrillHead_Iron.name=Iron Drill Head
+item.supermultidrills:DrillHead_Gold.name=Gold Drill Head
+item.supermultidrills:DrillHead_Diamond.name=Diamond Drill Head
+item.supermultidrills:DrillHead_Copper.name=Copper Drill Head
+item.supermultidrills:DrillHead_Tin.name=Tin Drill Head
+item.supermultidrills:DrillHead_Silver.name=Silver Drill Head
+item.supermultidrills:DrillHead_Lead.name=Lead Drill Head
+item.supermultidrills:DrillHead_Ferrous.name=Ferrous Drill Head
+item.supermultidrills:DrillHead_Electrum.name=Electrum Drill Head
+item.supermultidrills:DrillHead_Invar.name=Invar Drill Head
+item.supermultidrills:DrillHead_Bronze.name=Bronze Drill Head
+item.supermultidrills:DrillHead_Shiny.name=Shiny Drill Head
+item.supermultidrills:DrillHead_Ruby.name=Ruby Drill Head
+item.supermultidrills:DrillHead_Garnet.name=Garnet Drill Head
+item.supermultidrills:DrillHead_Topaz.name=Topaz Drill Head
+item.supermultidrills:DrillHead_Heliodor.name=Heliodor Drill Head
+item.supermultidrills:DrillHead_Peridot.name=Peridot Drill Head
+item.supermultidrills:DrillHead_Beryl.name=Beryl Drill Head
+item.supermultidrills:DrillHead_Aquamarine.name=Aquamarine Drill Head
+item.supermultidrills:DrillHead_Sapphire.name=Sapphire Drill Head
+item.supermultidrills:DrillHead_Iolite.name=Iolite Drill Head
+item.supermultidrills:DrillHead_Amethyst.name=Amethyst Drill Head
+item.supermultidrills:DrillHead_Morganite.name=Morganite Drill Head
+item.supermultidrills:DrillHead_Onyx.name=Onyx Drill Head
+item.supermultidrills:DrillHead_Steel.name=Steel Drill Head
+
+
+item.supermultidrills:DrillMotor0.name=Mainstream Motor
+item.supermultidrills:DrillMotor1.name=Performance Motor
+item.supermultidrills:DrillMotor2.name=Enthusiast Motor
+item.supermultidrills:DrillMotor.desc=Mining level %d
+
+item.supermultidrills:MagneticRod.name=Magnetic Iron Rod
+
+# Misc text
+
+misc.supermultidrills:CostPerHardness=Cost per block hardness: %.1f
+misc.supermultidrills:MiningSpeed=Mining speed: %.1f
+misc.supermultidrills:Damage=Attack damage: %.1f
+
+misc.supermultidrills:PressCtrl=<Press Ctrl>
+misc.supermultidrills:PressShift=<Press Shift>
