@@ -4,10 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,16 +23,22 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
 import net.silentchaos512.supermultidrills.lib.Names;
+import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.registry.IAddRecipe;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
 import net.silentchaos512.supermultidrills.util.LogHelper;
+
+import org.lwjgl.input.Keyboard;
+
 import cofh.api.energy.IEnergyContainerItem;
 
 import com.google.common.collect.ImmutableSet;
@@ -62,8 +67,9 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
    * Render pass Ids
    */
   public static final int PASS_CHASSIS = 0;
-  public static final int PASS_HEAD = 1;
-  public static final int NUM_RENDER_PASSES = 2;
+  public static final int PASS_BATTERY_GAUGE = 1;
+  public static final int PASS_HEAD = 2;
+  public static final int NUM_RENDER_PASSES = 3;
 
   /*
    * NBT keys
@@ -76,6 +82,11 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public static final String NBT_SAW = "Saw";
   // public static final String NBT_SILK = "Silk";
   // public static final String NBT_SPEED = "Speed";
+  
+  /*
+   * Battery gauge icons
+   */
+  public final IIcon[] iconBatteryGauge = new IIcon[4];
 
   /*
    * The basic recipe that shows up in NEI. It's referenced in RecipeCraftDrill, but the crafting result is overridden
@@ -154,8 +165,16 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public float getDigSpeed(ItemStack stack) {
 
-    // TODO: Speed modifiers?
     return this.getDrillMaterial(stack).getEfficiency();
+  }
+  
+  @Override
+  public float getDigSpeed(ItemStack stack, Block block, int meta) {
+    
+    if (ForgeHooks.isToolEffective(stack, block, meta)) {
+      return this.getDrillMaterial(stack).getEfficiency();
+    }
+    return super.getDigSpeed(stack, block, meta);
   }
 
   public int getEnergyToBreakBlock(ItemStack stack, float hardness) {
@@ -270,9 +289,11 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
 
     if (isEffective && this.getEnergyStored(stack) > 0) {
+      LogHelper.derp();
       return this.getDigSpeed(stack);
     }
 
+    LogHelper.yay();
     return 1.0f;
   }
 
@@ -413,7 +434,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         head = 0;
       }
       return ModItems.drillHead.icons[head];
+    } else if (pass == PASS_BATTERY_GAUGE) {
+      double charge = 1.0 - this.getDurabilityForDisplay(stack);
+      int index = MathHelper.clamp_int((int) Math.round(4.0 * charge), 0, 3);
+      return iconBatteryGauge[index];
     } else {
+      LogHelper.debug("Unknown render pass for drill! Pass " + pass);
       return null;
     }
   }
@@ -439,6 +465,14 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public boolean requiresMultipleRenderPasses() {
 
     return true;
+  }
+  
+  @Override
+  public void registerIcons(IIconRegister reg) {
+    
+    for (int i = 0; i < iconBatteryGauge.length; ++i) {
+      iconBatteryGauge[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + "BatteryGauge" + i);
+    }
   }
 
   @Override
