@@ -44,7 +44,7 @@ public class SuperMultiDrills {
     
     ModItems.init();
     
-    Config.save();
+//    Config.save();
   }
   
   @EventHandler

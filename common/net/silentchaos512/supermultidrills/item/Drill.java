@@ -1,7 +1,10 @@
 package net.silentchaos512.supermultidrills.item;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+
+import org.lwjgl.input.Keyboard;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -36,6 +39,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import com.udojava.evalex.Expression;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -89,6 +93,9 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
+    
+    boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
+        || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 
     if (stack.stackTagCompound != null && !stack.stackTagCompound.hasKey(NBT_HEAD)) {
       int i = 1;
@@ -111,7 +118,11 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       int energyMax = this.getMaxEnergyStored(stack);
       String str = EnumChatFormatting.YELLOW + String.format("%d / %d", energy, energyMax);
       list.add(str);
-      list.add("Mining level: " + this.getHarvestLevel(stack, ""));
+      
+      if (shifted) {
+        list.add("Mining level: " + this.getHarvestLevel(stack, ""));
+        list.add("Energy cost: " + this.getEnergyToBreakBlock(stack, 1.0f));
+      }
     }
   }
 
@@ -151,8 +162,14 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId,
         stack);
-    float costPerHardness = this.getDrillMaterial(stack).getCostPerHardness();
-    return (int) ((1.0f + Config.energyCostPerSpeedLevel * efficiencyLevel) * costPerHardness * hardness);
+    EnumDrillMaterial material = this.getDrillMaterial(stack);
+    
+    Expression exp = Config.energyCostExpression;
+    exp.setVariable("durability", BigDecimal.valueOf(material.getDurability()));
+    exp.setVariable("efficiency", BigDecimal.valueOf(efficiencyLevel));
+    exp.setVariable("hardness", BigDecimal.valueOf(hardness));
+    exp.setVariable("mining_speed", BigDecimal.valueOf(material.getEfficiency()));
+    return exp.eval().intValue();
   }
 
   public int getTag(ItemStack stack, String key) {

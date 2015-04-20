@@ -1,5 +1,11 @@
 package net.silentchaos512.supermultidrills.lib;
 
+import java.math.BigDecimal;
+
+import net.silentchaos512.supermultidrills.configuration.Config;
+
+import com.udojava.evalex.Expression;
+
 
 public enum EnumDrillMaterial {
   
@@ -49,26 +55,34 @@ public enum EnumDrillMaterial {
     this.material = material;
   }
   
+  public int getDurability() {
+    
+    return this.durability;
+  }
+  
   public float getEfficiency() {
     
-    return efficiency;
+    return this.efficiency;
   }
   
   public float getDamageVsEntity() {
     
-    return damage;
+    return this.damage;
   }
   
   public String getMaterialName() {
     
-    return material;
+    return this.material;
   }
   
   public float getCostPerHardness() {
     
-    // Higher durability = lower cost
-    // y = 250 + (1100 / 95) - (11 / 95) * x
-    return 261.5789f - 0.1158f * durability;
+    Expression exp = Config.energyCostExpression;
+    exp.setVariable("durability", BigDecimal.valueOf(this.durability));
+    exp.setVariable("efficiency", BigDecimal.valueOf(0));
+    exp.setVariable("hardness", BigDecimal.valueOf(1));
+    exp.setVariable("mining_speed", BigDecimal.valueOf(this.efficiency));
+    return exp.eval().floatValue();
   }
   
   @Override
