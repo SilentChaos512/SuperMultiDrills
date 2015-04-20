@@ -31,7 +31,8 @@ public class DrillUpgrade extends ItemSMD {
         " i ", "imi", "mi ", 'i', Items.iron_ingot, 'm', rod);
 
     // Silk
-    // TODO
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SILK)),
+        "eee", "rgr", 'e', Items.emerald, 'r', rod, 'g', Items.gold_ingot);
 
     // Speed
     GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SPEED)),
