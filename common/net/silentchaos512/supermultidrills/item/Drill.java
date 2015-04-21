@@ -82,7 +82,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public static final String NBT_SAW = "Saw";
   // public static final String NBT_SILK = "Silk";
   // public static final String NBT_SPEED = "Speed";
-  
+
   /*
    * Battery gauge icons
    */
@@ -104,7 +104,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
-    
+
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
         || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 
@@ -129,7 +129,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       int energyMax = this.getMaxEnergyStored(stack);
       String str = EnumChatFormatting.YELLOW + String.format("%d / %d", energy, energyMax);
       list.add(str);
-      
+
       if (shifted) {
         list.add("Mining level: " + this.getHarvestLevel(stack, ""));
         list.add("Energy cost: " + this.getEnergyToBreakBlock(stack, 1.0f));
@@ -163,15 +163,30 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     return EnumDrillMaterial.values()[headId];
   }
 
+  public boolean canHarvestBlock(ItemStack drill, Block block, int meta) {
+
+    if (block.getHarvestLevel(meta) > this.getHarvestLevel(drill, "")) {
+      return false;
+    }
+    boolean isEffective = effectiveMaterialsBasic.contains(block.getMaterial());
+    if (!isEffective && this.getTagBoolean(drill, NBT_SAW)) {
+      isEffective = effectiveMaterialsExtra.contains(block.getMaterial());
+    }
+    return isEffective;
+  }
+
   public float getDigSpeed(ItemStack stack) {
 
     return this.getDrillMaterial(stack).getEfficiency();
   }
-  
+
   @Override
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
-    
-    if (ForgeHooks.isToolEffective(stack, block, meta) && this.getEnergyStored(stack) > 0) {
+
+    // Is this correct?
+    boolean canHarvest = ForgeHooks.isToolEffective(stack, block, meta)
+        || this.canHarvestBlock(stack, block, meta);
+    if (canHarvest && this.getEnergyStored(stack) > 0) {
       return this.getDrillMaterial(stack).getEfficiency();
     } else {
       return 1.0f;
@@ -183,7 +198,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId,
         stack);
     EnumDrillMaterial material = this.getDrillMaterial(stack);
-    
+
     Expression exp = Config.energyCostExpression;
     exp.setVariable("durability", BigDecimal.valueOf(material.getDurability()));
     exp.setVariable("efficiency", BigDecimal.valueOf(efficiencyLevel));
@@ -449,10 +464,10 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     return true;
   }
-  
+
   @Override
   public void registerIcons(IIconRegister reg) {
-    
+
     for (int i = 0; i < iconBatteryGauge.length; ++i) {
       iconBatteryGauge[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + "BatteryGauge" + i);
     }
