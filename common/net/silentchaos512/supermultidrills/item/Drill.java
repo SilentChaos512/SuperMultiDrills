@@ -209,7 +209,9 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public int getTag(ItemStack stack, String key) {
 
-    if (stack.stackTagCompound == null) {
+    if (stack == null) {
+      return -1;
+    } else if (stack.stackTagCompound == null) {
       stack.setTagCompound(new NBTTagCompound());
     }
     if (stack.stackTagCompound.hasKey(key)) {
@@ -221,7 +223,9 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public boolean getTagBoolean(ItemStack stack, String key) {
 
-    if (stack.stackTagCompound == null) {
+    if (stack == null) {
+      return false;
+    } else if (stack.stackTagCompound == null) {
       stack.setTagCompound(new NBTTagCompound());
     }
     if (stack.stackTagCompound.hasKey(key)) {
@@ -233,7 +237,9 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public void setTag(ItemStack stack, String key, int value) {
 
-    if (stack.stackTagCompound == null) {
+    if (stack == null) {
+      return;
+    } else if (stack.stackTagCompound == null) {
       stack.setTagCompound(new NBTTagCompound());
     }
     stack.stackTagCompound.setInteger(key, value);
@@ -241,7 +247,9 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public void setTagBoolean(ItemStack stack, String key, boolean value) {
 
-    if (stack.stackTagCompound == null) {
+    if (stack == null) {
+      return;
+    } else if (stack.stackTagCompound == null) {
       stack.setTagCompound(new NBTTagCompound());
     }
     stack.stackTagCompound.setBoolean(key, value);
