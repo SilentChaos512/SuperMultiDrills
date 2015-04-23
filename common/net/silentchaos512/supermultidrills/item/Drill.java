@@ -80,6 +80,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public static final String NBT_CHASSIS = "Chassis";
   public static final String NBT_ENERGY = "Energy";
   public static final String NBT_SAW = "Saw";
+  public static final String NBT_HEAD_COAT = "HeadCoat";
   // public static final String NBT_SILK = "Silk";
   // public static final String NBT_SPEED = "Speed";
 
@@ -435,7 +436,10 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       return ModItems.drillChassis.getIconFromDamage(0);
     } else if (pass == PASS_HEAD) {
       // Head
-      int head = this.getTag(stack, NBT_HEAD);
+      int head = this.getTag(stack, NBT_HEAD_COAT); // Is there a head coat?
+      if (head < 0) {
+        head = this.getTag(stack, NBT_HEAD);
+      }
       if (head < 0 || head >= ModItems.drillHead.icons.length) {
         head = 0;
       }

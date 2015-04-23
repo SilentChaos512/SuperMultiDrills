@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
 
 public class InventoryHelper {
 
@@ -17,6 +18,31 @@ public class InventoryHelper {
           player.posZ, stack);
       player.worldObj.spawnEntityInWorld(entityItem);
     }
+  }
+  
+  public static boolean isDrillHeadMaterial(ItemStack stack) {
+    
+    return getDrillHeadMaterialId(stack) >= 0;
+  }
+  
+  public static int getDrillHeadMaterialId(ItemStack stack) {
+    
+    if (stack.getItem() == Items.iron_ingot) {
+      return 0;
+    } else if (stack.getItem() == Items.gold_ingot) {
+      return 1;
+    } else if (stack.getItem() == Items.diamond) {
+      return 2;
+    }
+    
+    for (int id : OreDictionary.getOreIDs(stack)) {
+      for (int i = 0; i < EnumDrillMaterial.values().length; ++i) {
+        if (EnumDrillMaterial.values()[i].getMaterialName().equals(OreDictionary.getOreName(id))) {
+          return i;
+        }
+      }
+    }
+    return -1;
   }
   
   public static boolean isItemDye(ItemStack stack) {

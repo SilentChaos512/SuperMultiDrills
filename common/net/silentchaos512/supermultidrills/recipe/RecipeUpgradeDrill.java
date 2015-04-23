@@ -37,6 +37,7 @@ public class RecipeUpgradeDrill implements IRecipe {
     int countBattery = 0;
     int countChassis = 0;
     int countHead = 0;
+    int countHeadMaterial = 0;
     int countMotor = 0;
     int countDye = 0;
     ItemStack stack;
@@ -60,6 +61,8 @@ public class RecipeUpgradeDrill implements IRecipe {
           ++countMotor;
         } else if (isDye) {
           ++countDye;
+        } else if (InventoryHelper.isDrillHeadMaterial(stack)) {
+          ++countHeadMaterial;
         } else {
           return false;
         }
@@ -68,7 +71,8 @@ public class RecipeUpgradeDrill implements IRecipe {
 
     // return countDrill == 1 && countUpgrade >= 1;
     boolean flagColor = countChassis <= 1 && countDye <= 1 && !(countChassis == 1 && countDye == 1);
-    return countDrill == 1 && countBattery <= 1 && countHead <= 1 && countMotor <= 1 && flagColor;
+    return countDrill == 1 && countBattery <= 1 && countHead <= 1 && countHeadMaterial <= 1
+        && countMotor <= 1 && flagColor;
   }
 
   @Override
@@ -124,6 +128,9 @@ public class RecipeUpgradeDrill implements IRecipe {
         } else if (item instanceof DrillMotor) {
           // Motor change
           ModItems.drill.setTag(result, Drill.NBT_MOTOR, stack.getItemDamage());
+        } else if (InventoryHelper.isDrillHeadMaterial(stack)) {
+          int id = InventoryHelper.getDrillHeadMaterialId(stack);
+          ModItems.drill.setTag(result, Drill.NBT_HEAD_COAT, id);
         }
       }
     }
