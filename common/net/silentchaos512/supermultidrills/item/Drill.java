@@ -106,8 +106,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 
-    boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
-        || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+    boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)
+        || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 
     if (stack.stackTagCompound != null && !stack.stackTagCompound.hasKey(NBT_HEAD)) {
       int i = 1;
@@ -128,12 +128,41 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     } else {
       int energy = this.getEnergyStored(stack);
       int energyMax = this.getMaxEnergyStored(stack);
-      String str = EnumChatFormatting.YELLOW + String.format("%d / %d", energy, energyMax);
+      String str = EnumChatFormatting.YELLOW
+          + LocalizationHelper.getOtherItemKey(Names.DRILL, "Energy") + " "
+          + String.format("%d / %d RF", energy, energyMax);
       list.add(str);
 
       if (shifted) {
-        list.add("Mining level: " + this.getHarvestLevel(stack, ""));
-        list.add("Energy cost: " + this.getEnergyToBreakBlock(stack, 1.0f));
+        // Head
+        String s = EnumChatFormatting.GOLD
+            + LocalizationHelper.getOtherItemKey(Names.DRILL, "Head") + " "
+            + EnumChatFormatting.AQUA + this.getDrillMaterial(stack).getMaterialName();
+        String s2 = " " + EnumChatFormatting.RESET
+            + LocalizationHelper.getOtherItemKey(Names.DRILL, "HeadCoat");
+        s2 = String.format(s2, this.getCoatMaterial(stack).getMaterialName());
+        list.add(s + (this.getTag(stack, NBT_HEAD_COAT) >= 0 ? s2 : ""));
+
+        // Operating cost
+        s = EnumChatFormatting.GOLD + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningCost")
+            + " " + EnumChatFormatting.GREEN + this.getEnergyToBreakBlock(stack, 1.0f) + " "
+            + LocalizationHelper.getOtherItemKey(Names.DRILL, "RFPerHardness");
+        list.add(s);
+
+        // Harvest level
+        s = EnumChatFormatting.GOLD
+            + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningLevel") + " "
+            + EnumChatFormatting.BLUE + this.getHarvestLevel(stack, "");
+        list.add(s);
+
+        // Mining speed
+        s = EnumChatFormatting.GOLD
+            + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningSpeed") + " "
+            + EnumChatFormatting.DARK_PURPLE + String.format("%.1f", this.getDigSpeed(stack));
+        list.add(s);
+      } else {
+        list.add(EnumChatFormatting.GOLD + "" + EnumChatFormatting.ITALIC
+            + LocalizationHelper.getMiscText(Strings.PRESS_CTRL));
       }
     }
   }
@@ -162,6 +191,15 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       headId = 0;
     }
     return EnumDrillMaterial.values()[headId];
+  }
+
+  public EnumDrillMaterial getCoatMaterial(ItemStack stack) {
+
+    int coatId = this.getTag(stack, NBT_HEAD_COAT);
+    if (coatId < 0 || coatId >= EnumDrillMaterial.values().length) {
+      coatId = 0;
+    }
+    return EnumDrillMaterial.values()[coatId];
   }
 
   public boolean canHarvestBlock(ItemStack drill, Block block, int meta) {

@@ -70,7 +70,26 @@ public enum EnumDrillMaterial {
     return this.damage;
   }
   
+  public String getMaterial() {
+    
+    return this.material;
+  }
+  
   public String getMaterialName() {
+    
+    if (this == IRON) {
+      return "Iron";
+    } else if (this == GOLD) {
+      return "Gold";
+    } else if (this == DIAMOND) {
+      return "Diamond";
+    }
+    
+    for (int i = 0; i < this.material.length(); ++i) {
+      if (this.material.charAt(i) < 'a') {
+        return this.material.substring(i);
+      }
+    }
     
     return this.material;
   }

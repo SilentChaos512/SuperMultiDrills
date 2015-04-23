@@ -37,7 +37,7 @@ public class InventoryHelper {
     
     for (int id : OreDictionary.getOreIDs(stack)) {
       for (int i = 0; i < EnumDrillMaterial.values().length; ++i) {
-        if (EnumDrillMaterial.values()[i].getMaterialName().equals(OreDictionary.getOreName(id))) {
+        if (EnumDrillMaterial.values()[i].getMaterial().equals(OreDictionary.getOreName(id))) {
           return i;
         }
       }

@@ -36,7 +36,7 @@ public class DrillHead extends ItemSMD {
       material = EnumDrillMaterial.values()[i];
       if (i > 2) {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, i), " mm", "mim", "im ",
-            'm', material.getMaterialName(), 'i', rod));
+            'm', material.getMaterial(), 'i', rod));
       } else {
         // Vanilla materials
         ItemStack stack = new ItemStack(Items.poisonous_potato);

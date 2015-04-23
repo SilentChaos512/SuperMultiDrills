@@ -7,6 +7,13 @@ itemGroup.tabSuperMultiDrills=Super Multi-Drills
 item.supermultidrills:Drill.name=Multi-Drill
 item.supermultidrills:Drill.desc1=The exact appearance and stats
 item.supermultidrills:Drill.desc2=will depend on the parts used.
+item.supermultidrills:Drill.Energy=Energy:
+item.supermultidrills:Drill.Head=Head Material:
+item.supermultidrills:Drill.HeadCoat=(coated with %s)
+item.supermultidrills:Drill.MiningLevel=Harvest Level:
+item.supermultidrills:Drill.MiningSpeed=Mining Speed:
+item.supermultidrills:Drill.MiningCost=Operating Cost:
+item.supermultidrills:Drill.RFPerHardness=RF/block hardness
 
 item.supermultidrills:DrillBattery0.name=Drill Battery: Tater
 item.supermultidrills:DrillBattery1.name=Drill Battery: Small
