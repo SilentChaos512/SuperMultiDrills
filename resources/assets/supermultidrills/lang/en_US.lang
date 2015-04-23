@@ -14,12 +14,14 @@ item.supermultidrills:Drill.MiningLevel=Harvest Level:
 item.supermultidrills:Drill.MiningSpeed=Mining Speed:
 item.supermultidrills:Drill.MiningCost=Operating Cost:
 item.supermultidrills:Drill.RFPerHardness=RF/block hardness
+item.supermultidrills:Drill.PlusSaw=+ Saw
 
 item.supermultidrills:DrillBattery0.name=Drill Battery: Tater
 item.supermultidrills:DrillBattery1.name=Drill Battery: Small
 item.supermultidrills:DrillBattery2.name=Drill Battery: Medium
 item.supermultidrills:DrillBattery3.name=Drill Battery: Large
 item.supermultidrills:DrillBattery4.name=Drill Battery: Extreme
+item.supermultidrills:DrillBattery.Capacity=Capacity:
 
 item.supermultidrills:DrillChassis0.name=White Drill Chassis
 item.supermultidrills:DrillChassis1.name=Orange Drill Chassis
@@ -64,13 +66,24 @@ item.supermultidrills:DrillHead_Morganite.name=Morganite Drill Head
 item.supermultidrills:DrillHead_Onyx.name=Onyx Drill Head
 item.supermultidrills:DrillHead_Steel.name=Steel Drill Head
 
-
 item.supermultidrills:DrillMotor0.name=Mainstream Motor
 item.supermultidrills:DrillMotor1.name=Performance Motor
 item.supermultidrills:DrillMotor2.name=Enthusiast Motor
 item.supermultidrills:DrillMotor.desc=Mining level %d
 
 item.supermultidrills:MagneticRod.name=Magnetic Iron Rod
+
+item.supermultidrills:UpgradeSaw.name=Saw Upgrade
+item.supermultidrills:UpgradeSaw.desc1=Allows the drill to harvest
+item.supermultidrills:UpgradeSaw.desc2=wood and such. Don't ask how.
+
+item.supermultidrills:UpgradeSilk.name=Silk Upgrade
+item.supermultidrills:UpgradeSilk.desc1=Allows you to harvest blocks as
+item.supermultidrills:UpgradeSilk.desc2=they are. OK, it's just Silk Touch.
+
+item.supermultidrills:UpgradeSpeed.name=Speed Upgrade
+item.supermultidrills:UpgradeSpeed.desc1=Increases mining speed at the
+item.supermultidrills:UpgradeSpeed.desc2=cost of energy efficiency.
 
 # Misc text
 

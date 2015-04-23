@@ -130,7 +130,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       int energyMax = this.getMaxEnergyStored(stack);
       String str = EnumChatFormatting.YELLOW
           + LocalizationHelper.getOtherItemKey(Names.DRILL, "Energy") + " "
-          + String.format("%d / %d RF", energy, energyMax);
+          + String.format("%,d / %,d RF", energy, energyMax);
       list.add(str);
 
       if (shifted) {
@@ -153,6 +153,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         s = EnumChatFormatting.GOLD
             + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningLevel") + " "
             + EnumChatFormatting.BLUE + this.getHarvestLevel(stack, "");
+        s += this.getTagBoolean(stack, NBT_SAW) ? " "
+            + LocalizationHelper.getOtherItemKey(Names.DRILL, "PlusSaw") : "";
         list.add(s);
 
         // Mining speed

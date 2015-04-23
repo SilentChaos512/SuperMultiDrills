@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
@@ -29,7 +30,7 @@ public class DrillHead extends ItemSMD {
 
   @Override
   public void addRecipes() {
-    
+
     ItemStack rod = ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1);
     EnumDrillMaterial material;
     for (int i = 0; i < EnumDrillMaterial.values().length; ++i) {
@@ -57,16 +58,32 @@ public class DrillHead extends ItemSMD {
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 
     EnumDrillMaterial material = this.getDrillMaterial(stack);
-    
+
+    // // Cost
+    // String str = LocalizationHelper.getMiscText("CostPerHardness");
+    // list.add(String.format(str, material.getCostPerHardness()));
+    // // Speed
+    // str = LocalizationHelper.getMiscText("MiningSpeed");
+    // list.add(String.format(str, material.getEfficiency()));
+    // // Damage
+    // str = LocalizationHelper.getMiscText("Damage");
+    // list.add(String.format(str, material.getDamageVsEntity()));
+
     // Cost
-    String str = LocalizationHelper.getMiscText("CostPerHardness");
-    list.add(String.format(str, material.getCostPerHardness()));
+    String s = EnumChatFormatting.GOLD
+        + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningCost") + " "
+        + EnumChatFormatting.GREEN + String.format("%.1f", material.getCostPerHardness()) + " "
+        + LocalizationHelper.getOtherItemKey(Names.DRILL, "RFPerHardness");
+    list.add(s);
+    
     // Speed
-    str = LocalizationHelper.getMiscText("MiningSpeed");
-    list.add(String.format(str, material.getEfficiency()));
+    s = EnumChatFormatting.GOLD
+        + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningSpeed") + " "
+        + EnumChatFormatting.DARK_PURPLE + String.format("%.1f", material.getEfficiency());
+    list.add(s);
+    
     // Damage
-    str = LocalizationHelper.getMiscText("Damage");
-    list.add(String.format(str, material.getDamageVsEntity()));
+    // TODO
   }
 
   public EnumDrillMaterial getDrillMaterial(ItemStack stack) {
@@ -90,7 +107,8 @@ public class DrillHead extends ItemSMD {
 
     for (int i = 0; i < icons.length; ++i) {
       EnumDrillMaterial material = EnumDrillMaterial.values()[i];
-      icons[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + this.itemName + "_" + material.toString());
+      icons[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + this.itemName + "_"
+          + material.toString());
     }
   }
 }

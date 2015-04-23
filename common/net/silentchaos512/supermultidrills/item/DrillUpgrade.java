@@ -1,12 +1,18 @@
 package net.silentchaos512.supermultidrills.item;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
+import net.silentchaos512.supermultidrills.util.LocalizationHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillUpgrade extends ItemSMD {
 
@@ -19,6 +25,29 @@ public class DrillUpgrade extends ItemSMD {
     this.setMaxStackSize(64);
     this.setHasSubtypes(true);
     this.setUnlocalizedName(Names.DRILL_UPGRADE);
+  }
+  
+  @Override
+  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
+    
+    if (stack.getItemDamage() < 0 || stack.getItemDamage() >= NAMES.length) {
+      return;
+    }
+    
+    String itemName = NAMES[stack.getItemDamage()];
+    int i = 1;
+    String s = LocalizationHelper.getItemDescription(itemName, i);
+    while (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, i)) && i < 8) {
+      list.add(EnumChatFormatting.ITALIC + s);
+      s = LocalizationHelper.getItemDescription(itemName, ++i);
+    }
+
+    if (i == 1) {
+      s = LocalizationHelper.getItemDescription(itemName, 0);
+      if (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, 0))) {
+        list.add(EnumChatFormatting.ITALIC + LocalizationHelper.getItemDescription(itemName, 0));
+      }
+    }
   }
 
   @Override

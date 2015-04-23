@@ -59,6 +59,8 @@ public class RecipeUpgradeDrill implements IRecipe {
           ++countHead;
         } else if (item instanceof DrillMotor) {
           ++countMotor;
+        } else if (item instanceof DrillUpgrade) {
+          ;
         } else if (isDye) {
           ++countDye;
         } else if (InventoryHelper.isDrillHeadMaterial(stack)) {
