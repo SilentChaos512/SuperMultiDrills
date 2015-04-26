@@ -412,7 +412,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public int getMaxEnergyExtracted(ItemStack container) {
 
-    return 1000000;
+    return Integer.MAX_VALUE;
   }
 
   public int getMaxEnergyReceived(ItemStack container) {
@@ -437,7 +437,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-    if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(NBT_ENERGY)) {
+    if (container.stackTagCompound == null || !this.hasTag(container, NBT_ENERGY)) {
       return 0;
     }
     int energy = getEnergyStored(container);
@@ -541,7 +541,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public boolean showDurabilityBar(ItemStack stack) {
 
-    return stack.stackTagCompound != null && stack.stackTagCompound.hasKey(NBT_ENERGY);
+    return stack.stackTagCompound != null && this.hasTag(stack, NBT_ENERGY);
   }
 
   @Override

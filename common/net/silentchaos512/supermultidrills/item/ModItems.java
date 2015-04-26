@@ -1,6 +1,9 @@
 package net.silentchaos512.supermultidrills.item;
 
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 import net.silentchaos512.supermultidrills.lib.Names;
+import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.recipe.RecipeCraftDrill;
 import net.silentchaos512.supermultidrills.recipe.RecipeUpgradeDrill;
 import net.silentchaos512.supermultidrills.registry.SRegistry;
@@ -31,5 +34,10 @@ public class ModItems {
 
     GameRegistry.addRecipe(new RecipeCraftDrill());
     GameRegistry.addRecipe(new RecipeUpgradeDrill());
+
+    RecipeSorter.INSTANCE.register(Strings.RESOURCE_PREFIX + "RecipeCraftDrill",
+        RecipeCraftDrill.class, Category.SHAPED, "after:minecraft:shapeless");
+    RecipeSorter.INSTANCE.register(Strings.RESOURCE_PREFIX + "RecipeUpgradeDrill",
+        RecipeUpgradeDrill.class, Category.SHAPELESS, "after:minecraft:shapeless");
   }
 }
