@@ -62,8 +62,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       Material.cloth, Material.gourd, Material.leaves, Material.plants, Material.vine,
       Material.web, Material.wood });
 
-  // public static final int MAX_ENERGY_IO = 10000;
-
   /*
    * Render pass Ids
    */
@@ -75,6 +73,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   /*
    * NBT keys
    */
+  public static final String NBT_BASE = "Drill";
   public static final String NBT_HEAD = "Head";
   public static final String NBT_MOTOR = "Motor";
   public static final String NBT_BATTERY = "Battery";
@@ -82,8 +81,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public static final String NBT_ENERGY = "Energy";
   public static final String NBT_SAW = "Saw";
   public static final String NBT_HEAD_COAT = "HeadCoat";
-  // public static final String NBT_SILK = "Silk";
-  // public static final String NBT_SPEED = "Speed";
 
   /*
    * Battery gauge icons
@@ -110,7 +107,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)
         || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 
-    if (stack.stackTagCompound != null && !stack.stackTagCompound.hasKey(NBT_HEAD)) {
+    if (stack.stackTagCompound != null && !this.hasTag(stack, NBT_HEAD)) {
       int i = 1;
       String itemName = Names.DRILL;
       String s = LocalizationHelper.getItemDescription(itemName, i);
@@ -249,15 +246,34 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     return exp.eval().intValue();
   }
 
+  public void createTagCompoundIfNeeded(ItemStack stack) {
+
+    if (stack.stackTagCompound == null) {
+      stack.setTagCompound(new NBTTagCompound());
+    }
+    if (!stack.stackTagCompound.hasKey(NBT_BASE)) {
+      stack.stackTagCompound.setTag(NBT_BASE, new NBTTagCompound());
+    }
+  }
+
+  public boolean hasTag(ItemStack stack, String key) {
+
+    if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey(NBT_BASE)) {
+      return false;
+    }
+    return ((NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE)).hasKey(key);
+  }
+
   public int getTag(ItemStack stack, String key) {
 
     if (stack == null) {
       return -1;
-    } else if (stack.stackTagCompound == null) {
-      stack.setTagCompound(new NBTTagCompound());
     }
-    if (stack.stackTagCompound.hasKey(key)) {
-      return stack.stackTagCompound.getInteger(key);
+    this.createTagCompoundIfNeeded(stack);
+
+    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    if (tags.hasKey(key)) {
+      return tags.getInteger(key);
     } else {
       return 0;
     }
@@ -267,11 +283,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     if (stack == null) {
       return false;
-    } else if (stack.stackTagCompound == null) {
-      stack.setTagCompound(new NBTTagCompound());
     }
-    if (stack.stackTagCompound.hasKey(key)) {
-      return stack.stackTagCompound.getBoolean(key);
+    this.createTagCompoundIfNeeded(stack);
+
+    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    if (tags.hasKey(key)) {
+      return tags.getBoolean(key);
     } else {
       return false;
     }
@@ -281,30 +298,28 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     if (stack == null) {
       return;
-    } else if (stack.stackTagCompound == null) {
-      stack.setTagCompound(new NBTTagCompound());
     }
-    stack.stackTagCompound.setInteger(key, value);
+    this.createTagCompoundIfNeeded(stack);
+
+    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    tags.setInteger(key, value);
   }
 
   public void setTagBoolean(ItemStack stack, String key, boolean value) {
 
     if (stack == null) {
       return;
-    } else if (stack.stackTagCompound == null) {
-      stack.setTagCompound(new NBTTagCompound());
     }
-    stack.stackTagCompound.setBoolean(key, value);
+    this.createTagCompoundIfNeeded(stack);
+
+    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    tags.setBoolean(key, value);
   }
 
   @Override
   public int getHarvestLevel(ItemStack stack, String toolClass) {
 
     int motorLevel = this.getTag(stack, NBT_MOTOR);
-    // if (motorLevel < 0) {
-    // motorLevel = 0;
-    // }
-    // return motorLevel + 2;
     switch (motorLevel) {
       case 2:
         return Config.motor2Level;
@@ -319,7 +334,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public Set getToolClasses(ItemStack stack) {
 
     boolean hasSaw = this.getTagBoolean(stack, NBT_SAW);
-    // return ImmutableSet.of("pickaxe");
     if (hasSaw) {
       return ImmutableSet.of("pickaxe", "shovel", "axe");
     } else {
@@ -348,13 +362,13 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public int getItemEnchantability(ItemStack stack) {
 
-    return 0;
+    return 0; // Prevents enchanting thru the enchantment table.
   }
 
   @Override
   public boolean hasEffect(ItemStack stack) {
 
-    return false;
+    return false; // Prevents the enchanted item glowing effect
   }
 
   @Override
@@ -447,10 +461,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public int getMaxEnergyStored(ItemStack container) {
 
     int battery = this.getTag(container, NBT_BATTERY);
-    // LogHelper.debug(battery);
     switch (battery) {
       case 4:
-        // LogHelper.debug(Config.battery4MaxCharge);
         return Config.battery4MaxCharge;
       case 3:
         return Config.battery3MaxCharge;
