@@ -39,7 +39,7 @@ public class DrillMotor extends ItemSMD {
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), " im", "gmg", "mi ",
           'i', Items.iron_ingot, 'm', rod, 'g', "gearTin"));
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), " im", "gmg", "mi ",
-          'i', "ingotInvar", 'm', rod, 'g', "gearElectrum"));
+          'i', Items.diamond, 'm', rod, 'g', "gearElectrum"));
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), " im", "gmg", "mi ",
           'i', "ingotSilver", 'm', rod, 'g', "gearEnderium"));
     }
