@@ -14,6 +14,7 @@ item.supermultidrills:Drill.MiningLevel=Harvest Level:
 item.supermultidrills:Drill.MiningSpeed=Mining Speed:
 item.supermultidrills:Drill.MiningCost=Operating Cost:
 item.supermultidrills:Drill.RFPerHardness=RF/block hardness
+item.supermultidrills:Drill.AttackDamage=Attack Damage:
 item.supermultidrills:Drill.PlusSaw=+ Saw
 
 item.supermultidrills:DrillBattery0.name=Drill Battery: Tater

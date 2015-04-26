@@ -59,16 +59,6 @@ public class DrillHead extends ItemSMD {
 
     EnumDrillMaterial material = this.getDrillMaterial(stack);
 
-    // // Cost
-    // String str = LocalizationHelper.getMiscText("CostPerHardness");
-    // list.add(String.format(str, material.getCostPerHardness()));
-    // // Speed
-    // str = LocalizationHelper.getMiscText("MiningSpeed");
-    // list.add(String.format(str, material.getEfficiency()));
-    // // Damage
-    // str = LocalizationHelper.getMiscText("Damage");
-    // list.add(String.format(str, material.getDamageVsEntity()));
-
     // Cost
     String s = EnumChatFormatting.GOLD
         + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningCost") + " "
@@ -83,7 +73,10 @@ public class DrillHead extends ItemSMD {
     list.add(s);
     
     // Damage
-    // TODO
+    s = EnumChatFormatting.GOLD
+        + LocalizationHelper.getOtherItemKey(Names.DRILL, "AttackDamage") + " "
+        + EnumChatFormatting.DARK_RED + String.format("%.1f", material.getDamageVsEntity());
+    list.add(s);
   }
 
   public EnumDrillMaterial getDrillMaterial(ItemStack stack) {

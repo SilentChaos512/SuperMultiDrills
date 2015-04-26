@@ -41,6 +41,7 @@ import org.lwjgl.input.Keyboard;
 
 import cofh.api.energy.IEnergyContainerItem;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -359,7 +360,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public boolean hitEntity(ItemStack stack, EntityLivingBase entity1, EntityLivingBase entity2) {
 
-    // TODO: Draw power?
+    this.extractEnergy(stack, this.getEnergyToBreakBlock(stack, 1.0f), false);
     return true;
   }
 
@@ -388,10 +389,10 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public Multimap getAttributeModifiers(ItemStack stack) {
 
-    Multimap multimap = super.getAttributeModifiers(stack);
-    double damage = this.getDrillMaterial(stack).getDamageVsEntity();
+    Multimap multimap = HashMultimap.create();
+    double damage = this.getDrillMaterial(stack).getDamageVsEntity() + 4.0;
     multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-        new AttributeModifier(field_111210_e, "Weapon modifier", damage, 0));
+        new AttributeModifier(field_111210_e, "Tool modifier", damage, 0));
     return multimap;
   }
 
