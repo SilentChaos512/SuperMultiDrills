@@ -98,6 +98,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     // The values passed into super should have no effect.
     super(4.0f, ToolMaterial.EMERALD, effectiveMaterialsBasic);
     this.setMaxStackSize(1);
+    this.setMaxDamage(100);
     this.setCreativeTab(SuperMultiDrills.creativeTab);
   }
 
@@ -476,6 +477,17 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   }
 
   @Override
+  public int getDamage(ItemStack stack) {
+
+    return 0;
+  }
+
+  @Override
+  public void setDamage(ItemStack stack, int damage) {
+
+  }
+
+  @Override
   public String getUnlocalizedName(ItemStack stack) {
 
     return LocalizationHelper.ITEM_PREFIX + Names.DRILL;
@@ -541,7 +553,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public boolean showDurabilityBar(ItemStack stack) {
 
-    return stack.stackTagCompound != null && this.hasTag(stack, NBT_ENERGY);
+    return stack.stackTagCompound != null && this.hasTag(stack, NBT_ENERGY)
+        && this.getEnergyStored(stack) != this.getMaxEnergyStored(stack);
   }
 
   @Override
