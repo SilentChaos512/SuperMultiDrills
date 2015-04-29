@@ -155,42 +155,53 @@ public class RecipeUpgradeDrill implements IRecipe {
 
     if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SAW)) {
       // Saw
+      if (ModItems.drill.getTagBoolean(drill, Drill.NBT_SAW)) {
+        return null;
+      }
       ModItems.drill.setTagBoolean(drill, Drill.NBT_SAW, true);
+    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_FORTUNE)) {
+      // Fortune
+      if (EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, drill) > 0) {
+        return null;
+      }
+      return this.increaseEnchantmentLevel(drill, Enchantment.fortune, 3);
     } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SILK)) {
       // Silk
-      if (EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, drill) == 0
-          && EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, drill) == 0) {
-        drill.addEnchantment(Enchantment.silkTouch, 1);
-      } else {
+      if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, drill) > 0) {
         return null;
       }
+      return this.increaseEnchantmentLevel(drill, Enchantment.silkTouch, 1);
     } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SPEED)) {
       // Speed
-      int level = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, drill);
-      if (level == 0) {
-        drill.addEnchantment(Enchantment.efficiency, 1);
-      } else if (level < 5) {
-        NBTTagCompound tagCompound;
-        for (int i = 0; i < drill.getEnchantmentTagList().tagCount(); ++i) {
-          tagCompound = (NBTTagCompound) drill.getEnchantmentTagList().getCompoundTagAt(i);
-          int id = tagCompound.getShort("id");
-          if (id == Enchantment.efficiency.effectId) {
-            tagCompound.setShort("lvl", (short) (level + 1));
-          }
-        }
-      } else {
-        return null;
-      }
+      return this.increaseEnchantmentLevel(drill, Enchantment.efficiency, 5);
     }
 
+    return drill;
+  }
+  
+  private ItemStack increaseEnchantmentLevel(ItemStack drill, Enchantment enchantment, int maxLevel) {
+    
+    int level = EnchantmentHelper.getEnchantmentLevel(enchantment.effectId, drill);
+    if (level == 0) {
+      drill.addEnchantment(enchantment, 1);
+    } else if (level < maxLevel) {
+      NBTTagCompound tagCompound;
+      for (int i = 0; i < drill.getEnchantmentTagList().tagCount(); ++i) {
+        tagCompound = (NBTTagCompound) drill.getEnchantmentTagList().getCompoundTagAt(i);
+        int id = tagCompound.getShort("id");
+        if (id == enchantment.effectId) {
+          tagCompound.setShort("lvl", (short) (level + 1));
+        }
+      }
+    } else {
+      return null;
+    }
     return drill;
   }
 
   @Override
   public int getRecipeSize() {
 
-    // This seems to affect the "priority" of the recipe? Larger values override smaller ones.
-    // So this needs to be greater than four to override the recipe in Drill.addRecipe. I think.
     return 9;
   }
 

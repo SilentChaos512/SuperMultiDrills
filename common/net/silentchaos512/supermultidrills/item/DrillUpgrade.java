@@ -16,7 +16,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillUpgrade extends ItemSMD {
 
-  public static final String[] NAMES = { Names.UPGRADE_SAW, Names.UPGRADE_SILK, Names.UPGRADE_SPEED };
+  public static final String[] NAMES = { Names.UPGRADE_SAW, Names.UPGRADE_SPEED,
+      Names.UPGRADE_SILK, Names.UPGRADE_FORTUNE };
 
   public DrillUpgrade() {
 
@@ -26,14 +27,14 @@ public class DrillUpgrade extends ItemSMD {
     this.setHasSubtypes(true);
     this.setUnlocalizedName(Names.DRILL_UPGRADE);
   }
-  
+
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
-    
+
     if (stack.getItemDamage() < 0 || stack.getItemDamage() >= NAMES.length) {
       return;
     }
-    
+
     String itemName = NAMES[stack.getItemDamage()];
     int i = 1;
     String s = LocalizationHelper.getItemDescription(itemName, i);
@@ -59,13 +60,17 @@ public class DrillUpgrade extends ItemSMD {
     GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SAW)),
         " i ", "imi", "mi ", 'i', Items.iron_ingot, 'm', rod);
 
-    // Silk
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SILK)),
-        "eee", "rgr", 'e', Items.emerald, 'r', rod, 'g', Items.gold_ingot);
-
     // Speed
     GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SPEED)),
         " m ", "grg", " m ", 'm', rod, 'g', Items.gold_ingot, 'r', Items.redstone);
+
+    // Silk
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SILK)),
+        "eee", "rgr", 'e', Items.emerald, 'r', rod, 'g', Items.gold_ingot);
+    
+    // Fortune
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_FORTUNE)),
+        "ddd", "rgr", 'd', Items.diamond, 'r', rod, 'g', Items.gold_ingot);
   }
 
   public int getMetaForName(String name) {

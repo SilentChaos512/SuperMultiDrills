@@ -64,6 +64,8 @@ public class RecipeCraftDrill implements IRecipe {
   @Override
   public int getRecipeSize() {
 
+    // This seems to affect the "priority" of the recipe? Larger values override smaller ones.
+    // So this needs to be greater than four to override the recipe in Drill.addRecipe. I think.
     return 10;
   }
 
