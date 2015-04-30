@@ -5,8 +5,10 @@ itemGroup.tabSuperMultiDrills=Super Multi-Drills
 # Item localizations
 
 item.supermultidrills:Drill.name=Multi-Drill
-item.supermultidrills:Drill.desc1=The exact appearance and stats
-item.supermultidrills:Drill.desc2=will depend on the parts used.
+item.supermultidrills:Drill.desc1=The exact appearance and stats will depend
+item.supermultidrills:Drill.desc2=on the parts used.
+item.supermultidrills:Drill.desc3=Drills can be upgraded by crafting them
+item.supermultidrills:Drill.desc4=with new parts (head, motor, etc.)
 item.supermultidrills:Drill.Energy=Energy:
 item.supermultidrills:Drill.Head=Head Material:
 item.supermultidrills:Drill.HeadCoat=(coated with %s)
