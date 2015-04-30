@@ -30,6 +30,8 @@ public class Config {
       + "Available variables:\n"
       + "durability: The 'max uses' of the drill head material.\n"
       + "efficiency: The level of the Efficiency enchantment (or number of speed upgrades) on the drill.\n"
+      + "silk_touch: The level of the Silk Touch enchantment on the drill.\n"
+      + "fortune: The level of the Fortune enchantment on the drill.\n"
       + "hardness: The hardness of the block being mined.\n"
       + "mining_speed: The digging speed of the drill head material.\n";
 

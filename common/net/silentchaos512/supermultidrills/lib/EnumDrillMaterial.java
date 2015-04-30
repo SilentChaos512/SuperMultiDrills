@@ -100,6 +100,8 @@ public enum EnumDrillMaterial {
     Expression exp = Config.energyCostExpression;
     exp.setVariable("durability", BigDecimal.valueOf(this.durability));
     exp.setVariable("efficiency", BigDecimal.valueOf(0));
+    exp.setVariable("silk_touch", BigDecimal.valueOf(0));
+    exp.setVariable("fortune", BigDecimal.valueOf(0));
     exp.setVariable("hardness", BigDecimal.valueOf(1));
     exp.setVariable("mining_speed", BigDecimal.valueOf(this.efficiency));
     return exp.eval().floatValue();

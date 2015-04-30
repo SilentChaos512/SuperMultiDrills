@@ -237,11 +237,17 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId,
         stack);
+    int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId,
+        stack);
+    int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack);
+    
     EnumDrillMaterial material = this.getDrillMaterial(stack);
 
     Expression exp = Config.energyCostExpression;
     exp.setVariable("durability", BigDecimal.valueOf(material.getDurability()));
     exp.setVariable("efficiency", BigDecimal.valueOf(efficiencyLevel));
+    exp.setVariable("silk_touch", BigDecimal.valueOf(silkTouchLevel));
+    exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
     exp.setVariable("hardness", BigDecimal.valueOf(hardness));
     exp.setVariable("mining_speed", BigDecimal.valueOf(material.getEfficiency()));
     return exp.eval().intValue();
@@ -479,7 +485,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public int getDamage(ItemStack stack) {
 
-    return 0;
+    int value = (int) (100 * this.getDurabilityForDisplay(stack));
+    return MathHelper.clamp_int(value, 0, 99);
   }
 
   @Override
