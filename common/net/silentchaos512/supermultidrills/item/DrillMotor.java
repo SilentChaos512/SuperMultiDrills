@@ -34,11 +34,11 @@ public class DrillMotor extends ItemSMD {
     if (SuperMultiDrills.instance.foundEnderIO) {
       // Ender IO recipes
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), " im", "gmg", "mi ",
-          'i', Items.iron_ingot, 'm', rod, 'g', "gearElectricalSteel"));
+          'i', Items.iron_ingot, 'm', rod, 'g', "ingotElectricalSteel"));
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), " im", "gmg", "mi ",
-          'i', Items.diamond, 'm', rod, 'g', "gearEnergeticAlloy"));
+          'i', Items.diamond, 'm', rod, 'g', "ingotEnergeticAlloy"));
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), " im", "gmg", "mi ",
-          'i', "ingotDarkSteel", 'm', rod, 'g', "gearPhasedGold"));
+          'i', "ingotDarkSteel", 'm', rod, 'g', "ingotPhasedGold"));
     }
     if (SuperMultiDrills.instance.foundThermalFoundation) {
       // Thermal Foundation recipes

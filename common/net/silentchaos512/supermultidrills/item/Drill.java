@@ -99,6 +99,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     super(4.0f, ToolMaterial.EMERALD, effectiveMaterialsBasic);
     this.setMaxStackSize(1);
     this.setMaxDamage(100);
+    this.setNoRepair();
     this.setCreativeTab(SuperMultiDrills.creativeTab);
   }
 

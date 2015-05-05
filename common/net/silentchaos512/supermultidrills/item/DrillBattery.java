@@ -40,9 +40,8 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
       Item itemCapacitor = (Item) Item.itemRegistry.getObject("EnderIO:itemBasicCapacitor");
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "iyi", "iri",
           'i', Items.iron_ingot, 'r', Items.redstone, 'y', Items.potato));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotConductiveIron", 'y',
-          new ItemStack(itemCapacitor, 1, 0)));
+      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xrx", "iri",
+          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotConductiveIron"));
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri",
           'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotElectricalSteel", 'y',
           new ItemStack(itemCapacitor, 1, 0)));
