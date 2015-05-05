@@ -125,6 +125,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         }
       }
     } else {
+      // Energy stored
       int energy = this.getEnergyStored(stack);
       int energyMax = this.getMaxEnergyStored(stack);
       String str = EnumChatFormatting.YELLOW
@@ -203,6 +204,29 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     return EnumDrillMaterial.values()[coatId];
   }
 
+  public ItemStack getBattery(ItemStack stack) {
+
+    ItemStack battery = new ItemStack(ModItems.drillBattery, 1, this.getTag(stack, NBT_BATTERY));
+    ModItems.drillBattery.setTag(battery, ModItems.drillBattery.NBT_ENERGY,
+        this.getEnergyStored(stack));
+    return battery;
+  }
+  
+  public ItemStack getHead(ItemStack stack) {
+    
+    return new ItemStack(ModItems.drillHead, 1, this.getTag(stack, NBT_HEAD));
+  }
+  
+  public ItemStack getMotor(ItemStack stack) {
+    
+    return new ItemStack(ModItems.drillMotor, 1, this.getTag(stack, NBT_MOTOR));
+  }
+  
+  public ItemStack getChassis(ItemStack stack) {
+    
+    return new ItemStack(ModItems.drillChassis, 1, this.getTag(stack, NBT_CHASSIS));
+  }
+
   public boolean canHarvestBlock(ItemStack drill, Block block, int meta) {
 
     if (block.getHarvestLevel(meta) > this.getHarvestLevel(drill, "")) {
@@ -240,7 +264,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId,
         stack);
     int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack);
-    
+
     EnumDrillMaterial material = this.getDrillMaterial(stack);
 
     Expression exp = Config.energyCostExpression;

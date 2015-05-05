@@ -12,6 +12,9 @@ public class Names {
   // Crafting items
   public static final String CRAFTING_ITEM = "CraftingItem";
   public static final String MAGNETIC_ROD = "MagneticRod";
+  public static final String GEAR_ELECTRICAL = "GearElectrilSteel";
+  public static final String GEAR_ENERGETIC = "GearEnergetic";
+  public static final String GEAR_VIBRANT = "GearVibrant";
   
   // Upgrades
   public static final String DRILL_UPGRADE = "DrillUpgrade";

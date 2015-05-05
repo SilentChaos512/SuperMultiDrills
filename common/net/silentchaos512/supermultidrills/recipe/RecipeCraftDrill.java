@@ -56,7 +56,7 @@ public class RecipeCraftDrill implements IRecipe {
     drill.setTag(stack, drill.NBT_MOTOR, motor.getItemDamage());
     drill.setTag(stack, drill.NBT_BATTERY, battery.getItemDamage());
     drill.setTag(stack, drill.NBT_CHASSIS, chassis.getItemDamage());
-    drill.setTag(stack, drill.NBT_ENERGY, 0);
+    drill.setTag(stack, drill.NBT_ENERGY, ModItems.drillBattery.getEnergyStored(battery));
     
     return stack;
   }

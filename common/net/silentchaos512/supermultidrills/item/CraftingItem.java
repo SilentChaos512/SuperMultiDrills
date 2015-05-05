@@ -4,13 +4,16 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CraftingItem extends ItemSMD {
 
-  public static final String[] NAMES = { Names.MAGNETIC_ROD };
+  public static final String[] NAMES = { Names.MAGNETIC_ROD, Names.GEAR_ELECTRICAL,
+      Names.GEAR_ENERGETIC, Names.GEAR_VIBRANT };
 
   public CraftingItem() {
 
@@ -24,9 +27,32 @@ public class CraftingItem extends ItemSMD {
   @Override
   public void addRecipes() {
 
+    ItemStack rod = this.getStack(Names.MAGNETIC_ROD);
     // Magnetic rod
-    GameRegistry.addShapedRecipe(getStack(Names.MAGNETIC_ROD, 2), " ri", "rir", "ir ", 'i',
+    GameRegistry.addShapedRecipe(this.getStack(Names.MAGNETIC_ROD, 2), " ri", "rir", "ir ", 'i',
         Items.iron_ingot, 'r', Items.redstone);
+    // Electrical Steel Gear
+    GameRegistry.addRecipe(new ShapedOreRecipe(this.getStack(Names.GEAR_ELECTRICAL), " i ", "iri",
+        " i ", 'i', "ingotElectricalSteel", 'r', rod));
+    // Energetic Alloy Gear
+    GameRegistry.addRecipe(new ShapedOreRecipe(this.getStack(Names.GEAR_ENERGETIC), " i ", "iri",
+        " i ", 'i', "ingotEnergeticAlloy", 'r', rod));
+    // Vibrant Alloy Gear
+    GameRegistry.addRecipe(new ShapedOreRecipe(this.getStack(Names.GEAR_VIBRANT), " i ", "iri",
+        " i ", 'i', "ingotPhasedGold", 'r', rod));
+  }
+
+  @Override
+  public void addOreDict() {
+
+    OreDictionary.registerOre("gearElectricalSteel", this.getStack(Names.GEAR_ELECTRICAL));
+    OreDictionary.registerOre("gearEnergeticAlloy", this.getStack(Names.GEAR_ENERGETIC));
+    OreDictionary.registerOre("gearPhasedGold", this.getStack(Names.GEAR_VIBRANT));
+  }
+
+  public ItemStack getStack(String name) {
+
+    return this.getStack(name, 1);
   }
 
   public ItemStack getStack(String name, int count) {

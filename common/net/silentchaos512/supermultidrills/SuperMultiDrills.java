@@ -7,10 +7,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.silentchaos512.supermultidrills.configuration.Config;
+import net.silentchaos512.supermultidrills.core.handler.DrillsEventHandler;
 import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.proxy.CommonProxy;
 import net.silentchaos512.supermultidrills.registry.SRegistry;
-import net.silentchaos512.supermultidrills.util.LogHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -20,8 +20,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 @Mod(modid = SuperMultiDrills.MOD_ID, name = SuperMultiDrills.MOD_NAME, version = SuperMultiDrills.VERSION_NUMBER)
 public class SuperMultiDrills {
@@ -59,8 +57,8 @@ public class SuperMultiDrills {
     SRegistry.addRecipesAndOreDictEntries();
     ModItems.initItemRecipes();
     
-//  MinecraftForge.EVENT_BUS.register(new SMDEventHandler());
-//  FMLCommonHandler.instance().bus().register(new SMDEventHandler());
+    MinecraftForge.EVENT_BUS.register(new DrillsEventHandler());
+    FMLCommonHandler.instance().bus().register(new DrillsEventHandler());
   }
   
   @EventHandler

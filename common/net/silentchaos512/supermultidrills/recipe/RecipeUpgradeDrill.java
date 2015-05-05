@@ -27,9 +27,6 @@ import com.google.common.collect.ImmutableSet;
 
 public class RecipeUpgradeDrill implements IRecipe {
 
-  // public static final Set upgrades = ImmutableSet.of(ModItems.drillUpgrade, ModItems.drillBattery,
-  // ModItems.drillChassis, ModItems.drillHead, ModItems.drillMotor, Items.dye);
-
   @Override
   public boolean matches(InventoryCrafting inv, World world) {
 
@@ -111,7 +108,15 @@ public class RecipeUpgradeDrill implements IRecipe {
           result = applyDrillUpgrade(result, stack);
         } else if (item instanceof DrillBattery) {
           // Battery change
+          // Remove next 2 statements!
+          ItemStack oldBattery = new ItemStack(ModItems.drillBattery, 1, ModItems.drill.getTag(
+              result, Drill.NBT_BATTERY));
+          ModItems.drillBattery.setTag(oldBattery, ModItems.drillBattery.NBT_ENERGY,
+              ModItems.drill.getEnergyStored(result));
+
           ModItems.drill.setTag(result, Drill.NBT_BATTERY, stack.getItemDamage());
+          ModItems.drill.setTag(result, Drill.NBT_ENERGY,
+              ModItems.drillBattery.getEnergyStored(stack));
           // Cap to new max charge
           int maxEnergy = ModItems.drill.getMaxEnergyStored(result);
           if (ModItems.drill.getEnergyStored(result) > maxEnergy) {
@@ -159,7 +164,8 @@ public class RecipeUpgradeDrill implements IRecipe {
         return null;
       }
       ModItems.drill.setTagBoolean(drill, Drill.NBT_SAW, true);
-    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_FORTUNE)) {
+    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade
+        .getMetaForName(Names.UPGRADE_FORTUNE)) {
       // Fortune
       if (EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, drill) > 0) {
         return null;
@@ -178,9 +184,9 @@ public class RecipeUpgradeDrill implements IRecipe {
 
     return drill;
   }
-  
+
   private ItemStack increaseEnchantmentLevel(ItemStack drill, Enchantment enchantment, int maxLevel) {
-    
+
     int level = EnchantmentHelper.getEnchantmentLevel(enchantment.effectId, drill);
     if (level == 0) {
       drill.addEnchantment(enchantment, 1);
