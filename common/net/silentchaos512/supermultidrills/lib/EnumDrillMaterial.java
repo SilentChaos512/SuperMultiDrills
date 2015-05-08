@@ -40,8 +40,12 @@ public enum EnumDrillMaterial {
   MORGANITE(1024, 10.0f, 4.0f, "gemMorganite"),
   ONYX(768, 10.0f, 6.0f, "gemOnyx"),
 
-  // Misc
-  STEEL(900, 7.0f, 2.0f, "ingotSteel");
+  // Tinker's Construct (Includes handle modifiers, Manyullyn reduced because it breaks the default formula.)
+  STEEL((int) (750 * 1.3f), 10.0f, 4.0f, "ingotSteel"),
+  ALUMITE((int) (700 * 1.3f), 8.0f, 3.0f, "ingotAlumite"),
+  COBALT((int) (800 * 1.75f), 14.0f, 3.0f, "ingotCobalt"),
+  ARDITE((int) (500 * 2.0f), 8.0f, 3.0f, "ingotArdite"),
+  MANYULLYN((int) (1200 * 1.5f), 9.0f, 4.0f, "ingotManyullyn");
 
   private final int durability;
   private final float efficiency;
