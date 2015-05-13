@@ -108,7 +108,12 @@ public enum EnumDrillMaterial {
     exp.setVariable("fortune", BigDecimal.valueOf(0));
     exp.setVariable("hardness", BigDecimal.valueOf(1));
     exp.setVariable("mining_speed", BigDecimal.valueOf(this.efficiency));
-    return exp.eval().floatValue();
+    
+    float result = exp.eval().floatValue();
+    if (result < 0.0f) {
+      result = 0.0f; // Energy cost should be non-negative!
+    }
+    return result;
   }
 
   /**

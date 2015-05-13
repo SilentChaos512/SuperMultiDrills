@@ -286,7 +286,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
     exp.setVariable("hardness", BigDecimal.valueOf(hardness));
     exp.setVariable("mining_speed", BigDecimal.valueOf(material.getEfficiency()));
-    return exp.eval().intValue();
+    
+    int result = exp.eval().intValue();
+    if (result < 0) {
+      result = 0; // Energy cost should be non-negative!
+    }
+    return result;
   }
 
   public void createTagCompoundIfNeeded(ItemStack stack) {
