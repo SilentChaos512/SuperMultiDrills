@@ -1,6 +1,7 @@
 package net.silentchaos512.supermultidrills.item;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +41,6 @@ import net.silentchaos512.supermultidrills.util.LogHelper;
 
 import org.lwjgl.input.Keyboard;
 
-import scala.tools.nsc.backend.icode.Members.Local;
 import cofh.api.energy.IEnergyContainerItem;
 
 import com.google.common.collect.HashMultimap;
@@ -189,8 +189,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    list.add(new ItemStack(item, 1, 0));
-
+    list.add(new ItemStack(item));
+    
     if (Config.showSpawnableDrills) {
       // Shiny drill
       ItemStack drill = new ItemStack(item, 1, 0);
@@ -198,10 +198,10 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       this.setTag(drill, NBT_HEAD, 11);
       this.setTag(drill, NBT_HEAD_COAT, -1);
       this.setTag(drill, NBT_MOTOR, 1);
-      this.setTag(drill, NBT_BATTERY, 4);
+      this.setTag(drill, NBT_BATTERY, 3);
       this.setTag(drill, NBT_CHASSIS, 9);
       this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
-      this.setTagBoolean(drill, NBT_SAW, true);
+      this.setTagBoolean(drill, NBT_SAW, false);
       this.setTagString(drill, NBT_SPECIAL, "For testing purposes and cheaters.");
       list.add(drill);
 
@@ -212,10 +212,23 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       this.setTag(drill, NBT_HEAD_COAT, 5);
       this.setTag(drill, NBT_MOTOR, 2);
       this.setTag(drill, NBT_BATTERY, 4);
-      this.setTag(drill, NBT_CHASSIS, 0);
+      this.setTag(drill, NBT_CHASSIS, 14);
       this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
       this.setTagBoolean(drill, NBT_SAW, true);
       this.setTagString(drill, NBT_SPECIAL, "SilentChaos512's tool of choice.");
+      list.add(drill);
+
+      // Mani Mani
+      drill = new ItemStack(item, 1, 0);
+      drill.setStackDisplayName("Evil Mani Mani Drill");
+      this.setTag(drill, NBT_HEAD, 28);
+      this.setTag(drill, NBT_HEAD_COAT, -1);
+      this.setTag(drill, NBT_MOTOR, 2);
+      this.setTag(drill, NBT_BATTERY, 5);
+      this.setTag(drill, NBT_CHASSIS, 10);
+      this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
+      this.setTagBoolean(drill, NBT_SAW, true);
+      this.setTagString(drill, NBT_SPECIAL, "+5 coolness for getting the reference.");
       list.add(drill);
     }
   }

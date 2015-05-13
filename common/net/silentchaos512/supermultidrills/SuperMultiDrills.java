@@ -70,7 +70,7 @@ public class SuperMultiDrills {
     
     @Override
     public Item getTabIconItem() {
-      return Items.baked_potato;
+      return ModItems.drill;
     }
   };
 }

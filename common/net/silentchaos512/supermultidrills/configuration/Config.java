@@ -18,7 +18,7 @@ public class Config {
   public static int motor1Level = 3;
   public static int motor2Level = 4;
   public static boolean showUncraftableHeads = false;
-  public static boolean showSpawnableDrills = false;
+  public static boolean showSpawnableDrills = true;
 
   public static String energyCostExpressionString = "(270 - 0.12 * durability) * (1 + 0.08 * efficiency) * hardness";
   public static Expression energyCostExpression;
