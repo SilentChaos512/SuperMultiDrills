@@ -7,6 +7,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,6 +40,7 @@ import net.silentchaos512.supermultidrills.util.LogHelper;
 
 import org.lwjgl.input.Keyboard;
 
+import scala.tools.nsc.backend.icode.Members.Local;
 import cofh.api.energy.IEnergyContainerItem;
 
 import com.google.common.collect.HashMultimap;
@@ -81,6 +83,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public static final String NBT_ENERGY = "Energy";
   public static final String NBT_SAW = "Saw";
   public static final String NBT_HEAD_COAT = "HeadCoat";
+  public static final String NBT_SPECIAL = "Special";
 
   /*
    * Battery gauge icons
@@ -109,18 +112,19 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 
     if (stack.stackTagCompound != null && !this.hasTag(stack, NBT_HEAD)) {
+      // The "empty" drill that shows up in NEI.
       int i = 1;
       String itemName = Names.DRILL;
       String s = LocalizationHelper.getItemDescription(itemName, i);
       while (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, i)) && i < 8) {
-        list.add(EnumChatFormatting.DARK_GRAY + s);
+        list.add(EnumChatFormatting.DARK_AQUA + s);
         s = LocalizationHelper.getItemDescription(itemName, ++i);
       }
 
       if (i == 1) {
         s = LocalizationHelper.getItemDescription(itemName, 0);
         if (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, 0))) {
-          list.add(EnumChatFormatting.DARK_GRAY
+          list.add(EnumChatFormatting.DARK_AQUA
               + LocalizationHelper.getItemDescription(itemName, 0));
         }
       }
@@ -137,6 +141,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       String str = EnumChatFormatting.YELLOW
           + LocalizationHelper.getOtherItemKey(Names.DRILL, "Energy") + " " + amount;
       list.add(str);
+
+      // Special
+      str = this.getTagString(stack, NBT_SPECIAL);
+      if (str != null) {
+        list.add(EnumChatFormatting.DARK_PURPLE + str);
+      }
 
       if (shifted) {
         // Head
@@ -173,6 +183,40 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         list.add(EnumChatFormatting.GOLD + "" + EnumChatFormatting.ITALIC
             + LocalizationHelper.getMiscText(Strings.PRESS_CTRL));
       }
+    }
+  }
+
+  @Override
+  public void getSubItems(Item item, CreativeTabs tab, List list) {
+
+    list.add(new ItemStack(item, 1, 0));
+
+    if (Config.showSpawnableDrills) {
+      // Shiny drill
+      ItemStack drill = new ItemStack(item, 1, 0);
+      drill.setStackDisplayName("Shiny Multi-Drill");
+      this.setTag(drill, NBT_HEAD, 11);
+      this.setTag(drill, NBT_HEAD_COAT, -1);
+      this.setTag(drill, NBT_MOTOR, 1);
+      this.setTag(drill, NBT_BATTERY, 4);
+      this.setTag(drill, NBT_CHASSIS, 9);
+      this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
+      this.setTagBoolean(drill, NBT_SAW, true);
+      this.setTagString(drill, NBT_SPECIAL, "For testing purposes and cheaters.");
+      list.add(drill);
+
+      // Claire
+      drill = new ItemStack(item, 1, 0);
+      drill.setStackDisplayName("Claire");
+      this.setTag(drill, NBT_HEAD, 15);
+      this.setTag(drill, NBT_HEAD_COAT, 5);
+      this.setTag(drill, NBT_MOTOR, 2);
+      this.setTag(drill, NBT_BATTERY, 4);
+      this.setTag(drill, NBT_CHASSIS, 0);
+      this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
+      this.setTagBoolean(drill, NBT_SAW, true);
+      this.setTagString(drill, NBT_SPECIAL, "SilentChaos512's tool of choice.");
+      list.add(drill);
     }
   }
 
@@ -261,7 +305,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     // an easy way to do it, but it shouldn't matter in most cases, so I just used 1.
     boolean hasEnoughPower = this.getEnergyStored(stack) > 0
         || this.getEnergyToBreakBlock(stack, 1.0f) == 0;
-    
+
     if (canHarvest && hasEnoughPower) {
       return this.getDrillMaterial(stack).getEfficiency();
     } else {
@@ -342,6 +386,21 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
   }
 
+  public String getTagString(ItemStack stack, String key) {
+
+    if (stack == null) {
+      return null;
+    }
+    this.createTagCompoundIfNeeded(stack);
+
+    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    if (tags.hasKey(key)) {
+      return tags.getString(key);
+    } else {
+      return null;
+    }
+  }
+
   public void setTag(ItemStack stack, String key, int value) {
 
     if (stack == null) {
@@ -362,6 +421,17 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
     tags.setBoolean(key, value);
+  }
+
+  public void setTagString(ItemStack stack, String key, String value) {
+
+    if (stack == null) {
+      return;
+    }
+    this.createTagCompoundIfNeeded(stack);
+
+    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    tags.setString(key, value);
   }
 
   @Override

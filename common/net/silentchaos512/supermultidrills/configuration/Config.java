@@ -18,6 +18,7 @@ public class Config {
   public static int motor1Level = 3;
   public static int motor2Level = 4;
   public static boolean showUncraftableHeads = false;
+  public static boolean showSpawnableDrills = false;
 
   public static String energyCostExpressionString = "(270 - 0.12 * durability) * (1 + 0.08 * efficiency) * hardness";
   public static Expression energyCostExpression;
@@ -66,6 +67,8 @@ public class Config {
 
       showUncraftableHeads = c.getBoolean("Head.ShowUncraftables", CAT_ITEM, showUncraftableHeads,
           "Show the drill heads that are not craftable with the available mods.");
+      showSpawnableDrills = c.getBoolean("Drill.ShowSpawnables", CAT_ITEM, showSpawnableDrills,
+          "Show some pre-made drills for creative/cheaty purposes.");
 
       energyCostExpressionString = c.getString("Math.EnergyToBreakBlock", CAT_ITEM,
           energyCostExpressionString, commentEnergyCostExpression);

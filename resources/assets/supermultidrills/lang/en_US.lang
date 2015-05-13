@@ -26,6 +26,7 @@ item.supermultidrills:DrillBattery3.name=Drill Battery: Large
 item.supermultidrills:DrillBattery4.name=Drill Battery: Extreme
 item.supermultidrills:DrillBattery5.name=Drill Battery: Creative
 item.supermultidrills:DrillBattery.Capacity=Capacity:
+item.supermultidrills:DrillBattery.Potato=What did you expect from a potato?
 
 item.supermultidrills:DrillChassis0.name=White Drill Chassis
 item.supermultidrills:DrillChassis1.name=Orange Drill Chassis
@@ -81,15 +82,22 @@ item.supermultidrills:DrillMotor.desc=Mining level %d
 
 item.supermultidrills:MagneticRod.name=Magnetic Iron Rod
 
+item.supermultidrills:DrillUpgrade.desc=Craft with a drill to apply.
+
 item.supermultidrills:UpgradeFortune.name=Drill Upgrade: Fortune
+item.supermultidrills:UpgradeFortune.desc1=Applies Fortune
+item.supermultidrills:UpgradeFortune.desc2=(one level each)
 
 item.supermultidrills:UpgradeSaw.name=Drill Upgrade: Saw
 item.supermultidrills:UpgradeSaw.desc1=Allows the drill to harvest
 item.supermultidrills:UpgradeSaw.desc2=wood and such. Don't ask how.
 
 item.supermultidrills:UpgradeSilk.name=Drill Upgrade: Silk
+item.supermultidrills:UpgradeSilk.desc=Applies Silk Touch
 
 item.supermultidrills:UpgradeSpeed.name=Drill Upgrade: Efficiency
+item.supermultidrills:UpgradeSpeed.desc1=Applies Efficiency
+item.supermultidrills:UpgradeSpeed.desc2=(one level each)
 
 # Misc text
 
@@ -97,6 +105,7 @@ misc.supermultidrills:CostPerHardness=Cost per block hardness: %.1f
 misc.supermultidrills:MiningSpeed=Mining speed: %.1f
 misc.supermultidrills:Damage=Attack damage: %.1f
 
+misc.supermultidrills:Cheater=Cheater!
 misc.supermultidrills:CreativeOnly=Creative mode only!
 misc.supermultidrills:Infinite=Infinite
 misc.supermultidrills:PressCtrl=<Press Ctrl>

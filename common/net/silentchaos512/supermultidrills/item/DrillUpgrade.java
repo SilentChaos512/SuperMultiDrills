@@ -39,16 +39,19 @@ public class DrillUpgrade extends ItemSMD {
     int i = 1;
     String s = LocalizationHelper.getItemDescription(itemName, i);
     while (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, i)) && i < 8) {
-      list.add(EnumChatFormatting.ITALIC + s);
+      list.add(EnumChatFormatting.GREEN + s);
       s = LocalizationHelper.getItemDescription(itemName, ++i);
     }
 
     if (i == 1) {
       s = LocalizationHelper.getItemDescription(itemName, 0);
       if (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, 0))) {
-        list.add(EnumChatFormatting.ITALIC + LocalizationHelper.getItemDescription(itemName, 0));
+        list.add(EnumChatFormatting.GREEN + LocalizationHelper.getItemDescription(itemName, 0));
       }
     }
+    
+    list.add(EnumChatFormatting.DARK_GRAY
+        + LocalizationHelper.getItemDescription(Names.DRILL_UPGRADE, 0));
   }
 
   @Override
@@ -67,10 +70,11 @@ public class DrillUpgrade extends ItemSMD {
     // Silk
     GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SILK)),
         "eee", "rgr", 'e', Items.emerald, 'r', rod, 'g', Items.gold_ingot);
-    
+
     // Fortune
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_FORTUNE)),
-        "ddd", "rgr", 'd', Items.diamond, 'r', rod, 'g', Items.gold_ingot);
+    GameRegistry.addShapedRecipe(
+        new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_FORTUNE)), "ddd", "rgr", 'd',
+        Items.diamond, 'r', rod, 'g', Items.gold_ingot);
   }
 
   public int getMetaForName(String name) {

@@ -6,6 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,6 +95,11 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
     int energy = this.getEnergyStored(stack);
     int energyMax = this.getMaxEnergyStored(stack);
 
+    if (stack.getItemDamage() == 0) {
+      list.add(EnumChatFormatting.GOLD
+          + LocalizationHelper.getOtherItemKey(Names.DRILL_BATTERY, "Potato"));
+    }
+
     String amount;
     if (stack.getItemDamage() == CREATIVE_ID) {
       list.add(EnumChatFormatting.DARK_PURPLE + LocalizationHelper.getMiscText("CreativeOnly"));
@@ -105,6 +111,19 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
     String str = EnumChatFormatting.YELLOW
         + LocalizationHelper.getOtherItemKey(Names.DRILL, "Energy") + " " + amount;
     list.add(str);
+  }
+
+  @Override
+  public EnumRarity getRarity(ItemStack stack) {
+
+    switch (stack.getItemDamage()) {
+      case 5:
+        return EnumRarity.epic;
+      case 4:
+        return EnumRarity.rare;
+      default:
+        return super.getRarity(stack);
+    }
   }
 
   @Override
