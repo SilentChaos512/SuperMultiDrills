@@ -2,6 +2,7 @@ package net.silentchaos512.supermultidrills.item;
 
 import java.util.List;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,12 +21,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
 
+  public static final int CREATIVE_ID = 5;
+  public static final int CREATIVE_MAX_ENERGY = 1;
   public static final String NBT_BASE = "Battery";
   public static final String NBT_ENERGY = "Energy";
 
   public DrillBattery() {
 
-    this.icons = new IIcon[5];
+    this.icons = new IIcon[6];
     this.setMaxDamage(0);
     this.setMaxStackSize(1);
     this.setHasSubtypes(true);
@@ -90,10 +93,30 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
     // Energy stored
     int energy = this.getEnergyStored(stack);
     int energyMax = this.getMaxEnergyStored(stack);
+
+    String amount;
+    if (stack.getItemDamage() == CREATIVE_ID) {
+      list.add(EnumChatFormatting.DARK_PURPLE + LocalizationHelper.getMiscText("CreativeOnly"));
+      amount = LocalizationHelper.getMiscText("Infinite");
+    } else {
+      amount = String.format("%,d / %,d RF", energy, energyMax);
+    }
+
     String str = EnumChatFormatting.YELLOW
-        + LocalizationHelper.getOtherItemKey(Names.DRILL, "Energy") + " "
-        + String.format("%,d / %,d RF", energy, energyMax);
+        + LocalizationHelper.getOtherItemKey(Names.DRILL, "Energy") + " " + amount;
     list.add(str);
+  }
+
+  @Override
+  public void getSubItems(Item item, CreativeTabs tab, List list) {
+
+    for (int i = 0; i < icons.length - 1; ++i) {
+      list.add(new ItemStack(this, 1, i));
+    }
+    // Creative battery should come charged.
+    ItemStack battery = new ItemStack(this, 1, CREATIVE_ID);
+    this.setTag(battery, NBT_ENERGY, CREATIVE_MAX_ENERGY);
+    list.add(battery);
   }
 
   @Override
@@ -113,6 +136,8 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   public int getEnergyCapacity(ItemStack stack) {
 
     switch (stack.getItemDamage()) {
+      case CREATIVE_ID:
+        return CREATIVE_MAX_ENERGY;
       case 4:
         return Config.battery4MaxCharge;
       case 3:
@@ -133,7 +158,7 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
 
   public int getMaxEnergyReceived(ItemStack container) {
 
-    return this.getMaxEnergyStored(container) / 100;
+    return Math.max(this.getMaxEnergyStored(container) / 100, 1);
   }
 
   @Override
@@ -153,7 +178,8 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-    if (container.stackTagCompound == null || !this.hasTag(container, NBT_ENERGY)) {
+    if (container.getItemDamage() == CREATIVE_ID || container.stackTagCompound == null
+        || !this.hasTag(container, NBT_ENERGY)) {
       return 0;
     }
     int energy = getEnergyStored(container);
@@ -176,18 +202,7 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   @Override
   public int getMaxEnergyStored(ItemStack container) {
 
-    switch (container.getItemDamage()) {
-      case 4:
-        return Config.battery4MaxCharge;
-      case 3:
-        return Config.battery3MaxCharge;
-      case 2:
-        return Config.battery2MaxCharge;
-      case 1:
-        return Config.battery1MaxCharge;
-      default:
-        return Config.battery0MaxCharge;
-    }
+    return this.getEnergyCapacity(container);
   }
 
   public void createTagCompoundIfNeeded(ItemStack stack) {

@@ -24,6 +24,7 @@ item.supermultidrills:DrillBattery1.name=Drill Battery: Small
 item.supermultidrills:DrillBattery2.name=Drill Battery: Medium
 item.supermultidrills:DrillBattery3.name=Drill Battery: Large
 item.supermultidrills:DrillBattery4.name=Drill Battery: Extreme
+item.supermultidrills:DrillBattery5.name=Drill Battery: Creative
 item.supermultidrills:DrillBattery.Capacity=Capacity:
 
 item.supermultidrills:DrillChassis0.name=White Drill Chassis
@@ -68,6 +69,10 @@ item.supermultidrills:DrillHead_Amethyst.name=Amethyst Drill Head
 item.supermultidrills:DrillHead_Morganite.name=Morganite Drill Head
 item.supermultidrills:DrillHead_Onyx.name=Onyx Drill Head
 item.supermultidrills:DrillHead_Steel.name=Steel Drill Head
+item.supermultidrills:DrillHead_Alumite.name=Alumite Drill Head
+item.supermultidrills:DrillHead_Cobalt.name=Cobalt Drill Head
+item.supermultidrills:DrillHead_Ardite.name=Ardite Drill Head
+item.supermultidrills:DrillHead_Manyullyn.name=Manyullyn Drill Head
 
 item.supermultidrills:DrillMotor0.name=Mainstream Motor
 item.supermultidrills:DrillMotor1.name=Performance Motor
@@ -92,5 +97,7 @@ misc.supermultidrills:CostPerHardness=Cost per block hardness: %.1f
 misc.supermultidrills:MiningSpeed=Mining speed: %.1f
 misc.supermultidrills:Damage=Attack damage: %.1f
 
+misc.supermultidrills:CreativeOnly=Creative mode only!
+misc.supermultidrills:Infinite=Infinite
 misc.supermultidrills:PressCtrl=<Press Ctrl>
 misc.supermultidrills:PressShift=<Press Shift>

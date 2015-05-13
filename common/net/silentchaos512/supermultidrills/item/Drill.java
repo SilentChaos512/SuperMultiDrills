@@ -88,8 +88,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public final IIcon[] iconBatteryGauge = new IIcon[4];
 
   /*
-   * The basic recipe that shows up in NEI. It's referenced in RecipeCraftDrill, but the crafting result is overridden
-   * there.
+   * Recipes
    */
   public static IRecipe baseRecipe;
 
@@ -129,9 +128,14 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       // Energy stored
       int energy = this.getEnergyStored(stack);
       int energyMax = this.getMaxEnergyStored(stack);
+      String amount;
+      if (this.getTag(stack, NBT_BATTERY) == DrillBattery.CREATIVE_ID) {
+        amount = LocalizationHelper.getMiscText("Infinite");
+      } else {
+        amount = String.format("%,d / %,d RF", energy, energyMax);
+      }
       String str = EnumChatFormatting.YELLOW
-          + LocalizationHelper.getOtherItemKey(Names.DRILL, "Energy") + " "
-          + String.format("%,d / %,d RF", energy, energyMax);
+          + LocalizationHelper.getOtherItemKey(Names.DRILL, "Energy") + " " + amount;
       list.add(str);
 
       if (shifted) {
@@ -162,6 +166,13 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         s = EnumChatFormatting.GOLD
             + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningSpeed") + " "
             + EnumChatFormatting.DARK_PURPLE + String.format("%.1f", this.getDigSpeed(stack));
+        list.add(s);
+
+        // Attack damage
+        s = EnumChatFormatting.GOLD
+            + LocalizationHelper.getOtherItemKey(Names.DRILL, "AttackDamage") + " "
+            + EnumChatFormatting.DARK_RED
+            + String.format("%.1f", this.getDrillMaterial(stack).getDamageVsEntity());
         list.add(s);
       } else {
         list.add(EnumChatFormatting.GOLD + "" + EnumChatFormatting.ITALIC
@@ -212,19 +223,19 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         this.getEnergyStored(stack));
     return battery;
   }
-  
+
   public ItemStack getHead(ItemStack stack) {
-    
+
     return new ItemStack(ModItems.drillHead, 1, this.getTag(stack, NBT_HEAD));
   }
-  
+
   public ItemStack getMotor(ItemStack stack) {
-    
+
     return new ItemStack(ModItems.drillMotor, 1, this.getTag(stack, NBT_MOTOR));
   }
-  
+
   public ItemStack getChassis(ItemStack stack) {
-    
+
     return new ItemStack(ModItems.drillChassis, 1, this.getTag(stack, NBT_CHASSIS));
   }
 
@@ -469,7 +480,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-    if (container.stackTagCompound == null || !this.hasTag(container, NBT_ENERGY)) {
+    if (container.stackTagCompound == null || !this.hasTag(container, NBT_ENERGY)
+        || this.getTag(container, NBT_BATTERY) == DrillBattery.CREATIVE_ID) {
       return 0;
     }
     int energy = getEnergyStored(container);
@@ -493,18 +505,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public int getMaxEnergyStored(ItemStack container) {
 
     int battery = this.getTag(container, NBT_BATTERY);
-    switch (battery) {
-      case 4:
-        return Config.battery4MaxCharge;
-      case 3:
-        return Config.battery3MaxCharge;
-      case 2:
-        return Config.battery2MaxCharge;
-      case 1:
-        return Config.battery1MaxCharge;
-      default:
-        return Config.battery0MaxCharge;
-    }
+    return ModItems.drillBattery
+        .getMaxEnergyStored(new ItemStack(ModItems.drillBattery, 1, battery));
   }
 
   @Override
