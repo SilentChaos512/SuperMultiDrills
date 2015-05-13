@@ -97,7 +97,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     // The values passed into super should have no effect.
     super(4.0f, ToolMaterial.EMERALD, effectiveMaterialsBasic);
     this.setMaxStackSize(1);
-    this.setMaxDamage(100);
+    this.setMaxDamage(0);
     this.setNoRepair();
     this.setCreativeTab(SuperMultiDrills.creativeTab);
   }
@@ -168,12 +168,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
             + EnumChatFormatting.DARK_PURPLE + String.format("%.1f", this.getDigSpeed(stack));
         list.add(s);
 
-        // Attack damage
-        s = EnumChatFormatting.GOLD
-            + LocalizationHelper.getOtherItemKey(Names.DRILL, "AttackDamage") + " "
-            + EnumChatFormatting.DARK_RED
-            + String.format("%.1f", this.getDrillMaterial(stack).getDamageVsEntity());
-        list.add(s);
+        // No need to display attack damage here! Vanilla does that.
       } else {
         list.add(EnumChatFormatting.GOLD + "" + EnumChatFormatting.ITALIC
             + LocalizationHelper.getMiscText(Strings.PRESS_CTRL));

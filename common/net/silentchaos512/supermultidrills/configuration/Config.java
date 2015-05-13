@@ -17,6 +17,7 @@ public class Config {
   public static int motor0Level = 2;
   public static int motor1Level = 3;
   public static int motor2Level = 4;
+  public static boolean showUncraftableHeads = false;
 
   public static String energyCostExpressionString = "(270 - 0.12 * durability) * (1 + 0.08 * efficiency) * hardness";
   public static Expression energyCostExpression;
@@ -43,18 +44,18 @@ public class Config {
 
     try {
       c.load();
-      
+
       // Load the stuffs.
-      battery0MaxCharge = c.getInt("Battery0.MaxCharge", CAT_ITEM, battery0MaxCharge, 0, 1000000000,
-          "Maximum capacity for drills with the tier 0 battery.");
-      battery1MaxCharge = c.getInt("Battery1.MaxCharge", CAT_ITEM, battery1MaxCharge, 0, 1000000000,
-          "Maximum capacity for drills with the tier 1 battery.");
-      battery2MaxCharge = c.getInt("Battery2.MaxCharge", CAT_ITEM, battery2MaxCharge, 0, 1000000000,
-          "Maximum capacity for drills with the tier 2 battery.");
-      battery3MaxCharge = c.getInt("Battery3.MaxCharge", CAT_ITEM, battery3MaxCharge, 0, 1000000000,
-          "Maximum capacity for drills with the tier 3 battery.");
-      battery4MaxCharge = c.getInt("Battery4.MaxCharge", CAT_ITEM, battery4MaxCharge, 0, 1000000000,
-          "Maximum capacity for drills with the tier 4 battery.");
+      battery0MaxCharge = c.getInt("Battery0.MaxCharge", CAT_ITEM, battery0MaxCharge, 0,
+          1000000000, "Maximum capacity for drills with the tier 0 battery.");
+      battery1MaxCharge = c.getInt("Battery1.MaxCharge", CAT_ITEM, battery1MaxCharge, 0,
+          1000000000, "Maximum capacity for drills with the tier 1 battery.");
+      battery2MaxCharge = c.getInt("Battery2.MaxCharge", CAT_ITEM, battery2MaxCharge, 0,
+          1000000000, "Maximum capacity for drills with the tier 2 battery.");
+      battery3MaxCharge = c.getInt("Battery3.MaxCharge", CAT_ITEM, battery3MaxCharge, 0,
+          1000000000, "Maximum capacity for drills with the tier 3 battery.");
+      battery4MaxCharge = c.getInt("Battery4.MaxCharge", CAT_ITEM, battery4MaxCharge, 0,
+          1000000000, "Maximum capacity for drills with the tier 4 battery.");
 
       motor0Level = c.getInt("Motor0.MiningLevel", CAT_ITEM, motor0Level, 0, 100,
           "The harvest level for the tier 0 motor.");
@@ -62,6 +63,9 @@ public class Config {
           "The harvest level for the tier 1 motor.");
       motor2Level = c.getInt("Motor2.MiningLevel", CAT_ITEM, motor2Level, 0, 100,
           "The harvest level for the tier 2 motor.");
+
+      showUncraftableHeads = c.getBoolean("Head.ShowUncraftables", CAT_ITEM, showUncraftableHeads,
+          "Show the drill heads that are not craftable with the available mods.");
 
       energyCostExpressionString = c.getString("Math.EnergyToBreakBlock", CAT_ITEM,
           energyCostExpressionString, commentEnergyCostExpression);
