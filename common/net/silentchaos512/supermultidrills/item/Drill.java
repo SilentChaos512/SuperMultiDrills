@@ -262,7 +262,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     // Is this correct?
     boolean canHarvest = ForgeHooks.isToolEffective(stack, block, meta)
         || this.canHarvestBlock(stack, block, meta);
-    if (canHarvest && this.getEnergyStored(stack) > 0) {
+    // I wasn't sure how to get block hardness here, as it requires a world object. There's probably
+    // an easy way to do it, but it shouldn't matter in most cases, so I just used 1.
+    boolean hasEnoughPower = this.getEnergyStored(stack) > 0
+        || this.getEnergyToBreakBlock(stack, 1.0f) == 0;
+    
+    if (canHarvest && hasEnoughPower) {
       return this.getDrillMaterial(stack).getEfficiency();
     } else {
       return 1.0f;
@@ -286,7 +291,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
     exp.setVariable("hardness", BigDecimal.valueOf(hardness));
     exp.setVariable("mining_speed", BigDecimal.valueOf(material.getEfficiency()));
-    
+
     int result = exp.eval().intValue();
     if (result < 0) {
       result = 0; // Energy cost should be non-negative!
