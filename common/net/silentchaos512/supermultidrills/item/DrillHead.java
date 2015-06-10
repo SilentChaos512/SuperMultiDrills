@@ -1,9 +1,10 @@
 package net.silentchaos512.supermultidrills.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -15,7 +16,7 @@ import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
-import net.silentchaos512.supermultidrills.util.LogHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillHead extends ItemSMD {
 
@@ -65,18 +66,21 @@ public class DrillHead extends ItemSMD {
         + EnumChatFormatting.GREEN + String.format("%.1f", material.getCostPerHardness()) + " "
         + LocalizationHelper.getOtherItemKey(Names.DRILL, "RFPerHardness");
     list.add(s);
-    
+
     // Speed
-    s = EnumChatFormatting.GOLD
-        + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningSpeed") + " "
-        + EnumChatFormatting.DARK_PURPLE + String.format("%.1f", material.getEfficiency());
+    s = EnumChatFormatting.GOLD + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningSpeed")
+        + " " + EnumChatFormatting.DARK_PURPLE + String.format("%.1f", material.getEfficiency());
+    list.add(s);
+
+    // Damage
+    s = EnumChatFormatting.GOLD + LocalizationHelper.getOtherItemKey(Names.DRILL, "AttackDamage")
+        + " " + EnumChatFormatting.DARK_RED + String.format("%.1f", material.getDamageVsEntity());
     list.add(s);
     
-    // Damage
-    s = EnumChatFormatting.GOLD
-        + LocalizationHelper.getOtherItemKey(Names.DRILL, "AttackDamage") + " "
-        + EnumChatFormatting.DARK_RED + String.format("%.1f", material.getDamageVsEntity());
-    list.add(s);
+    if (advanced) {
+      s = LocalizationHelper.getOtherItemKey(this.itemName, "Group");
+      list.add(s + " " + material.getGroup());
+    }
   }
 
   public EnumDrillMaterial getDrillMaterial(ItemStack stack) {
@@ -86,6 +90,17 @@ public class DrillHead extends ItemSMD {
       meta = 0;
     }
     return EnumDrillMaterial.values()[meta];
+  }
+
+  @Override
+  public void getSubItems(Item item, CreativeTabs tab, List list) {
+
+    for (String group : EnumDrillMaterial.GROUPS_ORDERED) {
+      ArrayList<EnumDrillMaterial> sub = EnumDrillMaterial.getAllInGroup(group);
+      for (EnumDrillMaterial material : sub) {
+        list.add(new ItemStack(this, 1, material.ordinal()));
+      }
+    }
   }
 
   @Override

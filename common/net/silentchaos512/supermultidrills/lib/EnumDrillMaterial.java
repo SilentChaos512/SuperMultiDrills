@@ -1,59 +1,124 @@
 package net.silentchaos512.supermultidrills.lib;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.supermultidrills.configuration.Config;
-import net.silentchaos512.supermultidrills.util.LogHelper;
 
 import com.udojava.evalex.Expression;
 
 public enum EnumDrillMaterial {
 
   // Vanilla
-  IRON(250, 6.0f, 2.0f, ""),
-  GOLD(32, 12.0f, 0.0f, ""),
-  DIAMOND(1561, 8.0f, 3.0f, ""),
+  IRON(EnumDrillMaterial.GROUP_VANILLA, 250, 6.0f, 2.0f, ""),
+  GOLD(EnumDrillMaterial.GROUP_VANILLA, 32, 12.0f, 0.0f, ""),
+  DIAMOND(EnumDrillMaterial.GROUP_VANILLA, 1561, 8.0f, 3.0f, ""),
 
   // Thermal Foundation
-  COPPER(175, 4.0f, 0.5f, "ingotCopper"),
-  TIN(200, 4.5f, 1.0f, "ingotTin"),
-  SILVER(200, 6.0f, 1.5f, "ingotSilver"),
-  LEAD(150, 5.0f, 1.0f, "ingotLead"),
-  FERROUS(300, 6.5f, 2.5f, "ingotNickel"),
-  ELECTRUM(100, 14.0f, 0.5f, "ingotElectrum"),
-  INVAR(450, 7.0f, 3.0f, "ingotInvar"),
-  BRONZE(500, 6.0f, 2.0f, "ingotBronze"),
-  SHINY(1700, 9.0f, 4.0f, "ingotPlatinum"),
+  COPPER(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 175, 4.0f, 0.5f, "ingotCopper"),
+  TIN(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 200, 4.5f, 1.0f, "ingotTin"),
+  SILVER(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 200, 6.0f, 1.5f, "ingotSilver"),
+  LEAD(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 150, 5.0f, 1.0f, "ingotLead"),
+  FERROUS(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 300, 6.5f, 2.5f, "ingotNickel"),
+  ELECTRUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 100, 14.0f, 0.5f, "ingotElectrum"),
+  INVAR(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 450, 7.0f, 3.0f, "ingotInvar"),
+  BRONZE(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 500, 6.0f, 2.0f, "ingotBronze"),
+  PLATINUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 1700, 9.0f, 4.0f, "ingotPlatinum"), // Was Shiny
 
   // Silent's Gems
-  RUBY(1536, 8.0f, 3.0f, "gemRuby"),
-  GARNET(1024, 8.0f, 3.0f, "gemGarnet"),
-  TOPAZ(1024, 10.0f, 4.0f, "gemTopaz"),
-  HELIODOR(768, 12.0f, 5.0f, "gemHeliodor"),
-  PERIDOT(1024, 7.0f, 4.0f, "gemPeridot"),
-  BERYL(1024, 8.0f, 4.0f, "gemBeryl"),
-  AQUAMARINE(768, 10.0f, 3.0f, "gemAquamarine"),
-  SAPPHIRE(1536, 8.0f, 3.0f, "gemSapphire"),
-  IOLITE(1536, 7.0f, 2.0f, "gemIolite"),
-  AMETHYST(1024, 8.0f, 3.0f, "gemAmethyst"),
-  MORGANITE(1024, 10.0f, 4.0f, "gemMorganite"),
-  ONYX(768, 10.0f, 6.0f, "gemOnyx"),
+  RUBY(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 8.0f, 3.0f, "gemRuby"),
+  GARNET(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 8.0f, 3.0f, "gemGarnet"),
+  TOPAZ(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 10.0f, 4.0f, "gemTopaz"),
+  HELIODOR(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 12.0f, 5.0f, "gemHeliodor"),
+  PERIDOT(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 7.0f, 4.0f, "gemPeridot"),
+  BERYL(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 8.0f, 4.0f, "gemBeryl"),
+  AQUAMARINE(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 10.0f, 3.0f, "gemAquamarine"),
+  SAPPHIRE(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 8.0f, 3.0f, "gemSapphire"),
+  IOLITE(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 7.0f, 2.0f, "gemIolite"),
+  AMETHYST(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 8.0f, 3.0f, "gemAmethyst"),
+  MORGANITE(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 10.0f, 4.0f, "gemMorganite"),
+  ONYX(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 10.0f, 6.0f, "gemOnyx"),
 
   // Tinker's Construct (Includes handle modifiers, Manyullyn reduced because it breaks the default formula.)
-  STEEL((int) (750 * 1.3f), 10.0f, 4.0f, "ingotSteel"),
-  ALUMITE((int) (700 * 1.3f), 8.0f, 3.0f, "ingotAlumite"),
-  COBALT((int) (800 * 1.75f), 14.0f, 3.0f, "ingotCobalt"),
-  ARDITE((int) (500 * 2.0f), 8.0f, 3.0f, "ingotArdite"),
-  MANYULLYN((int) (1200 * 1.5f), 9.0f, 4.0f, "ingotManyullyn");
+  STEEL(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (750), 10.0f, 4.0f, "ingotSteel"),
+  ALUMITE(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (700), 8.0f, 3.0f, "ingotAlumite"),
+  COBALT(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (800), 14.0f, 3.0f, "ingotCobalt"),
+  ARDITE(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (500), 8.0f, 3.0f, "ingotArdite"),
+  MANYULLYN(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (1200), 9.0f, 4.0f, "ingotManyullyn"),
+  
+  // Extra TiC
+  FAIRY(EnumDrillMaterial.GROUP_TCONSTRUCT, 250, 7.5f, 1.0f, "ingotFairy"),
+  POKEFENNIUM(EnumDrillMaterial.GROUP_TCONSTRUCT, 500, 8.5f, 1.0f, "ingotPokefennium"),
+  REDAURUM(EnumDrillMaterial.GROUP_TCONSTRUCT, 250, 7.5f, 1.0f, "ingotPokefennium"),
+  
+  // More Thermal Foundation. Skipping Mana-Infused, that's Mithril.
+  ENDERIUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 1100, 23.0f, 15.0f, "ingotEnderium"),
+  SIGNALUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 800, 13.0f, 10.0f, "ingotSignalum"),
+  LUMIUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 1500, 3.0f, 8.0f, "ingotLumium"),
+  
+  // Botania
+  MANASTEEL(EnumDrillMaterial.GROUP_BOTANIA, 300, 6.2f, 1.0f, "ingotManasteel"),
+  TERRASTEEL(EnumDrillMaterial.GROUP_BOTANIA, 2300, 9.0f, 2.0f, "ingotTerrasteel"),
+  ELEMENTIUM(EnumDrillMaterial.GROUP_BOTANIA, 720, 6.2f, 1.0f, "ingotElvenElementium"),
+  
+  // Metallurgy 4
+  HEPATIZON(EnumDrillMaterial.GROUP_METALLURGY, 300, 8.0f, 1.0f, "ingotHepatizon"),
+  DAMASCUS_STEEL(EnumDrillMaterial.GROUP_METALLURGY, 500, 6.0f, 2.0f, "ingotDamascusSteel"),
+  ANGMALLEN(EnumDrillMaterial.GROUP_METALLURGY, 300, 8.0f, 2.0f, "ingotAngmallen"),
+  BRASS(EnumDrillMaterial.GROUP_METALLURGY, 15, 10.0f, 1.0f, "ingotBrass"),
+  IGNATIUS(EnumDrillMaterial.GROUP_METALLURGY, 200, 4.0f, 2.0f, "ingotIgnatius"),
+  SHADOW_IRON(EnumDrillMaterial.GROUP_METALLURGY, 300, 5.0f, 2.0f, "ingotShadowIron"),
+  SHADOW_STEEL(EnumDrillMaterial.GROUP_METALLURGY, 400, 6.0f, 3.0f, "ingotShadowSteel"),
+  MIDASIUM(EnumDrillMaterial.GROUP_METALLURGY, 100, 10.0f, 3.0f, "ingotMidasium"),
+  VYROXERES(EnumDrillMaterial.GROUP_METALLURGY, 300, 7.0f, 3.0f, "ingotVyroxeres"),
+  CERUCLASE(EnumDrillMaterial.GROUP_METALLURGY, 500, 7.0f, 3.0f, "ingotCeruclase"),
+  INOLASHITE(EnumDrillMaterial.GROUP_METALLURGY, 900, 8.0f, 3.0f, "ingotInolashite"),
+  KALENDRITE(EnumDrillMaterial.GROUP_METALLURGY, 1000, 8.0f, 3.0f, "ingotKalendrite"),
+  AMORDRINE(EnumDrillMaterial.GROUP_METALLURGY, 500, 14.0f, 2.0f, "ingotAmordrine"),
+  VULCANITE(EnumDrillMaterial.GROUP_METALLURGY, 1500, 10.0f, 3.0f, "ingotVulcanite"),
+  SANGUINITE(EnumDrillMaterial.GROUP_METALLURGY, 1750, 12.0f, 4.0f, "ingotSanguinite"),
+  PROMETHEUM(EnumDrillMaterial.GROUP_METALLURGY, 200, 4.0f, 1.0f, "ingotPrometheum"),
+  DEEP_IRON(EnumDrillMaterial.GROUP_METALLURGY, 250, 6.0f, 2.0f, "ingotDeepIron"),
+  BLACK_STEEL(EnumDrillMaterial.GROUP_METALLURGY, 500, 8.0f, 2.0f, "ingotBlackSteel"),
+  OURECLASE(EnumDrillMaterial.GROUP_METALLURGY, 750, 8.0f, 2.0f, "ingotOureclase"),
+  ASTRAL_SILVER(EnumDrillMaterial.GROUP_METALLURGY, 35, 12.0f, 1.0f, "ingotAstralSilver"),
+  CARMOT(EnumDrillMaterial.GROUP_METALLURGY, 50, 12.0f, 1.0f, "ingotCarmot"),
+  MITHRIL(EnumDrillMaterial.GROUP_METALLURGY, 1000, 9.0f, 3.0f, "ingotMithril"),
+  QUICKSILVER(EnumDrillMaterial.GROUP_METALLURGY, 1100, 14.0f, 3.0f, "ingotQuicksilver"),
+  HADEROTH(EnumDrillMaterial.GROUP_METALLURGY, 1250, 12.0f, 3.0f, "ingotHaderoth"),
+  ORICHALCUM(EnumDrillMaterial.GROUP_METALLURGY, 1350, 9.0f, 3.0f, "ingotOrichalcum"),
+  CELENEGIL(EnumDrillMaterial.GROUP_METALLURGY, 1600, 14.0f, 3.0f, "ingotCelenegil"),
+  ADAMANTINE(EnumDrillMaterial.GROUP_METALLURGY, 1550, 10.0f, 4.0f, "ingotAdamantine"),
+  ATLARUS(EnumDrillMaterial.GROUP_METALLURGY, 1750, 10.0f, 4.0f, "ingotAtlarus"),
+  TARTARITE(EnumDrillMaterial.GROUP_METALLURGY, 3000, 14.0f, 5.0f, "ingotTartarite"),
+  EXIMITE(EnumDrillMaterial.GROUP_METALLURGY, 1000, 8.0f, 3.0f, "ingotEximite"),
+  DESICHALKOS(EnumDrillMaterial.GROUP_METALLURGY, 1800, 10.0f, 4.0f, "ingotDesichalkos"),
+  
+  // Ender IO
+  DARK_STEEL(EnumDrillMaterial.GROUP_ENDER_IO, 1561, 7.0f, 1.0f, "ingotDarkSteel");
+  
+  // Group for sorting in NEI, since metadata might be a bit scattered.
+  public static final String GROUP_VANILLA = "Vanilla";
+  public static final String GROUP_THERMAL_FOUNDATION = "Thermal Foundation";
+  public static final String GROUP_ENDER_IO = "Ender IO";
+  public static final String GROUP_SILENT_GEMS = "Silent's Gems";
+  public static final String GROUP_TCONSTRUCT = "Tinker's Construct";
+  public static final String GROUP_BOTANIA = "Botania";
+  public static final String GROUP_METALLURGY = "Metallurgy";
+  public static final String[] GROUPS_ORDERED = new String[] { GROUP_VANILLA, GROUP_THERMAL_FOUNDATION,
+    GROUP_ENDER_IO, GROUP_SILENT_GEMS, GROUP_BOTANIA, GROUP_TCONSTRUCT, GROUP_METALLURGY };
 
   private final int durability;
   private final float efficiency;
   private final float damage;
   private final String material;
+  private final String group;
 
-  private EnumDrillMaterial(int durability, float efficiency, float damage, String material) {
+  private EnumDrillMaterial(String group, int durability, float efficiency, float damage, String material) {
 
+    this.group = group;
     this.durability = durability;
     this.efficiency = efficiency;
     this.damage = damage;
@@ -98,6 +163,11 @@ public enum EnumDrillMaterial {
 
     return this.material;
   }
+  
+  public String getGroup() {
+
+    return this.group;
+  }
 
   public float getCostPerHardness() {
 
@@ -141,6 +211,24 @@ public enum EnumDrillMaterial {
 
     // No matching oredict key.
     return false;
+  }
+  
+  /**
+   * Returns a list of all drill materials in the specified group.
+   * @param group
+   * @return
+   */
+  public static ArrayList<EnumDrillMaterial> getAllInGroup(String group) {
+    
+    ArrayList<EnumDrillMaterial> list = new ArrayList<EnumDrillMaterial>();
+    
+    for (EnumDrillMaterial material : values()) {
+      if (material.group.equals(group)) {
+        list.add(material);
+      }
+    }
+    
+    return list;
   }
 
   @Override

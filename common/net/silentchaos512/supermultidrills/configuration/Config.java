@@ -20,7 +20,8 @@ public class Config {
   public static boolean showUncraftableHeads = false;
   public static boolean showSpawnableDrills = true;
 
-  public static String energyCostExpressionString = "(270 - 0.12 * durability) * (1 + 0.08 * efficiency) * hardness";
+  public static boolean useCustomEnergyExpression = false;
+  public static String energyCostExpressionString = "(280 - 0.085 * durability) * (1 + 0.08 * efficiency) * hardness";
   public static Expression energyCostExpression;
 
   public static boolean printMiningCost = false;
@@ -47,6 +48,7 @@ public class Config {
       c.load();
 
       // Load the stuffs.
+      // Battery options.
       battery0MaxCharge = c.getInt("Battery0.MaxCharge", CAT_ITEM, battery0MaxCharge, 0,
           1000000000, "Maximum capacity for drills with the tier 0 battery.");
       battery1MaxCharge = c.getInt("Battery1.MaxCharge", CAT_ITEM, battery1MaxCharge, 0,
@@ -58,6 +60,7 @@ public class Config {
       battery4MaxCharge = c.getInt("Battery4.MaxCharge", CAT_ITEM, battery4MaxCharge, 0,
           1000000000, "Maximum capacity for drills with the tier 4 battery.");
 
+      // Motor options.
       motor0Level = c.getInt("Motor0.MiningLevel", CAT_ITEM, motor0Level, 0, 100,
           "The harvest level for the tier 0 motor.");
       motor1Level = c.getInt("Motor1.MiningLevel", CAT_ITEM, motor1Level, 0, 100,
@@ -65,15 +68,24 @@ public class Config {
       motor2Level = c.getInt("Motor2.MiningLevel", CAT_ITEM, motor2Level, 0, 100,
           "The harvest level for the tier 2 motor.");
 
+      // Show/hide stuff in NEI options.
       showUncraftableHeads = c.getBoolean("Head.ShowUncraftables", CAT_ITEM, showUncraftableHeads,
           "Show the drill heads that are not craftable with the available mods.");
       showSpawnableDrills = c.getBoolean("Drill.ShowSpawnables", CAT_ITEM, showSpawnableDrills,
           "Show some pre-made drills for creative/cheaty purposes.");
 
-      energyCostExpressionString = c.getString("Math.EnergyToBreakBlock", CAT_ITEM,
-          energyCostExpressionString, commentEnergyCostExpression);
+      // Energy cost expression
+      useCustomEnergyExpression = c.getBoolean("Math.UseCustomEnergyExpression", CAT_ITEM,
+          useCustomEnergyExpression,
+          "Use the expression entered in Math.EnergyToBreakBlock to calculate mining cost."
+              + "If false, the default value will be used.");
+      if (useCustomEnergyExpression) {
+        energyCostExpressionString = c.getString("Math.EnergyToBreakBlock", CAT_ITEM,
+            energyCostExpressionString, commentEnergyCostExpression);
+      }
       energyCostExpression = new Expression(energyCostExpressionString);
 
+      // Debug
       printMiningCost = c.getBoolean("PrintMiningCost", CAT_DEBUG, printMiningCost,
           "Print the energy cost each time a block is mined.");
     } catch (Exception e) {

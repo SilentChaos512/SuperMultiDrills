@@ -220,7 +220,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
       // Mani Mani
       drill = new ItemStack(item, 1, 0);
-      drill.setStackDisplayName("Evil Mani Mani Drill");
+      drill.setStackDisplayName("Mani Mani Drill");
       this.setTag(drill, NBT_HEAD, 28);
       this.setTag(drill, NBT_HEAD_COAT, -1);
       this.setTag(drill, NBT_MOTOR, 2);

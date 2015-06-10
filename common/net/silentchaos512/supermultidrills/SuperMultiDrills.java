@@ -3,7 +3,6 @@ package net.silentchaos512.supermultidrills;
 import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.silentchaos512.supermultidrills.configuration.Config;
@@ -11,6 +10,7 @@ import net.silentchaos512.supermultidrills.core.handler.DrillsEventHandler;
 import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.proxy.CommonProxy;
 import net.silentchaos512.supermultidrills.registry.SRegistry;
+import net.silentchaos512.supermultidrills.util.LogHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -63,7 +63,7 @@ public class SuperMultiDrills {
   
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
-    
+
   }
   
   public static CreativeTabs creativeTab = new CreativeTabs("tabSuperMultiDrills") {
