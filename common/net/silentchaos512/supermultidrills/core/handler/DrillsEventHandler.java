@@ -27,7 +27,6 @@ public class DrillsEventHandler {
       World world = player.worldObj;
 
       if ((new RecipeUpgradeDrill()).matches(inv, world)) {
-        LogHelper.derp();
         ItemStack stack = null;
         ItemStack drill = null;
         
