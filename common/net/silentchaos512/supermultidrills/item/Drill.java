@@ -1,7 +1,6 @@
 package net.silentchaos512.supermultidrills.item;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -93,7 +92,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   /*
    * Recipes
    */
-  public static IRecipe baseRecipe;
+//  public static IRecipe baseRecipe;
 
   public Drill() {
 
@@ -115,8 +114,18 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       // The "empty" drill that shows up in NEI.
       int i = 1;
       String itemName = Names.DRILL;
-      String s = LocalizationHelper.getItemDescription(itemName, i);
-      while (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, i)) && i < 8) {
+      
+      // Crafting description
+      String s = LocalizationHelper.getOtherItemKey(itemName, "craft" + i);
+      while (!s.equals(LocalizationHelper.getOtherItemKey(itemName, "craft" + i))) {
+        list.add(EnumChatFormatting.YELLOW + s);
+        s = LocalizationHelper.getOtherItemKey(itemName, "craft" + ++i);
+      }
+      i = 1;
+
+      // Other description
+      s = LocalizationHelper.getItemDescription(itemName, i);
+      while (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, i)) && i < 16) {
         list.add(EnumChatFormatting.DARK_AQUA + s);
         s = LocalizationHelper.getItemDescription(itemName, ++i);
       }
@@ -236,13 +245,14 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public void addRecipes() {
 
-    ItemStack head = new ItemStack(ModItems.drillHead, 1, OreDictionary.WILDCARD_VALUE);
-    ItemStack motor = new ItemStack(ModItems.drillMotor, 1, OreDictionary.WILDCARD_VALUE);
-    ItemStack chassis = new ItemStack(ModItems.drillChassis, 1, OreDictionary.WILDCARD_VALUE);
-    ItemStack battery = new ItemStack(ModItems.drillBattery, 1, OreDictionary.WILDCARD_VALUE);
-    // This recipe is only for NEI! It will be overridden by a custom recipe handler.
-    baseRecipe = GameRegistry.addShapedRecipe(new ItemStack(this), "  h", " m ", "cb ", 'h', head,
-        'm', motor, 'c', chassis, 'b', battery);
+//    ItemStack head = new ItemStack(ModItems.drillHead, 1, OreDictionary.WILDCARD_VALUE);
+//    ItemStack motor = new ItemStack(ModItems.drillMotor, 1, OreDictionary.WILDCARD_VALUE);
+//    ItemStack chassis = new ItemStack(ModItems.drillChassis, 1, OreDictionary.WILDCARD_VALUE);
+//    ItemStack battery = new ItemStack(ModItems.drillBattery, 1, OreDictionary.WILDCARD_VALUE);
+//    // This recipe is only for NEI! It will be overridden by a custom recipe handler.
+//    baseRecipe = GameRegistry.addShapedRecipe(new ItemStack(this), "h ", "mb", "c ", 'h', head,
+//        'm', motor, 'c', chassis, 'b', battery);
+//    LogHelper.debug("Base Drill Recipe Size: " + baseRecipe.getRecipeSize());
   }
 
   @Override

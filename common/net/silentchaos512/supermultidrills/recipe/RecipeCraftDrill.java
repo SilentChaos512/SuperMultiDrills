@@ -16,7 +16,30 @@ public class RecipeCraftDrill implements IRecipe {
   @Override
   public boolean matches(InventoryCrafting inv, World world) {
 
-    return Drill.baseRecipe.matches(inv, world);
+    int countHead = 0;
+    int countMotor = 0;
+    int countBattery = 0;
+    int countChassis = 0;
+    ItemStack stack;
+
+    for (int i = 0; i < inv.getSizeInventory(); ++i) {
+      stack = inv.getStackInSlot(i);
+      if (stack != null) {
+        if (stack.getItem() instanceof DrillHead) {
+          ++countHead;
+        } else if (stack.getItem() instanceof DrillMotor) {
+          ++countMotor;
+        } else if (stack.getItem() instanceof DrillBattery) {
+          ++countBattery;
+        } else if (stack.getItem() instanceof DrillChassis) {
+          ++countChassis;
+        } else {
+          return false;
+        }
+      }
+    }
+
+    return countHead == 1 && countMotor == 1 && countBattery == 1 && countChassis == 1;
   }
 
   @Override
@@ -27,7 +50,7 @@ public class RecipeCraftDrill implements IRecipe {
     ItemStack battery = null;
     ItemStack chassis = null;
     ItemStack stack;
-    
+
     for (int i = 0; i < inv.getSizeInventory(); ++i) {
       stack = inv.getStackInSlot(i);
       if (stack != null) {
@@ -44,11 +67,11 @@ public class RecipeCraftDrill implements IRecipe {
         }
       }
     }
-    
+
     if (head == null || motor == null || battery == null || chassis == null) {
       return null;
     }
-    
+
     Drill drill = ModItems.drill;
     stack = new ItemStack(drill);
     drill.setTag(stack, drill.NBT_HEAD, head.getItemDamage());
@@ -57,15 +80,14 @@ public class RecipeCraftDrill implements IRecipe {
     drill.setTag(stack, drill.NBT_BATTERY, battery.getItemDamage());
     drill.setTag(stack, drill.NBT_CHASSIS, chassis.getItemDamage());
     drill.setTag(stack, drill.NBT_ENERGY, ModItems.drillBattery.getEnergyStored(battery));
-    
+
     return stack;
   }
 
   @Override
   public int getRecipeSize() {
 
-    // This seems to affect the "priority" of the recipe? Larger values override smaller ones.
-    // So this needs to be greater than four to override the recipe in Drill.addRecipe. I think.
+    // Supposedly determines recipe priority? Seems too inconsistent to rely on.
     return 10;
   }
 
