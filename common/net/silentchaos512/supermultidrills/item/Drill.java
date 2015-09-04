@@ -1,9 +1,19 @@
 package net.silentchaos512.supermultidrills.item;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.lwjgl.input.Keyboard;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+import com.udojava.evalex.Expression;
+
+import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,7 +30,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
@@ -28,7 +37,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
@@ -38,30 +46,23 @@ import net.silentchaos512.supermultidrills.registry.IAddRecipe;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
 import net.silentchaos512.supermultidrills.util.LogHelper;
 
-import org.lwjgl.input.Keyboard;
-
-import cofh.api.energy.IEnergyContainerItem;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
-import com.udojava.evalex.Expression;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-
 public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem {
+
+  /*
+   * Caching the "spawnable" drills for speed. Probably doesn't make a big difference.
+   */
+  private static final ArrayList<ItemStack> SPAWNABLES = new ArrayList<ItemStack>();
 
   /*
    * Effective materials
    */
-  private static final Set effectiveMaterialsBasic = Sets.newHashSet(new Material[] {
-      Material.anvil, Material.circuits, Material.clay, Material.glass, Material.grass,
-      Material.ground, Material.ice, Material.iron, Material.packedIce, Material.piston,
-      Material.rock, Material.sand, Material.snow });
-  private static final Set effectiveMaterialsExtra = Sets.newHashSet(new Material[] {
-      Material.cloth, Material.gourd, Material.leaves, Material.plants, Material.vine,
-      Material.web, Material.wood });
+  private static final Set effectiveMaterialsBasic = Sets
+      .newHashSet(new Material[] { Material.anvil, Material.circuits, Material.clay, Material.glass,
+          Material.grass, Material.ground, Material.ice, Material.iron, Material.packedIce,
+          Material.piston, Material.rock, Material.sand, Material.snow });
+  private static final Set effectiveMaterialsExtra = Sets
+      .newHashSet(new Material[] { Material.cloth, Material.gourd, Material.leaves, Material.plants,
+          Material.vine, Material.web, Material.wood });
 
   /*
    * Render pass Ids
@@ -89,11 +90,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
    */
   public final IIcon[] iconBatteryGauge = new IIcon[4];
 
-  /*
-   * Recipes
-   */
-//  public static IRecipe baseRecipe;
-
   public Drill() {
 
     // The values passed into super should have no effect.
@@ -114,7 +110,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       // The "empty" drill that shows up in NEI.
       int i = 1;
       String itemName = Names.DRILL;
-      
+
       // Crafting description
       String s = LocalizationHelper.getOtherItemKey(itemName, "craft" + i);
       while (!s.equals(LocalizationHelper.getOtherItemKey(itemName, "craft" + i))) {
@@ -133,8 +129,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       if (i == 1) {
         s = LocalizationHelper.getItemDescription(itemName, 0);
         if (!s.equals(LocalizationHelper.getItemDescriptionKey(itemName, 0))) {
-          list.add(EnumChatFormatting.DARK_AQUA
-              + LocalizationHelper.getItemDescription(itemName, 0));
+          list.add(
+              EnumChatFormatting.DARK_AQUA + LocalizationHelper.getItemDescription(itemName, 0));
         }
       }
     } else {
@@ -159,9 +155,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
       if (shifted) {
         // Head
-        String s = EnumChatFormatting.GOLD
-            + LocalizationHelper.getOtherItemKey(Names.DRILL, "Head") + " "
-            + EnumChatFormatting.AQUA + this.getDrillMaterial(stack).getMaterialName();
+        String s = EnumChatFormatting.GOLD + LocalizationHelper.getOtherItemKey(Names.DRILL, "Head")
+            + " " + EnumChatFormatting.AQUA + this.getDrillMaterial(stack).getMaterialName();
         String s2 = " " + EnumChatFormatting.RESET
             + LocalizationHelper.getOtherItemKey(Names.DRILL, "HeadCoat");
         s2 = String.format(s2, this.getCoatMaterial(stack).getMaterialName());
@@ -174,17 +169,15 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         list.add(s);
 
         // Harvest level
-        s = EnumChatFormatting.GOLD
-            + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningLevel") + " "
-            + EnumChatFormatting.BLUE + this.getHarvestLevel(stack, "");
-        s += this.getTagBoolean(stack, NBT_SAW) ? " "
-            + LocalizationHelper.getOtherItemKey(Names.DRILL, "PlusSaw") : "";
+        s = EnumChatFormatting.GOLD + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningLevel")
+            + " " + EnumChatFormatting.BLUE + this.getHarvestLevel(stack, "");
+        s += this.getTagBoolean(stack, NBT_SAW)
+            ? " " + LocalizationHelper.getOtherItemKey(Names.DRILL, "PlusSaw") : "";
         list.add(s);
 
         // Mining speed
-        s = EnumChatFormatting.GOLD
-            + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningSpeed") + " "
-            + EnumChatFormatting.DARK_PURPLE + String.format("%.1f", this.getDigSpeed(stack));
+        s = EnumChatFormatting.GOLD + LocalizationHelper.getOtherItemKey(Names.DRILL, "MiningSpeed")
+            + " " + EnumChatFormatting.DARK_PURPLE + String.format("%.1f", this.getDigSpeed(stack));
         list.add(s);
 
         // No need to display attack damage here! Vanilla does that.
@@ -199,60 +192,71 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
     list.add(new ItemStack(item));
-    
+
     if (Config.showSpawnableDrills) {
-      // Shiny drill
-      ItemStack drill = new ItemStack(item, 1, 0);
-      drill.setStackDisplayName("Shiny Multi-Drill");
-      this.setTag(drill, NBT_HEAD, 11);
-      this.setTag(drill, NBT_HEAD_COAT, -1);
-      this.setTag(drill, NBT_MOTOR, 1);
-      this.setTag(drill, NBT_BATTERY, 3);
-      this.setTag(drill, NBT_CHASSIS, 9);
-      this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
-      this.setTagBoolean(drill, NBT_SAW, false);
-      this.setTagString(drill, NBT_SPECIAL, "For testing purposes and cheaters.");
-      list.add(drill);
+      if (SPAWNABLES.isEmpty()) {
+        // Shiny drill
+        ItemStack drill = new ItemStack(item, 1, 0);
+        drill.setStackDisplayName("Shiny Multi-Drill");
+        this.setTag(drill, NBT_HEAD, 11);
+        this.setTag(drill, NBT_HEAD_COAT, -1);
+        this.setTag(drill, NBT_MOTOR, 1);
+        this.setTag(drill, NBT_BATTERY, 3);
+        this.setTag(drill, NBT_CHASSIS, 9);
+        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
+        this.setTagBoolean(drill, NBT_SAW, false);
+        this.setTagString(drill, NBT_SPECIAL, "For testing purposes and cheaters.");
+        SPAWNABLES.add(drill);
 
-      // Claire
-      drill = new ItemStack(item, 1, 0);
-      drill.setStackDisplayName("Claire");
-      this.setTag(drill, NBT_HEAD, 15);
-      this.setTag(drill, NBT_HEAD_COAT, 5);
-      this.setTag(drill, NBT_MOTOR, 2);
-      this.setTag(drill, NBT_BATTERY, 4);
-      this.setTag(drill, NBT_CHASSIS, 14);
-      this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
-      this.setTagBoolean(drill, NBT_SAW, true);
-      this.setTagString(drill, NBT_SPECIAL, "SilentChaos512's tool of choice.");
-      list.add(drill);
+        // Black Jack
+        drill = new ItemStack(item, 1, 0);
+        drill.setStackDisplayName("Black Jack");
+        this.setTag(drill, NBT_HEAD, 63);
+        this.setTag(drill, NBT_HEAD_COAT, 0);
+        this.setTag(drill, NBT_MOTOR, 2);
+        this.setTag(drill, NBT_BATTERY, 4);
+        this.setTag(drill, NBT_CHASSIS, 14);
+        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
+        this.setTagBoolean(drill, NBT_SAW, true);
+        this.setTagString(drill, NBT_SPECIAL, "\"I'ma firin' mah lazors!\" - Asaga");
+        SPAWNABLES.add(drill);
 
-      // Mani Mani
-      drill = new ItemStack(item, 1, 0);
-      drill.setStackDisplayName("Mani Mani Drill");
-      this.setTag(drill, NBT_HEAD, 28);
-      this.setTag(drill, NBT_HEAD_COAT, -1);
-      this.setTag(drill, NBT_MOTOR, 2);
-      this.setTag(drill, NBT_BATTERY, 5);
-      this.setTag(drill, NBT_CHASSIS, 10);
-      this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
-      this.setTagBoolean(drill, NBT_SAW, true);
-      this.setTagString(drill, NBT_SPECIAL, "+5 coolness for getting the reference.");
-      list.add(drill);
+        // Mani Mani
+        drill = new ItemStack(item, 1, 0);
+        drill.setStackDisplayName("Mani Mani Drill");
+        this.setTag(drill, NBT_HEAD, 28);
+        this.setTag(drill, NBT_HEAD_COAT, -1);
+        this.setTag(drill, NBT_MOTOR, 2);
+        this.setTag(drill, NBT_BATTERY, 5);
+        this.setTag(drill, NBT_CHASSIS, 10);
+        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
+        this.setTagBoolean(drill, NBT_SAW, true);
+        this.setTagString(drill, NBT_SPECIAL, "+5 coolness for getting the reference.");
+        SPAWNABLES.add(drill);
+        
+        // Tartar Sauce
+        drill = new ItemStack(item, 1, 0);
+        drill.setStackDisplayName("Tartar Sauce");
+        this.setTag(drill, NBT_HEAD, 66);
+        this.setTag(drill, NBT_HEAD_COAT, -1);
+        this.setTag(drill, NBT_MOTOR, 2);
+        this.setTag(drill, NBT_BATTERY, 4);
+        this.setTag(drill, NBT_CHASSIS, 1);
+        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
+        this.setTagString(drill, NBT_SPECIAL, "I'll see myself out...");
+        drill.addEnchantment(Enchantment.efficiency, 5);
+        SPAWNABLES.add(drill);
+      }
+      
+      for (ItemStack stack : SPAWNABLES) {
+        list.add(stack);
+      }
     }
   }
 
   @Override
   public void addRecipes() {
 
-//    ItemStack head = new ItemStack(ModItems.drillHead, 1, OreDictionary.WILDCARD_VALUE);
-//    ItemStack motor = new ItemStack(ModItems.drillMotor, 1, OreDictionary.WILDCARD_VALUE);
-//    ItemStack chassis = new ItemStack(ModItems.drillChassis, 1, OreDictionary.WILDCARD_VALUE);
-//    ItemStack battery = new ItemStack(ModItems.drillBattery, 1, OreDictionary.WILDCARD_VALUE);
-//    // This recipe is only for NEI! It will be overridden by a custom recipe handler.
-//    baseRecipe = GameRegistry.addShapedRecipe(new ItemStack(this), "h ", "mb", "c ", 'h', head,
-//        'm', motor, 'c', chassis, 'b', battery);
-//    LogHelper.debug("Base Drill Recipe Size: " + baseRecipe.getRecipeSize());
   }
 
   @Override
@@ -486,18 +490,28 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public boolean func_150897_b(Block block) {
 
     return block == Blocks.obsidian ? this.toolMaterial.getHarvestLevel() == 3
-        : (block != Blocks.diamond_block && block != Blocks.diamond_ore ? (block != Blocks.emerald_ore
-            && block != Blocks.emerald_block ? (block != Blocks.gold_block
-            && block != Blocks.gold_ore ? (block != Blocks.iron_block && block != Blocks.iron_ore ? (block != Blocks.lapis_block
-            && block != Blocks.lapis_ore ? (block != Blocks.redstone_ore
-            && block != Blocks.lit_redstone_ore ? (block.getMaterial() == Material.rock ? true
-            : (block.getMaterial() == Material.iron ? true : block.getMaterial() == Material.anvil))
-            : this.toolMaterial.getHarvestLevel() >= 2)
-            : this.toolMaterial.getHarvestLevel() >= 1)
-            : this.toolMaterial.getHarvestLevel() >= 1)
-            : this.toolMaterial.getHarvestLevel() >= 2)
-            : this.toolMaterial.getHarvestLevel() >= 2)
-            : this.toolMaterial.getHarvestLevel() >= 2);
+        : (block != Blocks.diamond_block
+            && block != Blocks.diamond_ore
+                ? (block != Blocks.emerald_ore
+                    && block != Blocks.emerald_block
+                        ? (block != Blocks.gold_block
+                            && block != Blocks.gold_ore
+                                ? (block != Blocks.iron_block
+                                    && block != Blocks.iron_ore
+                                        ? (block != Blocks.lapis_block && block != Blocks.lapis_ore
+                                            ? (block != Blocks.redstone_ore
+                                                && block != Blocks.lit_redstone_ore
+                                                    ? (block.getMaterial() == Material.rock ? true
+                                                        : (block.getMaterial() == Material.iron
+                                                            ? true
+                                                            : block
+                                                                .getMaterial() == Material.anvil))
+                                                    : this.toolMaterial.getHarvestLevel() >= 2)
+                                            : this.toolMaterial.getHarvestLevel() >= 1)
+                                        : this.toolMaterial.getHarvestLevel() >= 1)
+                                : this.toolMaterial.getHarvestLevel() >= 2)
+                        : this.toolMaterial.getHarvestLevel() >= 2)
+                : this.toolMaterial.getHarvestLevel() >= 2);
   }
 
   @Override
