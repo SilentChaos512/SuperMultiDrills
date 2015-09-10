@@ -3,14 +3,66 @@ package net.silentchaos512.supermultidrills.registry;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.silentchaos512.supermultidrills.item.ItemSMD;
 import net.silentchaos512.supermultidrills.util.LogHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class SRegistry {
 
+  private final static HashMap<String, Block> blocks = new HashMap<String, Block>();
   private final static HashMap<String, Item> items = new HashMap<String, Item>();
+
+  /**
+   * Add a Block to the hash map and registers it in the GameRegistry.
+   * 
+   * @param blockClass
+   *          The Block class to register.
+   * @param key
+   *          The name of the Block.
+   */
+  public static Block registerBlock(Class<? extends Block> blockClass, String key) {
+
+    return registerBlock(blockClass, key, ItemBlock.class);
+  }
+
+  /**
+   * Add a Block to the hash map and registers it in the GameRegistry.
+   * 
+   * @param blockClass
+   *          The Block class to register.
+   * @param key
+   *          The name of the Block.
+   * @param itemBlockClass
+   *          The ItemBlock to use.
+   * @param constructorParams
+   *          The list of parameters for the constructor (minus the ID).
+   */
+  public static Block registerBlock(Class<? extends Block> blockClass, String key,
+      Class<? extends ItemBlock> itemBlockClass, Object... constructorParams) {
+
+    int i;
+
+    try {
+      // Create an array of the classes in the constructor parameters and the int for id.
+      Class[] paramClasses = getParameterClasses(constructorParams);
+
+      // Get the constructor for this Block.
+      Constructor<?> c = blockClass.getDeclaredConstructor(paramClasses);
+
+      // Instantiate and add to hash map.
+      Block block = (Block) c.newInstance(constructorParams);
+      blocks.put(key, block);
+      GameRegistry.registerBlock(block, itemBlockClass, key);
+      return block;
+    } catch (Exception e) {
+      LogHelper.severe("Failed to register block " + key);
+      e.printStackTrace();
+      return null;
+    }
+  }
 
   /**
    * Creates a new Item instance and add it to the hash map.
@@ -42,8 +94,8 @@ public class SRegistry {
     } catch (Exception e) {
       LogHelper.severe("Failed to register item " + key);
       e.printStackTrace();
+      return null;
     }
-    return null;
   }
 
   private static Class[] getParameterClasses(Object[] params) {
@@ -68,12 +120,33 @@ public class SRegistry {
    */
   public static void addRecipesAndOreDictEntries() {
 
+    for (Block block : blocks.values()) {
+      if (block instanceof IAddRecipe) {
+        ((IAddRecipe) block).addRecipes();
+        ((IAddRecipe) block).addOreDict();
+      }
+    }
     for (Item item : items.values()) {
       if (item instanceof IAddRecipe) {
         ((IAddRecipe) item).addRecipes();
         ((IAddRecipe) item).addOreDict();
       }
     }
+  }
+
+  /**
+   * Gets the Block registered with the given key.
+   * 
+   * @param key
+   * @return
+   */
+  public static Block getBlock(String key) {
+
+    if (!blocks.containsKey(key)) {
+      LogHelper.severe("No block with key " + key + "! This is a bug!");
+    }
+
+    return blocks.get(key);
   }
 
   /**

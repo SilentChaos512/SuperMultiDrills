@@ -1,6 +1,8 @@
 package net.silentchaos512.supermultidrills.lib;
 
 public class Names {
+  
+  public static final String GENERATOR = "Generator";
 
   public static final String DRILL = "Drill";
   public static final String DRILL_HEAD = "DrillHead";
