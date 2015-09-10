@@ -8,66 +8,25 @@ import cpw.mods.fml.common.FMLLog;
 
 public class LogHelper {
 
-  private final static String CONFIG = "[CONFIG]";
-  private final static String DEBUG = "[DEBUG]";
-  private final static String FINE = "[FINE]";
-  private final static String FINER = "[FINER]";
-  private final static String FINEST = "[FINEST]";
-  private final static String INFO = "[INFO]";
-  private final static String SEVERE = "[SEVERE]";
-  private final static String WARNING = "[WARNING]";
-
-  private static Logger logger = Logger.getLogger(SuperMultiDrills.MOD_ID);
-
-  public static void init() {
-
-    logger.setParent((Logger) FMLLog.getLogger());
-  }
-
-  public static void log(String logLevel, Object object) {
-
-    System.out.println((new Date()).toString() + " [" + SuperMultiDrills.MOD_ID + "] " + logLevel
-        + " " + object.toString());
-  }
-
   public static void severe(Object object) {
 
-    log(SEVERE, object.toString());
+    SuperMultiDrills.logger.error(object);
   }
 
   public static void debug(Object object) {
 
-    log(DEBUG, object.toString());
+    SuperMultiDrills.logger.error(object);
+    System.out.println(object);
   }
 
   public static void warning(Object object) {
 
-    log(WARNING, object.toString());
+    SuperMultiDrills.logger.warn(object);
   }
 
   public static void info(Object object) {
 
-    log(INFO, object.toString());
-  }
-
-  public static void config(Object object) {
-
-    log(CONFIG, object.toString());
-  }
-
-  public static void fine(Object object) {
-
-    log(FINE, object.toString());
-  }
-
-  public static void finer(Object object) {
-
-    log(FINER, object.toString());
-  }
-
-  public static void finest(Object object) {
-
-    log(FINEST, object.toString());
+    SuperMultiDrills.logger.info(object);
   }
 
   /**
@@ -75,12 +34,12 @@ public class LogHelper {
    */
   public static void derp() {
 
-    log(DEBUG, "Derp!");
+    debug("Derp!");
   }
 
   public static void derp(String message) {
 
-    log(DEBUG, "Derp! " + message);
+    debug("Derp! " + message);
   }
 
   public static void derpRand() {
@@ -89,12 +48,12 @@ public class LogHelper {
     for (int i = 0; i < SuperMultiDrills.instance.random.nextInt(6); ++i) {
       s += " ";
     }
-    log(DEBUG, s + "Derp!");
+    debug(s + "Derp!");
   }
 
   public static void yay() {
 
-    log(DEBUG, "Yay!");
+    debug("Yay!");
   }
 
   // Prints XYZ coordinates in a nice format.
@@ -112,6 +71,6 @@ public class LogHelper {
       }
       s += objects[i];
     }
-    log(DEBUG, s);
+    debug(s);
   }
 }

@@ -233,7 +233,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         this.setTagBoolean(drill, NBT_SAW, true);
         this.setTagString(drill, NBT_SPECIAL, "+5 coolness for getting the reference.");
         SPAWNABLES.add(drill);
-        
+
         // Tartar Sauce
         drill = new ItemStack(item, 1, 0);
         drill.setStackDisplayName("Tartar Sauce");
@@ -247,7 +247,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         drill.addEnchantment(Enchantment.efficiency, 5);
         SPAWNABLES.add(drill);
       }
-      
+
       for (ItemStack stack : SPAWNABLES) {
         list.add(stack);
       }

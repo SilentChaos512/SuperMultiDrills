@@ -39,53 +39,103 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   @Override
   public void addRecipes() {
 
+    boolean addVanilla = true;
+
     if (SuperMultiDrills.instance.foundEnderIO) {
-      // EnderIO recipes
-      Item itemCapacitor = (Item) Item.itemRegistry.getObject("EnderIO:itemBasicCapacitor");
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "iyi", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'y', Items.potato));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xrx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotConductiveIron"));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotElectricalSteel", 'y',
-          new ItemStack(itemCapacitor, 1, 0)));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotEnergeticAlloy", 'y',
-          new ItemStack(itemCapacitor, 1, 1)));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotPhasedGold", 'y', new ItemStack(
-              itemCapacitor, 1, 2)));
+      addRecipesEnderIO();
+      addVanilla = false;
+    }
+    if (SuperMultiDrills.instance.foundMekanism) {
+      addRecipesMekanism();
+      addVanilla = false;
     }
     if (SuperMultiDrills.instance.foundThermalFoundation) {
-      // Thermal Foundation recipes
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotCopper", 'y', Items.potato));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotLead", 'y', "dustSulfur"));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotInvar", 'y', new ItemStack(this,
-              1, 1)));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotElectrum", 'y', new ItemStack(
-              this, 1, 2)));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri",
-          'i', Items.iron_ingot, 'r', Items.redstone, 'x', "ingotEnderium", 'y', new ItemStack(
-              this, 1, 3)));
+      addRecipesThermalFoundation();
+      addVanilla = false;
     }
-    if (!SuperMultiDrills.instance.foundEnderIO
-        && !SuperMultiDrills.instance.foundThermalFoundation) {
-      // Vanilla
-      GameRegistry.addShapedRecipe(new ItemStack(this, 1, 0), " x ", "xyx", "zxz", 'x',
-          Blocks.dirt, 'y', Items.potato, 'z', Items.redstone);
-      GameRegistry.addShapedRecipe(new ItemStack(this, 1, 1), " x ", "xyx", "zxz", 'x',
-          Items.iron_ingot, 'y', Items.gold_ingot, 'z', Items.redstone);
-      GameRegistry.addShapedRecipe(new ItemStack(this, 1, 2), " x ", "xyx", "zxz", 'x',
-          Items.gold_nugget, 'y', Items.glowstone_dust, 'z', Items.redstone);
-      GameRegistry.addShapedRecipe(new ItemStack(this, 1, 3), " x ", "xyx", "zxz", 'x',
-          Items.gold_ingot, 'y', Items.ender_pearl, 'z', Items.redstone);
-      GameRegistry.addShapedRecipe(new ItemStack(this, 1, 4), " x ", "xyx", "zxz", 'x',
-          Items.diamond, 'y', Items.nether_star, 'z', Items.redstone);
+    if (addVanilla) {
+      addRecipesVanilla();
     }
+  }
+
+  /**
+   * Ender IO recipes
+   */
+  private void addRecipesEnderIO() {
+    
+    Item itemCapacitor = (Item) Item.itemRegistry.getObject("EnderIO:itemBasicCapacitor");
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "iyi", "iri", 'i',
+        Items.iron_ingot, 'r', Items.redstone, 'y', Items.potato));
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xrx", "iri", 'i',
+        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotConductiveIron"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i',
+        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotElectricalSteel", 'y',
+        new ItemStack(itemCapacitor, 1, 0)));
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i',
+        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotEnergeticAlloy", 'y',
+        new ItemStack(itemCapacitor, 1, 1)));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', Items.iron_ingot,
+            'r', Items.redstone, 'x', "ingotPhasedGold", 'y', new ItemStack(itemCapacitor, 1, 2)));
+  }
+
+  /**
+   * Mekanism recipes
+   */
+  private void addRecipesMekanism() {
+
+    ItemStack tier0 = new ItemStack(this, 1, 0);
+    ItemStack tier1 = new ItemStack(this, 1, 1);
+    ItemStack tier2 = new ItemStack(this, 1, 2);
+    ItemStack tier3 = new ItemStack(this, 1, 3);
+    ItemStack tier4 = new ItemStack(this, 1, 4);
+
+    GameRegistry.addRecipe(new ShapedOreRecipe(tier0, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+        "dustRedstone", 'x', "ingotCopper", 'y', Items.potato));
+    GameRegistry.addRecipe(new ShapedOreRecipe(tier1, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+        "dustRedstone", 'x', "ingotCopper", 'y', "ingotSteel"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(tier2, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+        "dustRedstone", 'x', "ingotOsmium", 'y', tier1));
+    GameRegistry.addRecipe(new ShapedOreRecipe(tier3, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+        "dustRedstone", 'x', "alloyAdvanced", 'y', tier2));
+    GameRegistry.addRecipe(new ShapedOreRecipe(tier4, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+        "dustRedstone", 'x', "alloyElite", 'y', tier3));
+  }
+
+  /*
+   * Thermal Foundation recipes
+   */
+  private void addRecipesThermalFoundation() {
+
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "xyx", "iri", 'i',
+        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotCopper", 'y', Items.potato));
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xyx", "iri", 'i',
+        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotLead", 'y', "dustSulfur"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i',
+        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotInvar", 'y', new ItemStack(this, 1, 1)));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i', Items.iron_ingot,
+            'r', Items.redstone, 'x', "ingotElectrum", 'y', new ItemStack(this, 1, 2)));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', Items.iron_ingot,
+            'r', Items.redstone, 'x', "ingotEnderium", 'y', new ItemStack(this, 1, 3)));
+  }
+
+  /**
+   * Vanilla fallback recipes
+   */
+  private void addRecipesVanilla() {
+
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 0), " x ", "xyx", "zxz", 'x', Blocks.dirt,
+        'y', Items.potato, 'z', Items.redstone);
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 1), " x ", "xyx", "zxz", 'x',
+        Items.iron_ingot, 'y', Items.gold_ingot, 'z', Items.redstone);
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 2), " x ", "xyx", "zxz", 'x',
+        Items.gold_nugget, 'y', Items.glowstone_dust, 'z', Items.redstone);
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 3), " x ", "xyx", "zxz", 'x',
+        Items.gold_ingot, 'y', Items.ender_pearl, 'z', Items.redstone);
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 4), " x ", "xyx", "zxz", 'x', Items.diamond,
+        'y', Items.nether_star, 'z', Items.redstone);
   }
 
   @Override
