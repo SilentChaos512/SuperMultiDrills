@@ -152,6 +152,10 @@ item.supermultidrills:UpgradeSpeed.name=Drill Upgrade: Efficiency
 item.supermultidrills:UpgradeSpeed.desc1=Applies Efficiency
 item.supermultidrills:UpgradeSpeed.desc2=(one level each)
 
+item.supermultidrills:UpgradeSharpness.name=Drill Upgrade: Sharpness
+item.supermultidrills:UpgradeSharpness.desc1=Applies Sharpness
+item.supermultidrills:UpgradeSharpness.desc2=(one level each)
+
 # Misc text
 
 misc.supermultidrills:CostPerHardness=Cost per block hardness: %.1f

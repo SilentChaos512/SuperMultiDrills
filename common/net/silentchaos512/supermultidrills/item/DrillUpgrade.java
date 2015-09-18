@@ -2,22 +2,22 @@ package net.silentchaos512.supermultidrills.item;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillUpgrade extends ItemSMD {
 
-  public static final String[] NAMES = { Names.UPGRADE_SAW, Names.UPGRADE_SPEED,
-      Names.UPGRADE_SILK, Names.UPGRADE_FORTUNE };
+  public static final String[] NAMES = { Names.UPGRADE_SAW, Names.UPGRADE_SPEED, Names.UPGRADE_SILK,
+      Names.UPGRADE_FORTUNE, Names.UPGRADE_SHARPNESS };
 
   public DrillUpgrade() {
 
@@ -49,7 +49,7 @@ public class DrillUpgrade extends ItemSMD {
         list.add(EnumChatFormatting.GREEN + LocalizationHelper.getItemDescription(itemName, 0));
       }
     }
-    
+
     list.add(EnumChatFormatting.DARK_GRAY
         + LocalizationHelper.getItemDescription(Names.DRILL_UPGRADE, 0));
   }
@@ -60,21 +60,31 @@ public class DrillUpgrade extends ItemSMD {
     ItemStack rod = ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1);
 
     // Saw
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SAW)),
-        " i ", "imi", "mi ", 'i', Items.iron_ingot, 'm', rod);
+    ItemStack saw = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SAW));
+    GameRegistry
+        .addRecipe(new ShapedOreRecipe(saw, " i ", "imi", "mi ", 'i', "ingotIron", 'm', rod));
 
     // Speed
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SPEED)),
-        " m ", "grg", " m ", 'm', rod, 'g', Items.gold_ingot, 'r', Items.redstone);
+    ItemStack speed = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SPEED));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(speed, " m ", "grg", " m ", 'm', rod, 'g',
+    // "ingotGold", 'r', "dustRedstone"));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(speed, "rrr", "mgm", 'r', "blockRedstone", 'm', rod, 'g', "ingotGold"));
 
     // Silk
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SILK)),
-        "eee", "rgr", 'e', Items.emerald, 'r', rod, 'g', Items.gold_ingot);
+    ItemStack silk = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SILK));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(silk, "eee", "rgr", 'e', "gemEmerald", 'r', rod, 'g', "ingotGold"));
 
     // Fortune
-    GameRegistry.addShapedRecipe(
-        new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_FORTUNE)), "ddd", "rgr", 'd',
-        Items.diamond, 'r', rod, 'g', Items.gold_ingot);
+    ItemStack fortune = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_FORTUNE));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(fortune, "ddd", "rgr", 'd', "gemDiamond", 'r', rod, 'g', "ingotGold"));
+
+    // Sharpness
+    ItemStack sharpness = new ItemStack(this, 1, getMetaForName(Names.UPGRADE_SHARPNESS));
+    GameRegistry.addRecipe(new ShapedOreRecipe(sharpness, "qqq", "rgr", 'q', "blockQuartz", 'r',
+        rod, 'g', "ingotGold"));
   }
 
   public int getMetaForName(String name) {

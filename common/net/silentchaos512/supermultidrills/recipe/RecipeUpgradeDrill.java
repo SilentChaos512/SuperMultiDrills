@@ -180,6 +180,9 @@ public class RecipeUpgradeDrill implements IRecipe {
     } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SPEED)) {
       // Speed
       return this.increaseEnchantmentLevel(drill, Enchantment.efficiency, 5);
+    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SHARPNESS)) {
+      // Sharpness
+      return increaseEnchantmentLevel(drill, Enchantment.sharpness, 5);
     }
 
     return drill;

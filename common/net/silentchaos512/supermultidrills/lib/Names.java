@@ -20,4 +20,5 @@ public class Names {
   public static final String UPGRADE_SPEED = "UpgradeSpeed";
   public static final String UPGRADE_SILK = "UpgradeSilk";
   public static final String UPGRADE_FORTUNE = "UpgradeFortune";
+  public static final String UPGRADE_SHARPNESS = "UpgradeSharpness";
 }
