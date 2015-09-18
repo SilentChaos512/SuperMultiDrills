@@ -48,6 +48,9 @@ item.supermultidrills:DrillChassis12.name=Brown Drill Chassis
 item.supermultidrills:DrillChassis13.name=Green Drill Chassis
 item.supermultidrills:DrillChassis14.name=Red Drill Chassis
 item.supermultidrills:DrillChassis15.name=Black Drill Chassis
+item.supermultidrills:DrillChassis.desc1=Color has no effect on performance.
+item.supermultidrills:DrillChassis.desc2=Craft drills with a dye to change
+item.supermultidrills:DrillChassis.desc3=the chassis color.
 
 item.supermultidrills:DrillHead.Group=Group:
 item.supermultidrills:DrillHead_Iron.name=Iron Drill Head

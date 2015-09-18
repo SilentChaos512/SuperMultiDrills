@@ -2,27 +2,25 @@ package net.silentchaos512.supermultidrills.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.supermultidrills.lib.Names;
-import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.util.LogHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillChassis extends ItemSMD {
-  
+
   public static final int PASS_CHASSIS = 0;
   public static final int PASS_BATTERY_GAUGE = 1;
   public static final int NUM_RENDER_PASSES = 2;
-  
+
   protected IIcon iconChassis;
   protected IIcon iconBatteryGauge;
 
@@ -37,21 +35,17 @@ public class DrillChassis extends ItemSMD {
   @Override
   public void addRecipes() {
 
-    GameRegistry.addShapedRecipe(new ItemStack(this), " ir", "igi", "ii ", 'i', Items.iron_ingot,
-        'r', ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1), 'g', Items.gold_ingot);
+    // Basic recipe
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this), " ir", "igi", "ii ", 'i',
+        "ingotIron", 'r', ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1), 'g', "ingotGold"));
+
+    // Recolor recipes
     for (int i = 0; i < 16; ++i) {
       String dye = ItemDye.field_150923_a[~i & 15];
       dye = "dye" + dye.substring(0, 1).toUpperCase() + dye.substring(1, dye.length());
-      GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(this, 1, i), new ItemStack(this,
-          1, OreDictionary.WILDCARD_VALUE), dye));
+      GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(this, 1, i),
+          new ItemStack(this, 1, OreDictionary.WILDCARD_VALUE), dye));
     }
-  }
-
-  @Override
-  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
-
-    // TODO
-    super.addInformation(stack, player, list, advanced);
   }
 
   @Override
@@ -84,13 +78,13 @@ public class DrillChassis extends ItemSMD {
       return null;
     }
   }
-  
+
   @Override
   public int getRenderPasses(int meta) {
-    
+
     return NUM_RENDER_PASSES;
   }
-  
+
   @Override
   public boolean requiresMultipleRenderPasses() {
 
