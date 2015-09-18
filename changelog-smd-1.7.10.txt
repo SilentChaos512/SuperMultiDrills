@@ -1,0 +1,5 @@
+Super Multi-Drills Changelog
+
+1.1.2
+Added: More Ender IO drill heads.
+Changed: Drill chassis now renders empty battery gauge.

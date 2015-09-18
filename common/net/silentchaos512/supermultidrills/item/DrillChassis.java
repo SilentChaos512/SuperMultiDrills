@@ -14,9 +14,17 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
+import net.silentchaos512.supermultidrills.util.LogHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillChassis extends ItemSMD {
+  
+  public static final int PASS_CHASSIS = 0;
+  public static final int PASS_BATTERY_GAUGE = 1;
+  public static final int NUM_RENDER_PASSES = 2;
+  
+  protected IIcon iconChassis;
+  protected IIcon iconBatteryGauge;
 
   public DrillChassis() {
 
@@ -49,7 +57,11 @@ public class DrillChassis extends ItemSMD {
   @Override
   public int getColorFromItemStack(ItemStack stack, int pass) {
 
-    return ItemDye.field_150922_c[~stack.getItemDamage() & 15];
+    if (pass == PASS_CHASSIS) {
+      return ItemDye.field_150922_c[~stack.getItemDamage() & 15];
+    } else {
+      return 0xFFFFFF;
+    }
   }
 
   @Override
@@ -61,14 +73,27 @@ public class DrillChassis extends ItemSMD {
   }
 
   @Override
-  public IIcon getIconFromDamage(int meta) {
+  public IIcon getIcon(ItemStack stack, int pass) {
 
-    return this.itemIcon;
+    if (pass == PASS_CHASSIS) {
+      return itemIcon;
+    } else if (pass == PASS_BATTERY_GAUGE) {
+      return ModItems.drill.iconBatteryGauge[0];
+    } else {
+      LogHelper.debug("Unknown render pass for chassis! Pass " + pass);
+      return null;
+    }
   }
-
+  
   @Override
-  public void registerIcons(IIconRegister reg) {
+  public int getRenderPasses(int meta) {
+    
+    return NUM_RENDER_PASSES;
+  }
+  
+  @Override
+  public boolean requiresMultipleRenderPasses() {
 
-    this.itemIcon = reg.registerIcon(Strings.RESOURCE_PREFIX + this.itemName);
+    return true;
   }
 }

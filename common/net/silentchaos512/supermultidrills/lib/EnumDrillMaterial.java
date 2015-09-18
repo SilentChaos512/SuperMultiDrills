@@ -96,7 +96,7 @@ public enum EnumDrillMaterial {
   EXIMITE(EnumDrillMaterial.GROUP_METALLURGY, 1000, 8.0f, 3.0f, "ingotEximite"),
   DESICHALKOS(EnumDrillMaterial.GROUP_METALLURGY, 1800, 10.0f, 4.0f, "ingotDesichalkos"),
   
-  // Ender IO
+  // Ender IO (aside from Dark Steel, these numbers are made up).
   DARK_STEEL(EnumDrillMaterial.GROUP_ENDER_IO, 1561, 7.0f, 1.0f, "ingotDarkSteel"),
   ELECTRICAL_STEEL(EnumDrillMaterial.GROUP_ENDER_IO, 300, 6.0f, 2.0f, "ingotElectricalSteel"),
   CONDUCTIVE_IRON(EnumDrillMaterial.GROUP_ENDER_IO, 100, 8.0f, 1.5f, "ingotConductiveIron"),
