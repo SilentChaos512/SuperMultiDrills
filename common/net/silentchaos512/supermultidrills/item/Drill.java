@@ -263,6 +263,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public void addOreDict() {
 
   }
+  
+
+
+  // ==========================================================================
+  // NBT helper methods
+  // ==========================================================================
 
   public EnumDrillMaterial getDrillMaterial(ItemStack stack) {
 
@@ -303,66 +309,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public ItemStack getChassis(ItemStack stack) {
 
     return new ItemStack(ModItems.drillChassis, 1, this.getTag(stack, NBT_CHASSIS));
-  }
-
-  public boolean canHarvestBlock(ItemStack drill, Block block, int meta) {
-
-    if (block.getHarvestLevel(meta) > this.getHarvestLevel(drill, "")) {
-      return false;
-    }
-    boolean isEffective = effectiveMaterialsBasic.contains(block.getMaterial());
-    if (!isEffective && this.getTagBoolean(drill, NBT_SAW)) {
-      isEffective = effectiveMaterialsExtra.contains(block.getMaterial());
-    }
-    return isEffective;
-  }
-
-  public float getDigSpeed(ItemStack stack) {
-
-    return this.getDrillMaterial(stack).getEfficiency();
-  }
-
-  @Override
-  public float getDigSpeed(ItemStack stack, Block block, int meta) {
-
-    // Is this correct?
-    boolean canHarvest = ForgeHooks.isToolEffective(stack, block, meta)
-        || this.canHarvestBlock(stack, block, meta);
-    // I wasn't sure how to get block hardness here, as it requires a world object. There's probably
-    // an easy way to do it, but it shouldn't matter in most cases, so I just used 1.
-    boolean hasEnoughPower = this.getEnergyStored(stack) > 0
-        || this.getEnergyToBreakBlock(stack, 1.0f) == 0;
-
-    if (canHarvest && hasEnoughPower) {
-      return this.getDrillMaterial(stack).getEfficiency();
-    } else {
-      return 1.0f;
-    }
-  }
-
-  public int getEnergyToBreakBlock(ItemStack stack, float hardness) {
-
-    int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId,
-        stack);
-    int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId,
-        stack);
-    int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack);
-
-    EnumDrillMaterial material = this.getDrillMaterial(stack);
-
-    Expression exp = Config.energyCostExpression;
-    exp.setVariable("durability", BigDecimal.valueOf(material.getDurability()));
-    exp.setVariable("efficiency", BigDecimal.valueOf(efficiencyLevel));
-    exp.setVariable("silk_touch", BigDecimal.valueOf(silkTouchLevel));
-    exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
-    exp.setVariable("hardness", BigDecimal.valueOf(hardness));
-    exp.setVariable("mining_speed", BigDecimal.valueOf(material.getEfficiency()));
-
-    int result = exp.eval().intValue();
-    if (result < 0) {
-      result = 0; // Energy cost should be non-negative!
-    }
-    return result;
   }
 
   public void createTagCompoundIfNeeded(ItemStack stack) {
@@ -460,6 +406,70 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
     tags.setString(key, value);
   }
+  
+  // ==========================================================================
+  // Mining, attacking, and placing
+  // ==========================================================================
+
+  public boolean canHarvestBlock(ItemStack drill, Block block, int meta) {
+
+    if (block.getHarvestLevel(meta) > this.getHarvestLevel(drill, "")) {
+      return false;
+    }
+    boolean isEffective = effectiveMaterialsBasic.contains(block.getMaterial());
+    if (!isEffective && this.getTagBoolean(drill, NBT_SAW)) {
+      isEffective = effectiveMaterialsExtra.contains(block.getMaterial());
+    }
+    return isEffective;
+  }
+
+  public float getDigSpeed(ItemStack stack) {
+
+    return this.getDrillMaterial(stack).getEfficiency();
+  }
+
+  @Override
+  public float getDigSpeed(ItemStack stack, Block block, int meta) {
+
+    // Is this correct?
+    boolean canHarvest = ForgeHooks.isToolEffective(stack, block, meta)
+        || this.canHarvestBlock(stack, block, meta);
+    // I wasn't sure how to get block hardness here, as it requires a world object. There's probably
+    // an easy way to do it, but it shouldn't matter in most cases, so I just used 1.
+    boolean hasEnoughPower = this.getEnergyStored(stack) > 0
+        || this.getEnergyToBreakBlock(stack, 1.0f) == 0;
+
+    if (canHarvest && hasEnoughPower) {
+      return this.getDrillMaterial(stack).getEfficiency();
+    } else {
+      return 1.0f;
+    }
+  }
+
+  public int getEnergyToBreakBlock(ItemStack stack, float hardness) {
+
+    int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId,
+        stack);
+    int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId,
+        stack);
+    int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack);
+
+    EnumDrillMaterial material = this.getDrillMaterial(stack);
+
+    Expression exp = Config.energyCostExpression;
+    exp.setVariable("durability", BigDecimal.valueOf(material.getDurability()));
+    exp.setVariable("efficiency", BigDecimal.valueOf(efficiencyLevel));
+    exp.setVariable("silk_touch", BigDecimal.valueOf(silkTouchLevel));
+    exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
+    exp.setVariable("hardness", BigDecimal.valueOf(hardness));
+    exp.setVariable("mining_speed", BigDecimal.valueOf(material.getEfficiency()));
+
+    int result = exp.eval().intValue();
+    if (result < 0) {
+      result = 0; // Energy cost should be non-negative!
+    }
+    return result;
+  }
 
   @Override
   public int getHarvestLevel(ItemStack stack, String toolClass) {
@@ -489,6 +499,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   // Can harvest block? Direct copy from ItemPickaxe.
   public boolean func_150897_b(Block block) {
 
+    // Silly auto format...
     return block == Blocks.obsidian ? this.toolMaterial.getHarvestLevel() == 3
         : (block != Blocks.diamond_block
             && block != Blocks.diamond_ore
@@ -515,18 +526,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   }
 
   @Override
-  public int getItemEnchantability(ItemStack stack) {
-
-    return 0; // Prevents enchanting thru the enchantment table.
-  }
-
-  @Override
-  public boolean hasEffect(ItemStack stack) {
-
-    return false; // Prevents the enchanted item glowing effect
-  }
-
-  @Override
   public boolean hitEntity(ItemStack stack, EntityLivingBase entity1, EntityLivingBase entity2) {
 
     this.extractEnergy(stack, this.getEnergyToBreakBlock(stack, 1.0f), false);
@@ -550,12 +549,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   }
 
   @Override
-  public boolean isFull3D() {
-
-    return true;
-  }
-
-  @Override
   public Multimap getAttributeModifiers(ItemStack stack) {
 
     Multimap multimap = HashMultimap.create();
@@ -564,6 +557,168 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         new AttributeModifier(field_111210_e, "Tool modifier", damage, 0));
     return multimap;
   }
+  
+  @Override
+  public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
+      int side, float hitX, float hitY, float hitZ) {
+
+    boolean used = false;
+    int toolSlot = player.inventory.currentItem;
+    int itemSlot = toolSlot + 1;
+    ItemStack nextStack = null;
+
+    if (toolSlot < 8) {
+      nextStack = player.inventory.getStackInSlot(itemSlot);
+      if (nextStack != null) {
+        Item item = nextStack.getItem();
+        Item bandolier = (Item) Item.itemRegistry.getObject("SilentGems:TorchBandolier");
+        if (item instanceof ItemBlock || (bandolier != null && item == bandolier)) {
+          ForgeDirection d = ForgeDirection.VALID_DIRECTIONS[side];
+
+          int px = x + d.offsetX;
+          int py = y + d.offsetY;
+          int pz = z + d.offsetZ;
+          int playerX = (int) Math.floor(player.posX);
+          int playerY = (int) Math.floor(player.posY);
+          int playerZ = (int) Math.floor(player.posZ);
+
+          // Check for overlap with player, except for torches and torch bandolier
+          if (Item.getIdFromItem(item) != Block.getIdFromBlock(Blocks.torch)
+              && !(bandolier != null && item == bandolier) && px == playerX
+              && (py == playerY || py == playerY + 1 || py == playerY - 1) && pz == playerZ) {
+            return false;
+          }
+
+          used = item.onItemUse(nextStack, player, world, x, y, z, side, hitX, hitY, hitZ);
+          if (nextStack.stackSize < 1) {
+            nextStack = null;
+            player.inventory.setInventorySlotContents(itemSlot, null);
+          }
+        }
+      }
+    }
+
+    return used;
+  }
+  
+  // ==========================================================================
+  // Rendering, damage, and localization
+  // ==========================================================================
+
+  @Override
+  public IIcon getIcon(ItemStack stack, int pass) {
+
+    if (pass == PASS_CHASSIS) {
+      // Chassis
+      return ModItems.drillChassis.getIconFromDamage(0);
+    } else if (pass == PASS_HEAD) {
+      // Head
+      int head = this.getTag(stack, NBT_HEAD_COAT); // Is there a head coat?
+      if (head < 0) {
+        head = this.getTag(stack, NBT_HEAD);
+      }
+      if (head < 0 || head >= ModItems.drillHead.icons.length) {
+        head = 0;
+      }
+      return ModItems.drillHead.icons[head];
+    } else if (pass == PASS_BATTERY_GAUGE) {
+      double charge = 1.0 - this.getDurabilityForDisplay(stack);
+      int index = MathHelper.clamp_int((int) Math.round(4.0 * charge), 0, 3);
+      return iconBatteryGauge[index];
+    } else {
+      LogHelper.debug("Unknown render pass for drill! Pass " + pass);
+      return null;
+    }
+  }
+
+  @Override
+  public int getColorFromItemStack(ItemStack stack, int pass) {
+
+    if (pass == PASS_CHASSIS) {
+      int color = this.getTag(stack, NBT_CHASSIS);
+      return ItemDye.field_150922_c[~color & 15];
+    } else {
+      return 0xFFFFFF;
+    }
+  }
+
+  @Override
+  public int getRenderPasses(int meta) {
+
+    return NUM_RENDER_PASSES;
+  }
+
+  @Override
+  public boolean requiresMultipleRenderPasses() {
+
+    return true;
+  }
+  
+  @Override
+  public boolean isFull3D() {
+
+    return true;
+  }
+
+  @Override
+  public void registerIcons(IIconRegister reg) {
+
+    // Chassis uses DrillChassis.itemIcon, head uses DrillHead.icons.
+    // So we only need to register the battery gauge icons.
+    for (int i = 0; i < iconBatteryGauge.length; ++i) {
+      iconBatteryGauge[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + "BatteryGauge" + i);
+    }
+  }
+
+  @Override
+  public boolean showDurabilityBar(ItemStack stack) {
+
+    return stack.stackTagCompound != null && this.hasTag(stack, NBT_ENERGY)
+        && this.getEnergyStored(stack) != this.getMaxEnergyStored(stack);
+  }
+
+  @Override
+  public double getDurabilityForDisplay(ItemStack stack) {
+
+    int energy = this.getEnergyStored(stack);
+    int energyMax = this.getMaxEnergyStored(stack);
+    return (double) (energyMax - energy) / (double) energyMax;
+  }
+  
+  @Override
+  public int getItemEnchantability(ItemStack stack) {
+
+    return 0; // Prevents enchanting thru the enchantment table.
+  }
+
+  @Override
+  public boolean hasEffect(ItemStack stack) {
+
+    return false; // Prevents the enchanted item glowing effect
+  }
+  
+  @Override
+  public String getUnlocalizedName(ItemStack stack) {
+
+    return LocalizationHelper.ITEM_PREFIX + Names.DRILL;
+  }
+  
+  @Override
+  public int getDamage(ItemStack stack) {
+
+    int value = (int) (100 * this.getDurabilityForDisplay(stack));
+    return MathHelper.clamp_int(value, 0, 99);
+  }
+
+  @Override
+  public void setDamage(ItemStack stack, int damage) {
+
+    // We don't want anything damaging the drill.
+  }
+  
+  // ==========================================================================
+  // IEnergyContainerItem (CoFH)
+  // ==========================================================================
 
   public int getMaxEnergyExtracted(ItemStack container) {
 
@@ -619,138 +774,5 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     int battery = this.getTag(container, NBT_BATTERY);
     return ModItems.drillBattery
         .getMaxEnergyStored(new ItemStack(ModItems.drillBattery, 1, battery));
-  }
-
-  @Override
-  public int getDamage(ItemStack stack) {
-
-    int value = (int) (100 * this.getDurabilityForDisplay(stack));
-    return MathHelper.clamp_int(value, 0, 99);
-  }
-
-  @Override
-  public void setDamage(ItemStack stack, int damage) {
-
-  }
-
-  @Override
-  public String getUnlocalizedName(ItemStack stack) {
-
-    return LocalizationHelper.ITEM_PREFIX + Names.DRILL;
-  }
-
-  @Override
-  public IIcon getIcon(ItemStack stack, int pass) {
-
-    if (pass == PASS_CHASSIS) {
-      // Chassis
-      return ModItems.drillChassis.getIconFromDamage(0);
-    } else if (pass == PASS_HEAD) {
-      // Head
-      int head = this.getTag(stack, NBT_HEAD_COAT); // Is there a head coat?
-      if (head < 0) {
-        head = this.getTag(stack, NBT_HEAD);
-      }
-      if (head < 0 || head >= ModItems.drillHead.icons.length) {
-        head = 0;
-      }
-      return ModItems.drillHead.icons[head];
-    } else if (pass == PASS_BATTERY_GAUGE) {
-      double charge = 1.0 - this.getDurabilityForDisplay(stack);
-      int index = MathHelper.clamp_int((int) Math.round(4.0 * charge), 0, 3);
-      return iconBatteryGauge[index];
-    } else {
-      LogHelper.debug("Unknown render pass for drill! Pass " + pass);
-      return null;
-    }
-  }
-
-  @Override
-  public int getColorFromItemStack(ItemStack stack, int pass) {
-
-    if (pass == PASS_CHASSIS) {
-      int color = this.getTag(stack, NBT_CHASSIS);
-      return ItemDye.field_150922_c[~color & 15];
-    } else {
-      return 0xFFFFFF;
-    }
-  }
-
-  @Override
-  public int getRenderPasses(int meta) {
-
-    return NUM_RENDER_PASSES;
-  }
-
-  @Override
-  public boolean requiresMultipleRenderPasses() {
-
-    return true;
-  }
-
-  @Override
-  public void registerIcons(IIconRegister reg) {
-
-    for (int i = 0; i < iconBatteryGauge.length; ++i) {
-      iconBatteryGauge[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + "BatteryGauge" + i);
-    }
-  }
-
-  @Override
-  public boolean showDurabilityBar(ItemStack stack) {
-
-    return stack.stackTagCompound != null && this.hasTag(stack, NBT_ENERGY)
-        && this.getEnergyStored(stack) != this.getMaxEnergyStored(stack);
-  }
-
-  @Override
-  public double getDurabilityForDisplay(ItemStack stack) {
-
-    int energy = this.getEnergyStored(stack);
-    int energyMax = this.getMaxEnergyStored(stack);
-    return (double) (energyMax - energy) / (double) energyMax;
-  }
-
-  @Override
-  public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-      int side, float hitX, float hitY, float hitZ) {
-
-    boolean used = false;
-    int toolSlot = player.inventory.currentItem;
-    int itemSlot = toolSlot + 1;
-    ItemStack nextStack = null;
-
-    if (toolSlot < 8) {
-      nextStack = player.inventory.getStackInSlot(itemSlot);
-      if (nextStack != null) {
-        Item item = nextStack.getItem();
-        Item bandolier = (Item) Item.itemRegistry.getObject("SilentGems:TorchBandolier");
-        if (item instanceof ItemBlock || (bandolier != null && item == bandolier)) {
-          ForgeDirection d = ForgeDirection.VALID_DIRECTIONS[side];
-
-          int px = x + d.offsetX;
-          int py = y + d.offsetY;
-          int pz = z + d.offsetZ;
-          int playerX = (int) Math.floor(player.posX);
-          int playerY = (int) Math.floor(player.posY);
-          int playerZ = (int) Math.floor(player.posZ);
-
-          // Check for overlap with player, except for torches and torch bandolier
-          if (Item.getIdFromItem(item) != Block.getIdFromBlock(Blocks.torch)
-              && !(bandolier != null && item == bandolier) && px == playerX
-              && (py == playerY || py == playerY + 1 || py == playerY - 1) && pz == playerZ) {
-            return false;
-          }
-
-          used = item.onItemUse(nextStack, player, world, x, y, z, side, hitX, hitY, hitZ);
-          if (nextStack.stackSize < 1) {
-            nextStack = null;
-            player.inventory.setInventorySlotContents(itemSlot, null);
-          }
-        }
-      }
-    }
-
-    return used;
   }
 }
