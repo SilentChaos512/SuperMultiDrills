@@ -41,12 +41,12 @@ public enum EnumDrillMaterial {
   MORGANITE(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 10.0f, 4.0f, "gemMorganite"),
   ONYX(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 10.0f, 6.0f, "gemOnyx"),
 
-  // Tinker's Construct (Includes handle modifiers, Manyullyn reduced because it breaks the default formula.)
-  STEEL(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (750), 10.0f, 4.0f, "ingotSteel"),
-  ALUMITE(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (700), 8.0f, 3.0f, "ingotAlumite"),
-  COBALT(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (800), 14.0f, 3.0f, "ingotCobalt"),
-  ARDITE(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (500), 8.0f, 3.0f, "ingotArdite"),
-  MANYULLYN(EnumDrillMaterial.GROUP_TCONSTRUCT, (int) (1200), 9.0f, 4.0f, "ingotManyullyn"),
+  // Tinker's Construct
+  STEEL(EnumDrillMaterial.GROUP_TCONSTRUCT, 750, 10.0f, 4.0f, "ingotSteel"),
+  ALUMITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 700, 8.0f, 3.0f, "ingotAlumite"),
+  COBALT(EnumDrillMaterial.GROUP_TCONSTRUCT, 800, 14.0f, 3.0f, "ingotCobalt"),
+  ARDITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 500, 8.0f, 3.0f, "ingotArdite"),
+  MANYULLYN(EnumDrillMaterial.GROUP_TCONSTRUCT, 1200, 9.0f, 4.0f, "ingotManyullyn"),
   
   // Extra TiC
   FAIRY(EnumDrillMaterial.GROUP_TCONSTRUCT, 250, 7.5f, 1.0f, "ingotFairy"),
@@ -97,7 +97,13 @@ public enum EnumDrillMaterial {
   DESICHALKOS(EnumDrillMaterial.GROUP_METALLURGY, 1800, 10.0f, 4.0f, "ingotDesichalkos"),
   
   // Ender IO
-  DARK_STEEL(EnumDrillMaterial.GROUP_ENDER_IO, 1561, 7.0f, 1.0f, "ingotDarkSteel");
+  DARK_STEEL(EnumDrillMaterial.GROUP_ENDER_IO, 1561, 7.0f, 1.0f, "ingotDarkSteel"),
+  ELECTRICAL_STEEL(EnumDrillMaterial.GROUP_ENDER_IO, 300, 6.0f, 2.0f, "ingotElectricalSteel"),
+  CONDUCTIVE_IRON(EnumDrillMaterial.GROUP_ENDER_IO, 100, 8.0f, 1.5f, "ingotConductiveIron"),
+  ENERGETIC_ALLOY(EnumDrillMaterial.GROUP_ENDER_IO, 150, 11.0f, 2.0f, "ingotEnergeticAlloy"),
+  VIBRANT_ALLOY(EnumDrillMaterial.GROUP_ENDER_IO, 400, 14.0f, 3.0f, "ingotPhasedGold"),
+  PULSATING_IRON(EnumDrillMaterial.GROUP_ENDER_IO, 850, 6.0f, 2.0f, "ingotPhasedIron"),
+  SOULARIUM(EnumDrillMaterial.GROUP_ENDER_IO, 1865, 4.0f, 1.0f, "ingotSoularium");
   
   // Group for sorting in NEI, since metadata might be a bit scattered.
   public static final String GROUP_VANILLA = "Vanilla";

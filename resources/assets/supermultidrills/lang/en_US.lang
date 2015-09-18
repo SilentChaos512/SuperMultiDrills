@@ -121,6 +121,12 @@ item.supermultidrills:DrillHead_Atlarus.name=Atlarus Drill Head
 item.supermultidrills:DrillHead_Tartarite.name=Tartarite Drill Head
 item.supermultidrills:DrillHead_Eximite.name=Eximite Drill Head
 item.supermultidrills:DrillHead_Desichalkos.name=Desichalkos Drill Head
+item.supermultidrills:DrillHead_Electrical_steel.name=Electrical Steel Drill Head
+item.supermultidrills:DrillHead_Conductive_iron.name=Conductive Iron Drill Head
+item.supermultidrills:DrillHead_Energetic_alloy.name=Energetic Alloy Drill Head
+item.supermultidrills:DrillHead_Vibrant_alloy.name=Vibrant Alloy Drill Head
+item.supermultidrills:DrillHead_Pulsating_iron.name=Pulsating Iron Drill Head
+item.supermultidrills:DrillHead_Soularium.name=Soularium Drill Head
 
 item.supermultidrills:DrillMotor0.name=Mainstream Motor
 item.supermultidrills:DrillMotor1.name=Performance Motor
