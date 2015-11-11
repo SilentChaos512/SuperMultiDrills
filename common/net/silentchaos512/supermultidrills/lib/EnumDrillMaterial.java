@@ -185,6 +185,7 @@ public enum EnumDrillMaterial {
     exp.setVariable("fortune", BigDecimal.valueOf(0));
     exp.setVariable("hardness", BigDecimal.valueOf(1));
     exp.setVariable("mining_speed", BigDecimal.valueOf(this.efficiency));
+    exp.setVariable("motor_boost", BigDecimal.valueOf(1));
     
     float result = exp.eval().floatValue();
     if (result < 0.0f) {
