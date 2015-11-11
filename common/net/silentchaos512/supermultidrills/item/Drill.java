@@ -218,7 +218,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         this.setTag(drill, NBT_CHASSIS, 14);
         this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
         this.setTagBoolean(drill, NBT_SAW, true);
-        this.setTagString(drill, NBT_SPECIAL, "\"I'ma firin' mah lazors!\" - Asaga");
+        this.setTagString(drill, NBT_SPECIAL, "I'ma firin' mah lazors!");
         SPAWNABLES.add(drill);
 
         // Mani Mani
@@ -499,7 +499,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   // Can harvest block? Direct copy from ItemPickaxe.
   public boolean func_150897_b(Block block) {
 
-    // Silly auto format...
+    // Silly auto-format...
     return block == Blocks.obsidian ? this.toolMaterial.getHarvestLevel() == 3
         : (block != Blocks.diamond_block
             && block != Blocks.diamond_ore
@@ -530,6 +530,14 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     this.extractEnergy(stack, this.getEnergyToBreakBlock(stack, 1.0f), false);
     return true;
+  }
+  
+  @Override
+  public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+
+    // TODO: Area Miner?
+
+    return super.onBlockStartBreak(stack, x, y, z, player);
   }
 
   @Override
