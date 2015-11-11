@@ -208,19 +208,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         this.setTagString(drill, NBT_SPECIAL, "For testing purposes and cheaters.");
         SPAWNABLES.add(drill);
 
-        // Black Jack
-        drill = new ItemStack(item, 1, 0);
-        drill.setStackDisplayName("Black Jack");
-        this.setTag(drill, NBT_HEAD, 63);
-        this.setTag(drill, NBT_HEAD_COAT, 0);
-        this.setTag(drill, NBT_MOTOR, 2);
-        this.setTag(drill, NBT_BATTERY, 4);
-        this.setTag(drill, NBT_CHASSIS, 14);
-        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
-        this.setTagBoolean(drill, NBT_SAW, true);
-        this.setTagString(drill, NBT_SPECIAL, "\"I'ma firin' mah lazors!\" - Asaga");
-        SPAWNABLES.add(drill);
-
         // Mani Mani
         drill = new ItemStack(item, 1, 0);
         drill.setStackDisplayName("Mani Mani Drill");
@@ -232,6 +219,19 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
         this.setTagBoolean(drill, NBT_SAW, true);
         this.setTagString(drill, NBT_SPECIAL, "+5 coolness for getting the reference.");
+        SPAWNABLES.add(drill);
+
+        // Black Jack
+        drill = new ItemStack(item, 1, 0);
+        drill.setStackDisplayName("Black Jack");
+        this.setTag(drill, NBT_HEAD, 63);
+        this.setTag(drill, NBT_HEAD_COAT, 0);
+        this.setTag(drill, NBT_MOTOR, 2);
+        this.setTag(drill, NBT_BATTERY, 4);
+        this.setTag(drill, NBT_CHASSIS, 14);
+        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
+        this.setTagBoolean(drill, NBT_SAW, true);
+        this.setTagString(drill, NBT_SPECIAL, "\"I'ma firin' mah lazors!\"");
         SPAWNABLES.add(drill);
 
         // Tartar Sauce
@@ -319,7 +319,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public float getDigSpeed(ItemStack stack) {
 
-    return this.getDrillMaterial(stack).getEfficiency();
+    float speed = getDrillMaterial(stack).getEfficiency();
+    return speed;
   }
 
   @Override
@@ -337,6 +338,14 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       return this.getDrillMaterial(stack).getEfficiency();
     } else {
       return 1.0f;
+    }
+  }
+  
+  public float getMotorSpeedBoost(ItemStack stack) {
+    
+    switch (getTag(stack, NBT_MOTOR)) {
+      case 0:
+        return Config.motor0Boost;
     }
   }
 
