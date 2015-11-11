@@ -12,9 +12,9 @@ import com.udojava.evalex.Expression;
 public enum EnumDrillMaterial {
 
   // Vanilla
-  IRON(EnumDrillMaterial.GROUP_VANILLA, 250, 6.0f, 2.0f, ""),
-  GOLD(EnumDrillMaterial.GROUP_VANILLA, 32, 12.0f, 0.0f, ""),
-  DIAMOND(EnumDrillMaterial.GROUP_VANILLA, 1561, 8.0f, 3.0f, ""),
+  IRON(EnumDrillMaterial.GROUP_VANILLA, 250, 6.0f, 2.0f, "ingotIron"),
+  GOLD(EnumDrillMaterial.GROUP_VANILLA, 32, 12.0f, 0.0f, "ingotGold"),
+  DIAMOND(EnumDrillMaterial.GROUP_VANILLA, 1561, 8.0f, 3.0f, "gemDiamond"),
 
   // Thermal Foundation
   COPPER(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 175, 4.0f, 0.5f, "ingotCopper"),
@@ -153,14 +153,15 @@ public enum EnumDrillMaterial {
 
   public String getMaterialName() {
 
-    if (this == IRON) {
-      return "Iron";
-    } else if (this == GOLD) {
-      return "Gold";
-    } else if (this == DIAMOND) {
-      return "Diamond";
-    }
+//    if (this == IRON) {
+//      return "Iron";
+//    } else if (this == GOLD) {
+//      return "Gold";
+//    } else if (this == DIAMOND) {
+//      return "Diamond";
+//    }
 
+    // Strip ingot/gem/etc, leaving just the material (ie, Iron, DarkSteel, Ruby)
     for (int i = 0; i < this.material.length(); ++i) {
       if (this.material.charAt(i) < 'a') {
         return this.material.substring(i);

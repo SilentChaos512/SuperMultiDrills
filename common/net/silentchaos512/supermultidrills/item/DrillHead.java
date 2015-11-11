@@ -36,29 +36,15 @@ public class DrillHead extends ItemSMD {
     EnumDrillMaterial material;
     for (int i = 0; i < EnumDrillMaterial.values().length; ++i) {
       material = EnumDrillMaterial.values()[i];
-      if (i > 2) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, i), " mm", "mim", "im ",
-            'm', material.getMaterial(), 'i', rod));
-      } else {
-        // Vanilla materials
-        ItemStack stack = new ItemStack(Items.poisonous_potato);
-        if (material == EnumDrillMaterial.IRON) {
-          stack = new ItemStack(Items.iron_ingot);
-        } else if (material == EnumDrillMaterial.GOLD) {
-          stack = new ItemStack(Items.gold_ingot);
-        } else if (material == EnumDrillMaterial.DIAMOND) {
-          stack = new ItemStack(Items.diamond);
-        }
-        GameRegistry.addShapedRecipe(new ItemStack(this, 1, i), " mm", "mim", "im ", 'm', stack,
-            'i', rod);
-      }
+      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, i), " mm", "mim", "im ",
+          'm', material.getMaterial(), 'i', rod));
     }
   }
 
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 
-    EnumDrillMaterial material = this.getDrillMaterial(stack);
+    EnumDrillMaterial material = getDrillMaterial(stack);
 
     // Cost
     String s = EnumChatFormatting.GOLD
@@ -76,9 +62,9 @@ public class DrillHead extends ItemSMD {
     s = EnumChatFormatting.GOLD + LocalizationHelper.getOtherItemKey(Names.DRILL, "AttackDamage")
         + " " + EnumChatFormatting.DARK_RED + String.format("%.1f", material.getDamageVsEntity());
     list.add(s);
-    
+
     if (advanced) {
-      s = LocalizationHelper.getOtherItemKey(this.itemName, "Group");
+      s = LocalizationHelper.getOtherItemKey(itemName, "Group");
       list.add(s + " " + material.getGroup());
       s = LocalizationHelper.getOtherItemKey(itemName, "Material");
       list.add(s + " " + material.getMaterial());
@@ -117,8 +103,8 @@ public class DrillHead extends ItemSMD {
 
     for (int i = 0; i < icons.length; ++i) {
       EnumDrillMaterial material = EnumDrillMaterial.values()[i];
-      icons[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + this.itemName + "_"
-          + material.toString());
+      icons[i] = reg
+          .registerIcon(Strings.RESOURCE_PREFIX + this.itemName + "_" + material.toString());
     }
   }
 }

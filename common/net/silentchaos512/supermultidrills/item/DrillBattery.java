@@ -65,18 +65,18 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
     
     Item itemCapacitor = (Item) Item.itemRegistry.getObject("EnderIO:itemBasicCapacitor");
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "iyi", "iri", 'i',
-        Items.iron_ingot, 'r', Items.redstone, 'y', Items.potato));
+        "ingotIron", 'r', "dustRedstone", 'y', Items.potato));
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xrx", "iri", 'i',
-        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotConductiveIron"));
+        "ingotIron", 'r', "dustRedstone", 'x', "ingotConductiveIron"));
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i',
-        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotElectricalSteel", 'y',
+        "ingotIron", 'r', "dustRedstone", 'x', "ingotElectricalSteel", 'y',
         new ItemStack(itemCapacitor, 1, 0)));
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i',
-        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotEnergeticAlloy", 'y',
+        "ingotIron", 'r', "dustRedstone", 'x', "ingotEnergeticAlloy", 'y',
         new ItemStack(itemCapacitor, 1, 1)));
     GameRegistry.addRecipe(
-        new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', Items.iron_ingot,
-            'r', Items.redstone, 'x', "ingotPhasedGold", 'y', new ItemStack(itemCapacitor, 1, 2)));
+        new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', "ingotIron",
+            'r', "dustRedstone", 'x', "ingotPhasedGold", 'y', new ItemStack(itemCapacitor, 1, 2)));
   }
 
   /**
@@ -108,17 +108,17 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   private void addRecipesThermalFoundation() {
 
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "xyx", "iri", 'i',
-        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotCopper", 'y', Items.potato));
+        "ingotIron", 'r', "dustRedstone", 'x', "ingotCopper", 'y', Items.potato));
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xyx", "iri", 'i',
-        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotLead", 'y', "dustSulfur"));
+        "ingotIron", 'r', "dustRedstone", 'x', "ingotLead", 'y', "dustSulfur"));
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i',
-        Items.iron_ingot, 'r', Items.redstone, 'x', "ingotInvar", 'y', new ItemStack(this, 1, 1)));
+        "ingotIron", 'r', "dustRedstone", 'x', "ingotInvar", 'y', new ItemStack(this, 1, 1)));
     GameRegistry.addRecipe(
-        new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i', Items.iron_ingot,
-            'r', Items.redstone, 'x', "ingotElectrum", 'y', new ItemStack(this, 1, 2)));
+        new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i', "ingotIron",
+            'r', "dustRedstone", 'x', "ingotElectrum", 'y', new ItemStack(this, 1, 2)));
     GameRegistry.addRecipe(
-        new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', Items.iron_ingot,
-            'r', Items.redstone, 'x', "ingotEnderium", 'y', new ItemStack(this, 1, 3)));
+        new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', "ingotIron",
+            'r', "dustRedstone", 'x', "ingotEnderium", 'y', new ItemStack(this, 1, 3)));
   }
 
   /**
@@ -127,15 +127,15 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   private void addRecipesVanilla() {
 
     GameRegistry.addShapedRecipe(new ItemStack(this, 1, 0), " x ", "xyx", "zxz", 'x', Blocks.dirt,
-        'y', Items.potato, 'z', Items.redstone);
+        'y', Items.potato, 'z', "dustRedstone");
     GameRegistry.addShapedRecipe(new ItemStack(this, 1, 1), " x ", "xyx", "zxz", 'x',
-        Items.iron_ingot, 'y', Items.gold_ingot, 'z', Items.redstone);
+        "ingotIron", 'y', "ingotGold", 'z', "dustRedstone");
     GameRegistry.addShapedRecipe(new ItemStack(this, 1, 2), " x ", "xyx", "zxz", 'x',
-        Items.gold_nugget, 'y', Items.glowstone_dust, 'z', Items.redstone);
+        "nuggetGold", 'y', "dustGlowstone", 'z', "dustRedstone");
     GameRegistry.addShapedRecipe(new ItemStack(this, 1, 3), " x ", "xyx", "zxz", 'x',
-        Items.gold_ingot, 'y', Items.ender_pearl, 'z', Items.redstone);
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 4), " x ", "xyx", "zxz", 'x', Items.diamond,
-        'y', Items.nether_star, 'z', Items.redstone);
+        "ingotGold", 'y', Items.ender_pearl, 'z', "dustRedstone");
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 4), " x ", "xyx", "zxz", 'x', "gemDiamond",
+        'y', Items.nether_star, 'z', "dustRedstone");
   }
 
   @Override
