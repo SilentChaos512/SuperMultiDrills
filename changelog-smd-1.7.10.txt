@@ -1,10 +1,11 @@
 Super Multi-Drills Changelog
 
 1.2.0
-Added: Area Miner upgrade. Just like the enchantment in Silent's Gems, it allows a drill to mine a 3x3 area, at the cost of speed.
 Added: Motor mining speed bonuses (configurable per motor).
-Added: More Ender IO drill heads.
+Added: Area Miner upgrade. Just like the enchantment in Silent's Gems, it allows a drill to mine a 3x3 area, at the cost of speed.
+Added: Graviton Generator upgrade. Eliminates the speed penalty for mining while flying or underwater.
 Added: Sharpness drill upgrade.
+Added: More Ender IO drill heads.
 Added: Chassis tooltips.
 Added: Some Mekanism recipes. Mekanism support is still a bit lacking though.
 Changed: Right-click to place updated (similar to Silent's Gems: collision detection improved, slot 9 is checked if appropriate).
