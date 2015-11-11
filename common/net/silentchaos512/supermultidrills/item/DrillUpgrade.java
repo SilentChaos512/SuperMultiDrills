@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -59,39 +60,46 @@ public class DrillUpgrade extends ItemSMD {
   public void addRecipes() {
 
     ItemStack rod = ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1);
+    String iron = "ingotIron";
+    String gold = "ingotGold";
+    String diamond = "gemDiamond";
+    String emerald = "gemEmerald";
+    String glass = "blockGlassColorless";
 
     // Saw
     ItemStack saw = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SAW));
-    GameRegistry
-        .addRecipe(new ShapedOreRecipe(saw, " i ", "imi", "mi ", 'i', "ingotIron", 'm', rod));
+    GameRegistry.addRecipe(new ShapedOreRecipe(saw, " i ", "imi", "mi ", 'i', iron, 'm', rod));
 
     // Speed
     ItemStack speed = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SPEED));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(speed, " m ", "grg", " m ", 'm', rod, 'g',
-    // "ingotGold", 'r', "dustRedstone"));
     GameRegistry.addRecipe(
-        new ShapedOreRecipe(speed, "rrr", "mgm", 'r', "blockRedstone", 'm', rod, 'g', "ingotGold"));
+        new ShapedOreRecipe(speed, "rrr", "mgm", 'r', "blockRedstone", 'm', rod, 'g', gold));
 
     // Silk
     ItemStack silk = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SILK));
-    GameRegistry.addRecipe(
-        new ShapedOreRecipe(silk, "eee", "rgr", 'e', "gemEmerald", 'r', rod, 'g', "ingotGold"));
+    GameRegistry
+        .addRecipe(new ShapedOreRecipe(silk, "eee", "rgr", 'e', emerald, 'r', rod, 'g', gold));
 
     // Fortune
     ItemStack fortune = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_FORTUNE));
-    GameRegistry.addRecipe(
-        new ShapedOreRecipe(fortune, "ddd", "rgr", 'd', "gemDiamond", 'r', rod, 'g', "ingotGold"));
+    GameRegistry
+        .addRecipe(new ShapedOreRecipe(fortune, "ddd", "rgr", 'd', diamond, 'r', rod, 'g', gold));
 
     // Sharpness
     ItemStack sharpness = new ItemStack(this, 1, getMetaForName(Names.UPGRADE_SHARPNESS));
-    GameRegistry.addRecipe(new ShapedOreRecipe(sharpness, "qqq", "rgr", 'q', "blockQuartz", 'r',
-        rod, 'g', "ingotGold"));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(sharpness, "qqq", "rgr", 'q', "blockQuartz", 'r', rod, 'g', gold));
 
     // Area Miner
-    // TODO
-    
+    ItemStack areaMiner = new ItemStack(this, 1, getMetaForName(Names.UPGRADE_AREA_MINER));
+    GameRegistry.addRecipe(new ShapedOreRecipe(areaMiner, "oto", "oto", "rgr", 'o', Blocks.obsidian,
+        't', Blocks.tnt, 'r', rod, 'g', gold));
+
     // Graviton Generator
-    // TODO
+    ItemStack gravitonGenerator = new ItemStack(this, 1,
+        getMetaForName(Names.UPGRADE_GRAVITON_GENERATOR));
+    GameRegistry.addRecipe(new ShapedOreRecipe(gravitonGenerator, "ele", "nln", "rgr", 'e', emerald,
+        'l', glass, 'n', Items.nether_star, 'r', rod, 'g', gold));
   }
 
   public int getMetaForName(String name) {
