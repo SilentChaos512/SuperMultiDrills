@@ -183,6 +183,12 @@ public class RecipeUpgradeDrill implements IRecipe {
     } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SHARPNESS)) {
       // Sharpness
       return increaseEnchantmentLevel(drill, Enchantment.sharpness, 5);
+    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_AREA_MINER)) {
+      // Area Miner
+      if (ModItems.drill.getTagBoolean(drill, Drill.NBT_AREA_MINER)) {
+        return null;
+      }
+      ModItems.drill.setTagBoolean(drill, Drill.NBT_AREA_MINER, true);
     }
 
     return drill;

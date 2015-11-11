@@ -40,6 +40,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.configuration.Config;
+import net.silentchaos512.supermultidrills.lib.DrillAreaMiner;
 import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
@@ -57,11 +58,11 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   /*
    * Effective materials
    */
-  private static final Set effectiveMaterialsBasic = Sets
+  public static final Set effectiveMaterialsBasic = Sets
       .newHashSet(new Material[] { Material.anvil, Material.circuits, Material.clay, Material.glass,
           Material.grass, Material.ground, Material.ice, Material.iron, Material.packedIce,
           Material.piston, Material.rock, Material.sand, Material.snow });
-  private static final Set effectiveMaterialsExtra = Sets
+  public static final Set effectiveMaterialsExtra = Sets
       .newHashSet(new Material[] { Material.cloth, Material.gourd, Material.leaves, Material.plants,
           Material.vine, Material.web, Material.wood });
 
@@ -85,6 +86,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public static final String NBT_SAW = "Saw";
   public static final String NBT_HEAD_COAT = "HeadCoat";
   public static final String NBT_SPECIAL = "Special";
+  public static final String NBT_AREA_MINER = "AreaMiner";
 
   /*
    * Battery gauge icons
@@ -185,6 +187,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       } else {
         list.add(EnumChatFormatting.GOLD + "" + EnumChatFormatting.ITALIC
             + LocalizationHelper.getMiscText(Strings.PRESS_CTRL));
+      }
+      
+      // Area Miner (since it's not an enchantment)
+      if (getTagBoolean(stack, NBT_AREA_MINER)) {
+        str = LocalizationHelper.getOtherItemKey(Names.DRILL, "AreaMiner");
+        list.add(str);
       }
     }
   }
@@ -563,6 +571,23 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
 
     return true;
+  }
+
+  @Override
+  public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+
+    boolean canceled = super.onBlockStartBreak(stack, x, y, z, player);
+
+    if (!canceled) {
+      // Number of blocks broken (not used at this time).
+      int amount = 1;
+      // Try to activate Area Miner
+      if (getTagBoolean(stack, NBT_AREA_MINER)) {
+        amount += DrillAreaMiner.tryActivate(stack, x, y, z, player);
+      }
+    }
+
+    return canceled;
   }
 
   @Override

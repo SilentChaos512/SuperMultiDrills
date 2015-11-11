@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.silentchaos512.supermultidrills.block.ModBlocks;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.core.handler.DrillsEventHandler;
+import net.silentchaos512.supermultidrills.core.handler.DrillsForgeEventHandler;
 import net.silentchaos512.supermultidrills.gui.GuiHandlerSuperMultiDrills;
 import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.proxy.CommonProxy;
@@ -81,9 +82,9 @@ public class SuperMultiDrills {
     SRegistry.addRecipesAndOreDictEntries();
     ModItems.initItemRecipes();
     
-    // Event handlers   FIXME Which bus?
-    MinecraftForge.EVENT_BUS.register(new DrillsEventHandler());
+    // Event handlers
     FMLCommonHandler.instance().bus().register(new DrillsEventHandler());
+    MinecraftForge.EVENT_BUS.register(new DrillsForgeEventHandler());
   }
   
   @EventHandler

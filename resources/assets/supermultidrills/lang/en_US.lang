@@ -22,6 +22,7 @@ item.supermultidrills:Drill.MiningCost=Operating Cost:
 item.supermultidrills:Drill.RFPerHardness=RF/block hardness
 item.supermultidrills:Drill.AttackDamage=Attack Damage:
 item.supermultidrills:Drill.PlusSaw=+ Saw
+item.supermultidrills:Drill.AreaMiner=Area Miner
 
 item.supermultidrills:DrillBattery0.name=Drill Battery: Tater
 item.supermultidrills:DrillBattery1.name=Drill Battery: Small
@@ -160,6 +161,12 @@ item.supermultidrills:UpgradeSpeed.desc2=(one level each)
 item.supermultidrills:UpgradeSharpness.name=Drill Upgrade: Sharpness
 item.supermultidrills:UpgradeSharpness.desc1=Applies Sharpness
 item.supermultidrills:UpgradeSharpness.desc2=(one level each)
+
+item.supermultidrills:UpgradeAreaMiner.name=Drill Upgrade: Area Miner
+item.supermultidrills:UpgradeAreaMiner.desc1=Allows the drill to mine a 3x3 area.
+item.supermultidrills:UpgradeAreaMiner.desc2=Sneak to disable. Reduces dig speed.
+item.supermultidrills:UpgradeAreaMiner.desc3=This is not the enchantment from
+item.supermultidrills:UpgradeAreaMiner.desc4=Silent's Gems, but it works the same.
 
 # Misc text
 

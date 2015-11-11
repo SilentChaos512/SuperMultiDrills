@@ -9,6 +9,7 @@ import com.udojava.evalex.Expression;
 
 public class Config {
 
+  public static float areaMinerSpeedMulti = 0.2f;
   public static int battery0MaxCharge = 5000;
   public static int battery1MaxCharge = 25000;
   public static int battery2MaxCharge = 100000;
@@ -32,8 +33,7 @@ public class Config {
   public static final String CAT_DEBUG = "debug";
   public static final String CAT_ITEM = "items";
 
-  public static final String commentEnergyCostExpression =
-      "The expression that determines the cost of mining a block with a drill.\n"
+  public static final String commentEnergyCostExpression = "The expression that determines the cost of mining a block with a drill.\n"
       + "Note that Math.UseCustomEnergyExpression must be true, or the default will be used!\n\n"
       + "Uses the EvalEx expression parser (https://github.com/uklimaschewski/EvalEx)\n\n"
       + "Available variables:\n" + "durability: The 'max uses' of the drill head material.\n"
@@ -54,6 +54,10 @@ public class Config {
       c.load();
 
       // Load the stuffs.
+      areaMinerSpeedMulti = c.getFloat("Drill.AreaMinerSpeedMultiplier", CAT_ITEM,
+          areaMinerSpeedMulti, 0.01f, 1.0f,
+          "The dig speed of drills with Area Miner is multiplied by this.");
+
       // Battery options.
       battery0MaxCharge = c.getInt("Battery0.MaxCharge", CAT_ITEM, battery0MaxCharge, 0,
           Integer.MAX_VALUE, "Maximum capacity for drills with the tier 0 battery.");
