@@ -1,12 +1,12 @@
 package net.silentchaos512.supermultidrills.item;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CraftingItem extends ItemSMD {
 
@@ -26,8 +26,8 @@ public class CraftingItem extends ItemSMD {
 
     ItemStack rod = this.getStack(Names.MAGNETIC_ROD);
     // Magnetic rod
-    GameRegistry.addShapedRecipe(this.getStack(Names.MAGNETIC_ROD, 2), " ri", "rir", "ir ", 'i',
-        Items.iron_ingot, 'r', Items.redstone);
+    GameRegistry.addRecipe(new ShapedOreRecipe(getStack(Names.MAGNETIC_ROD, 2), " ri", "rir", "ir ",
+        'i', "ingotIron", 'r', "dustRedstone"));
   }
 
   @Override
