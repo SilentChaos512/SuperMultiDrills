@@ -563,11 +563,13 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     float hardness = block.getBlockHardness(world, x, y, z);
     if (hardness != 0.0f) {
-      int cost = this.getEnergyToBreakBlock(stack, hardness);
-      if (Config.printMiningCost) {
-        LogHelper.debug(cost);
+      int cost = getEnergyToBreakBlock(stack, hardness);
+      if (Config.printMiningCost && entity.worldObj.isRemote) {
+        String str = "%d RF (%.2f hardness)";
+        str = String.format(str, cost, hardness);
+        LogHelper.debug(str);
       }
-      this.extractEnergy(stack, cost, false);
+      extractEnergy(stack, cost, false);
     }
 
     return true;

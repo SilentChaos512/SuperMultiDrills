@@ -177,12 +177,17 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
+    ItemStack battery;
     for (int i = 0; i < icons.length - 1; ++i) {
-      list.add(new ItemStack(this, 1, i));
+      battery = new ItemStack(this, 1, i);
+      list.add(battery); // Empty
+      battery = new ItemStack(this, 1, i);
+      setTag(battery, NBT_ENERGY, getMaxEnergyStored(battery));
+      list.add(battery); // Full
     }
     // Creative battery should come charged.
-    ItemStack battery = new ItemStack(this, 1, CREATIVE_ID);
-    this.setTag(battery, NBT_ENERGY, CREATIVE_MAX_ENERGY);
+    battery = new ItemStack(this, 1, CREATIVE_ID);
+    setTag(battery, NBT_ENERGY, CREATIVE_MAX_ENERGY);
     list.add(battery);
   }
 

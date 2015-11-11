@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 import net.silentchaos512.supermultidrills.item.Drill;
+import net.silentchaos512.supermultidrills.item.ModItems;
 
 public class DrillAreaMiner {
   
