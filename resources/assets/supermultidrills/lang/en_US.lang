@@ -23,6 +23,7 @@ item.supermultidrills:Drill.RFPerHardness=RF/block hardness
 item.supermultidrills:Drill.AttackDamage=Attack Damage:
 item.supermultidrills:Drill.PlusSaw=+ Saw
 item.supermultidrills:Drill.AreaMiner=Area Miner
+item.supermultidrills:Drill.GravitonGenerator=Graviton Generator
 
 item.supermultidrills:DrillBattery0.name=Drill Battery: Tater
 item.supermultidrills:DrillBattery1.name=Drill Battery: Small
@@ -167,6 +168,10 @@ item.supermultidrills:UpgradeAreaMiner.desc1=Allows the drill to mine a 3x3 area
 item.supermultidrills:UpgradeAreaMiner.desc2=Sneak to disable. Reduces dig speed.
 item.supermultidrills:UpgradeAreaMiner.desc3=This is not the enchantment from
 item.supermultidrills:UpgradeAreaMiner.desc4=Silent's Gems, but it works the same.
+
+item.supermultidrills:UpgradeGravitonGenerator.name=Drill Upgrade: Graviton Generator
+item.supermultidrills:UpgradeGravitonGenerator.desc1=Allows the drill to mine at full
+item.supermultidrills:UpgradeGravitonGenerator.desc2=speed while flying or underwater.
 
 # Misc text
 

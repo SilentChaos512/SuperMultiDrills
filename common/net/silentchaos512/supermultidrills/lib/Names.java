@@ -22,4 +22,5 @@ public class Names {
   public static final String UPGRADE_FORTUNE = "UpgradeFortune";
   public static final String UPGRADE_SHARPNESS = "UpgradeSharpness";
   public static final String UPGRADE_AREA_MINER = "UpgradeAreaMiner";
+  public static final String UPGRADE_GRAVITON_GENERATOR = "UpgradeGravitonGenerator";
 }

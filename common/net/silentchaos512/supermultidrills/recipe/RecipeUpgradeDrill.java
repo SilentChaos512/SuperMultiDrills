@@ -1,17 +1,13 @@
 package net.silentchaos512.supermultidrills.recipe;
 
-import java.util.Set;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.supermultidrills.item.Drill;
 import net.silentchaos512.supermultidrills.item.DrillBattery;
 import net.silentchaos512.supermultidrills.item.DrillChassis;
@@ -22,8 +18,6 @@ import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.util.InventoryHelper;
 import net.silentchaos512.supermultidrills.util.LogHelper;
-
-import com.google.common.collect.ImmutableSet;
 
 public class RecipeUpgradeDrill implements IRecipe {
 
@@ -109,8 +103,8 @@ public class RecipeUpgradeDrill implements IRecipe {
         } else if (item instanceof DrillBattery) {
           // Battery change
           // Remove next 2 statements!
-          ItemStack oldBattery = new ItemStack(ModItems.drillBattery, 1, ModItems.drill.getTag(
-              result, Drill.NBT_BATTERY));
+          ItemStack oldBattery = new ItemStack(ModItems.drillBattery, 1,
+              ModItems.drill.getTag(result, Drill.NBT_BATTERY));
           ModItems.drillBattery.setTag(oldBattery, ModItems.drillBattery.NBT_ENERGY,
               ModItems.drill.getEnergyStored(result));
 
@@ -158,43 +152,50 @@ public class RecipeUpgradeDrill implements IRecipe {
       return null;
     }
 
-    if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SAW)) {
+    int meta = upgrade.getItemDamage();
+    if (meta == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SAW)) {
       // Saw
       if (ModItems.drill.getTagBoolean(drill, Drill.NBT_SAW)) {
         return null;
       }
       ModItems.drill.setTagBoolean(drill, Drill.NBT_SAW, true);
-    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade
-        .getMetaForName(Names.UPGRADE_FORTUNE)) {
+    } else if (meta == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_FORTUNE)) {
       // Fortune
       if (EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, drill) > 0) {
         return null;
       }
       return this.increaseEnchantmentLevel(drill, Enchantment.fortune, 3);
-    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SILK)) {
+    } else if (meta == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SILK)) {
       // Silk
       if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, drill) > 0) {
         return null;
       }
       return this.increaseEnchantmentLevel(drill, Enchantment.silkTouch, 1);
-    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SPEED)) {
+    } else if (meta == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SPEED)) {
       // Speed
       return this.increaseEnchantmentLevel(drill, Enchantment.efficiency, 5);
-    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SHARPNESS)) {
+    } else if (meta == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_SHARPNESS)) {
       // Sharpness
       return increaseEnchantmentLevel(drill, Enchantment.sharpness, 5);
-    } else if (upgrade.getItemDamage() == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_AREA_MINER)) {
+    } else if (meta == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_AREA_MINER)) {
       // Area Miner
       if (ModItems.drill.getTagBoolean(drill, Drill.NBT_AREA_MINER)) {
         return null;
       }
       ModItems.drill.setTagBoolean(drill, Drill.NBT_AREA_MINER, true);
+    } else if (meta == ModItems.drillUpgrade.getMetaForName(Names.UPGRADE_GRAVITON_GENERATOR)) {
+      // Graviton Generator
+      if (ModItems.drill.getTagBoolean(drill, Drill.NBT_GRAVITON_GENERATOR)) {
+        return null;
+      }
+      ModItems.drill.setTagBoolean(drill, Drill.NBT_GRAVITON_GENERATOR, true);
     }
 
     return drill;
   }
 
-  private ItemStack increaseEnchantmentLevel(ItemStack drill, Enchantment enchantment, int maxLevel) {
+  private ItemStack increaseEnchantmentLevel(ItemStack drill, Enchantment enchantment,
+      int maxLevel) {
 
     int level = EnchantmentHelper.getEnchantmentLevel(enchantment.effectId, drill);
     if (level == 0) {

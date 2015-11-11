@@ -17,7 +17,8 @@ import net.silentchaos512.supermultidrills.util.LocalizationHelper;
 public class DrillUpgrade extends ItemSMD {
 
   public static final String[] NAMES = { Names.UPGRADE_SAW, Names.UPGRADE_SPEED, Names.UPGRADE_SILK,
-      Names.UPGRADE_FORTUNE, Names.UPGRADE_SHARPNESS, Names.UPGRADE_AREA_MINER };
+      Names.UPGRADE_FORTUNE, Names.UPGRADE_SHARPNESS, Names.UPGRADE_AREA_MINER,
+      Names.UPGRADE_GRAVITON_GENERATOR };
 
   public DrillUpgrade() {
 
@@ -85,8 +86,11 @@ public class DrillUpgrade extends ItemSMD {
     ItemStack sharpness = new ItemStack(this, 1, getMetaForName(Names.UPGRADE_SHARPNESS));
     GameRegistry.addRecipe(new ShapedOreRecipe(sharpness, "qqq", "rgr", 'q', "blockQuartz", 'r',
         rod, 'g', "ingotGold"));
-    
+
     // Area Miner
+    // TODO
+    
+    // Graviton Generator
     // TODO
   }
 

@@ -87,6 +87,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public static final String NBT_HEAD_COAT = "HeadCoat";
   public static final String NBT_SPECIAL = "Special";
   public static final String NBT_AREA_MINER = "AreaMiner";
+  public static final String NBT_GRAVITON_GENERATOR = "GravitonGenerator";
 
   /*
    * Battery gauge icons
@@ -189,6 +190,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
             + LocalizationHelper.getMiscText(Strings.PRESS_CTRL));
       }
       
+      // Graviton generator
+      if (getTagBoolean(stack, NBT_GRAVITON_GENERATOR)) {
+        str = LocalizationHelper.getOtherItemKey(Names.DRILL, "GravitonGenerator");
+        list.add(EnumChatFormatting.LIGHT_PURPLE + str);
+      }
+      
       // Area Miner (since it's not an enchantment)
       if (getTagBoolean(stack, NBT_AREA_MINER)) {
         str = LocalizationHelper.getOtherItemKey(Names.DRILL, "AreaMiner");
@@ -215,6 +222,20 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
         this.setTagBoolean(drill, NBT_SAW, false);
         this.setTagString(drill, NBT_SPECIAL, "For testing purposes and cheaters.");
+        SPAWNABLES.add(drill);
+        
+        // Ender drill
+        drill = new ItemStack(item, 1, 0);
+        drill.setStackDisplayName("Ender Drill");
+        setTag(drill, NBT_HEAD, 32);
+        setTag(drill, NBT_HEAD_COAT, -1);
+        setTag(drill, NBT_MOTOR, 2);
+        setTag(drill, NBT_BATTERY, 4);
+        setTag(drill, NBT_CHASSIS, 7);
+        setTag(drill, NBT_ENERGY, getMaxEnergyStored(drill));
+        setTagBoolean(drill, NBT_SAW, true);
+        setTagBoolean(drill, NBT_GRAVITON_GENERATOR, true);
+        setTagString(drill, NBT_SPECIAL, "Because I got tired of spawning in the parts.");
         SPAWNABLES.add(drill);
 
         // Mani Mani
