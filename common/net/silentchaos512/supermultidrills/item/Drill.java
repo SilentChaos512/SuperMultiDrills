@@ -31,6 +31,7 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
@@ -730,17 +731,28 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
       int side, float hitX, float hitY, float hitZ) {
 
+    final Item bandolier = (Item) Item.itemRegistry.getObject("SilentGems:TorchBandolier");
+
     boolean used = false;
     int toolSlot = player.inventory.currentItem;
     int itemSlot = toolSlot + 1;
     ItemStack nextStack = null;
+    ItemStack lastStack = player.inventory.getStackInSlot(8); // Slot 9 in hotbar
 
     if (toolSlot < 8) {
+      // Get stack in slot after tool.
       nextStack = player.inventory.getStackInSlot(itemSlot);
+
+      // If there's nothing there we can use, try slot 9 instead.
+      if (nextStack == null
+          || (!(nextStack.getItem() instanceof ItemBlock) && !(nextStack.getItem() == bandolier))) {
+        nextStack = lastStack;
+        itemSlot = 8;
+      }
+
       if (nextStack != null) {
         Item item = nextStack.getItem();
-        Item bandolier = (Item) Item.itemRegistry.getObject("SilentGems:TorchBandolier");
-        if (item instanceof ItemBlock || (bandolier != null && item == bandolier)) {
+        if (item instanceof ItemBlock || item == bandolier) {
           ForgeDirection d = ForgeDirection.VALID_DIRECTIONS[side];
 
           int px = x + d.offsetX;
@@ -750,11 +762,15 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
           int playerY = (int) Math.floor(player.posY);
           int playerZ = (int) Math.floor(player.posZ);
 
-          // Check for overlap with player, except for torches and torch bandolier
-          if (Item.getIdFromItem(item) != Block.getIdFromBlock(Blocks.torch)
-              && !(bandolier != null && item == bandolier) && px == playerX
-              && (py == playerY || py == playerY + 1 || py == playerY - 1) && pz == playerZ) {
-            return false;
+          // Check for block overlap with player, if necessary.
+          if (item instanceof ItemBlock) {
+            AxisAlignedBB blockBounds = AxisAlignedBB.getBoundingBox(px, py, pz, px + 1, py + 1,
+                pz + 1);
+            AxisAlignedBB playerBounds = player.boundingBox;
+            Block block = ((ItemBlock) item).field_150939_a;
+            if (block.getMaterial().blocksMovement() && playerBounds.intersectsWith(blockBounds)) {
+              return false;
+            }
           }
 
           used = item.onItemUse(nextStack, player, world, x, y, z, side, hitX, hitY, hitZ);
