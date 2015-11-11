@@ -80,6 +80,8 @@ public class DrillHead extends ItemSMD {
     if (advanced) {
       s = LocalizationHelper.getOtherItemKey(this.itemName, "Group");
       list.add(s + " " + material.getGroup());
+      s = LocalizationHelper.getOtherItemKey(itemName, "Material");
+      list.add(s + " " + material.getMaterial());
     }
   }
 

@@ -100,22 +100,30 @@ public class DrillMotor extends ItemSMD {
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 
     int level = 0;
+    int boost = 0;
     switch (stack.getItemDamage()) {
       case 2:
         level = Config.motor2Level;
+        boost = (int) (Config.motor2Boost * 100);
         break;
       case 1:
         level = Config.motor1Level;
+        boost = (int) (Config.motor1Boost * 100);
         break;
       default:
         level = Config.motor0Level;
+        boost = (int) (Config.motor0Boost * 100);
     }
-    String str = LocalizationHelper.getItemDescription(this.itemName, 0);
+
     try {
+      String str = LocalizationHelper.getItemDescription(itemName, 1);
       list.add(EnumChatFormatting.AQUA + String.format(str, level));
+      str = LocalizationHelper.getItemDescription(itemName, 2);
+      list.add(EnumChatFormatting.AQUA + String.format(str, boost));
     } catch (IllegalFormatException ex) {
       // Fallback if localization is wrong.
-      list.add(EnumChatFormatting.AQUA + String.format("Mining level %d", level));
+      list.add(EnumChatFormatting.AQUA + String.format("Mining level: %d", level));
+      list.add(EnumChatFormatting.AQUA + String.format("Mining speed: %d%%", boost));
       list.add(EnumChatFormatting.RED + "Your localization file contains an error!");
     }
   }

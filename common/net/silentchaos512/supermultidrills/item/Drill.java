@@ -319,8 +319,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public float getDigSpeed(ItemStack stack) {
 
-    float speed = getDrillMaterial(stack).getEfficiency();
-    return speed;
+    return getDrillMaterial(stack).getEfficiency() * getMotorSpeedBoost(stack);
   }
 
   @Override
@@ -335,7 +334,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         || this.getEnergyToBreakBlock(stack, 1.0f) == 0;
 
     if (canHarvest && hasEnoughPower) {
-      return this.getDrillMaterial(stack).getEfficiency();
+      return this.getDrillMaterial(stack).getEfficiency() * getMotorSpeedBoost(stack);
     } else {
       return 1.0f;
     }
@@ -344,12 +343,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public float getMotorSpeedBoost(ItemStack stack) {
 
     switch (getTag(stack, NBT_MOTOR)) {
-      case 0:
-        return Config.motor0Boost;
-      case 1:
-        return Config.motor1Boost;
       case 2:
         return Config.motor2Boost;
+      case 1:
+        return Config.motor1Boost;
+      case 0:
+        return Config.motor0Boost;
       default:
         return 1.0f;
     }
@@ -372,6 +371,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
     exp.setVariable("hardness", BigDecimal.valueOf(hardness));
     exp.setVariable("mining_speed", BigDecimal.valueOf(material.getEfficiency()));
+    exp.setVariable("motor_boost", BigDecimal.valueOf(getMotorSpeedBoost(stack)));
 
     int result = exp.eval().intValue();
     if (result < 0) {

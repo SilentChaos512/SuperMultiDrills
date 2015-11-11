@@ -53,6 +53,7 @@ item.supermultidrills:DrillChassis.desc2=Craft drills with a dye to change
 item.supermultidrills:DrillChassis.desc3=the chassis color.
 
 item.supermultidrills:DrillHead.Group=Group:
+item.supermultidrills:DrillHead.Material=Material:
 item.supermultidrills:DrillHead_Iron.name=Iron Drill Head
 item.supermultidrills:DrillHead_Gold.name=Gold Drill Head
 item.supermultidrills:DrillHead_Diamond.name=Diamond Drill Head
@@ -134,7 +135,8 @@ item.supermultidrills:DrillHead_Soularium.name=Soularium Drill Head
 item.supermultidrills:DrillMotor0.name=Mainstream Motor
 item.supermultidrills:DrillMotor1.name=Performance Motor
 item.supermultidrills:DrillMotor2.name=Enthusiast Motor
-item.supermultidrills:DrillMotor.desc=Mining level %d
+item.supermultidrills:DrillMotor.desc1=Mining level: %d
+item.supermultidrills:DrillMotor.desc2=Mining speed: %d%%
 
 item.supermultidrills:MagneticRod.name=Magnetic Iron Rod
 
