@@ -3,5 +3,6 @@ Super Multi-Drills Changelog
 1.1.2
 Added: More Ender IO drill heads.
 Added: Sharpness drill upgrade.
+Added: Chassis tooltips
 Changed: Efficiency upgrade recipe.
 Changed: Drill chassis now renders empty battery gauge.
