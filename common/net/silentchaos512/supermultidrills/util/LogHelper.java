@@ -1,10 +1,6 @@
 package net.silentchaos512.supermultidrills.util;
 
-import java.util.Date;
-import java.util.logging.Logger;
-
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
-import cpw.mods.fml.common.FMLLog;
 
 public class LogHelper {
 

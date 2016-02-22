@@ -8,25 +8,24 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.silentchaos512.supermultidrills.block.ModBlocks;
+import net.silentchaos512.supermultidrills.compat.jei.SuperMultiDrillsPlugin;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.core.handler.DrillsEventHandler;
 import net.silentchaos512.supermultidrills.core.handler.DrillsForgeEventHandler;
-import net.silentchaos512.supermultidrills.gui.GuiHandlerSuperMultiDrills;
 import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.proxy.CommonProxy;
 import net.silentchaos512.supermultidrills.registry.SRegistry;
 import net.silentchaos512.supermultidrills.util.LogHelper;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 @Mod(modid = SuperMultiDrills.MOD_ID, name = SuperMultiDrills.MOD_NAME, version = SuperMultiDrills.VERSION_NUMBER)
 public class SuperMultiDrills {
@@ -41,6 +40,7 @@ public class SuperMultiDrills {
   public boolean foundEnderIO = false;
   public boolean foundThermalFoundation = false;
   public boolean foundMekanism = false;
+  public boolean foundFunOres = false;
 
   @Instance(MOD_ID)
   public static SuperMultiDrills instance;
@@ -55,19 +55,25 @@ public class SuperMultiDrills {
     
     ModBlocks.init();
     ModItems.init();
+
+    proxy.preInit();
     
-    NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerSuperMultiDrills());
+//    NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerSuperMultiDrills());
   }
   
   @EventHandler
   public void load(FMLInitializationEvent event) {
     
     // Look for compatible mods (just for recipes).
+    foundFunOres = Loader.isModLoaded("FunOres");
     foundEnderIO = Loader.isModLoaded("EnderIO");
     foundMekanism = Loader.isModLoaded("Mekanism");
     foundThermalFoundation = Loader.isModLoaded("ThermalFoundation");
     
     // Log found mods.
+    if (foundFunOres) {
+      LogHelper.info("Found Fun Ores!");
+    }
     if (foundEnderIO) {
       LogHelper.info("Found Ender IO!");
     }
@@ -81,6 +87,8 @@ public class SuperMultiDrills {
     // Recipes
     SRegistry.addRecipesAndOreDictEntries();
     ModItems.initItemRecipes();
+
+    proxy.init();
     
     // Event handlers
     FMLCommonHandler.instance().bus().register(new DrillsEventHandler());
@@ -90,6 +98,7 @@ public class SuperMultiDrills {
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
 
+    SuperMultiDrillsPlugin.doItemBlacklisting();
   }
   
   public static CreativeTabs creativeTab = new CreativeTabs("tabSuperMultiDrills") {

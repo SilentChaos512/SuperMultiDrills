@@ -1,20 +1,23 @@
 package net.silentchaos512.supermultidrills.item;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.silentchaos512.funores.api.FunOresAPI;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
+import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
 
 public class CraftingItem extends ItemSMD {
 
-  public static final String[] NAMES = { Names.MAGNETIC_ROD };
+  public static final String[] NAMES = { Names.MAGNETIC_ROD, Names.REDSTONE_ALLOY_INGOT,
+      Names.REDSTONE_ALLOY_PLATE };
 
   public CraftingItem() {
 
-    icons = new IIcon[NAMES.length];
+    super(NAMES.length);
     this.setMaxDamage(0);
     this.setMaxStackSize(64);
     this.setHasSubtypes(true);
@@ -24,15 +27,33 @@ public class CraftingItem extends ItemSMD {
   @Override
   public void addRecipes() {
 
-    ItemStack rod = this.getStack(Names.MAGNETIC_ROD);
+    final boolean funOres = SuperMultiDrills.instance.foundFunOres;
+
     // Magnetic rod
-    GameRegistry.addRecipe(new ShapedOreRecipe(getStack(Names.MAGNETIC_ROD, 2), " ri", "rir", "ir ",
-        'i', "ingotIron", 'r', "dustRedstone"));
+    if (funOres) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(getStack(Names.MAGNETIC_ROD, 4), "r", "i", "r", 'r', "plateRedstoneAlloy", 'i', "plateIron"));
+    } else {
+      GameRegistry.addRecipe(new ShapedOreRecipe(getStack(Names.MAGNETIC_ROD, 2), " ri", "rir",
+          "ir ", 'i', "ingotIron", 'r', "dustRedstone"));
+    }
+
+    if (funOres) {
+      // Redstone Alloy Ingot
+      AlloySmelterRecipeObject iron = new AlloySmelterRecipeObject("ingotIron", 1);
+      AlloySmelterRecipeObject redstone = new AlloySmelterRecipeObject("dustRedstone", 4);
+      FunOresAPI.addAlloySmelterRecipe(getStack(Names.REDSTONE_ALLOY_INGOT), 400, 1.0f, iron,
+          redstone);
+
+      // Redstone Alloy Plate
+      FunOresAPI.addPlateRecipe(getStack(Names.REDSTONE_ALLOY_PLATE), "ingotRedstoneAlloy");
+    }
   }
 
   @Override
   public void addOreDict() {
 
+    OreDictionary.registerOre("ingotRedstoneAlloy", getStack(Names.REDSTONE_ALLOY_INGOT));
+    OreDictionary.registerOre("plateRedstoneAlloy", getStack(Names.REDSTONE_ALLOY_PLATE));
   }
 
   public ItemStack getStack(String name) {
@@ -51,6 +72,16 @@ public class CraftingItem extends ItemSMD {
   }
 
   @Override
+  public String[] getVariantNames() {
+
+    String[] result = new String[NAMES.length];
+    for (int i = 0; i < result.length; ++i) {
+      result[i] = SuperMultiDrills.MOD_ID + ":" + NAMES[i];
+    }
+    return result;
+  }
+
+  @Override
   public String getUnlocalizedName(ItemStack stack) {
 
     int meta = stack.getItemDamage();
@@ -58,13 +89,5 @@ public class CraftingItem extends ItemSMD {
       return super.getUnlocalizedName(stack);
     }
     return getUnlocalizedName(NAMES[meta]);
-  }
-
-  @Override
-  public void registerIcons(IIconRegister iconRegister) {
-
-    for (int i = 0; i < NAMES.length; ++i) {
-      icons[i] = iconRegister.registerIcon(Strings.RESOURCE_PREFIX + NAMES[i]);
-    }
   }
 }

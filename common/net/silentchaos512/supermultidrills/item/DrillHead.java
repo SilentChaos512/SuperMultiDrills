@@ -3,26 +3,23 @@ package net.silentchaos512.supermultidrills.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillHead extends ItemSMD {
 
   public DrillHead() {
 
-    this.icons = new IIcon[EnumDrillMaterial.values().length];
+    super(EnumDrillMaterial.values().length);
     this.setMaxDamage(0);
     this.setMaxStackSize(64);
     this.setHasSubtypes(true);
@@ -92,19 +89,19 @@ public class DrillHead extends ItemSMD {
   }
 
   @Override
+  public String[] getVariantNames() {
+
+    String[] result = new String[EnumDrillMaterial.values().length];
+    for (int i = 0; i < result.length; ++i) {
+      result[i] = getFullName() + "_" + EnumDrillMaterial.values()[i].toString();
+    }
+    return result;
+  }
+
+  @Override
   public String getUnlocalizedName(ItemStack stack) {
 
     EnumDrillMaterial material = this.getDrillMaterial(stack);
     return LocalizationHelper.ITEM_PREFIX + this.itemName + "_" + material.toString();
-  }
-
-  @Override
-  public void registerIcons(IIconRegister reg) {
-
-    for (int i = 0; i < icons.length; ++i) {
-      EnumDrillMaterial material = EnumDrillMaterial.values()[i];
-      icons[i] = reg
-          .registerIcon(Strings.RESOURCE_PREFIX + this.itemName + "_" + material.toString());
-    }
   }
 }

@@ -2,36 +2,49 @@ package net.silentchaos512.supermultidrills.configuration;
 
 import java.io.File;
 
+import com.udojava.evalex.Expression;
+
 import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.supermultidrills.util.LogHelper;
-
-import com.udojava.evalex.Expression;
 
 public class Config {
 
   public static float areaMinerSpeedMulti = 0.2f;
-  public static int battery0MaxCharge = 5000;
-  public static int battery1MaxCharge = 25000;
+
+  public static int battery0MaxCharge = 2500;
+  public static int battery1MaxCharge = 10000;
   public static int battery2MaxCharge = 100000;
-  public static int battery3MaxCharge = 250000;
-  public static int battery4MaxCharge = 1000000;
-  public static int motor0Level = 2;
-  public static int motor1Level = 3;
-  public static int motor2Level = 4;
-  public static float motor0Boost = 0.8f;
-  public static float motor1Boost = 1.0f;
-  public static float motor2Boost = 1.2f;
+  public static int battery3MaxCharge = 1000000;
+  public static int battery4MaxCharge = 10000000;
+
+  public static int motor0Level = 1;
+  public static int motor1Level = 2;
+  public static int motor2Level = 3;
+  public static int motor3Level = 5;
+  public static int motor4Level = 7;
+
+  public static float motor0Boost = 0.6f;
+  public static float motor1Boost = 0.8f;
+  public static float motor2Boost = 1.0f;
+  public static float motor3Boost = 1.2f;
+  public static float motor4Boost = 1.4f;
+
   public static boolean showUncraftableHeads = false;
   public static boolean showSpawnableDrills = true;
 
   public static boolean useCustomEnergyExpression = false;
-  public static String energyCostExpressionString = "(280 - 0.085 * durability) * (1 + 0.08 * efficiency) * hardness";
+  public static String energyCostExpressionString = "(300 - 0.085 * durability) * (1 + 0.06 * efficiency) * hardness";
+  //public static String energyCostExpressionString = "135 * (1 + COS(180 * durability / 4096)) * (1 + 0.08 * efficiency) * hardness";
   public static Expression energyCostExpression;
 
   public static boolean printMiningCost = false;
 
-  public static final String CAT_DEBUG = "debug";
-  public static final String CAT_ITEM = "items";
+  public static final String CAT_MAIN = "main";
+  public static final String CAT_DEBUG = CAT_MAIN + Configuration.CATEGORY_SPLITTER + "debug";
+  public static final String CAT_BATTERY = CAT_MAIN + Configuration.CATEGORY_SPLITTER + "battery";
+  public static final String CAT_MOTOR = CAT_MAIN + Configuration.CATEGORY_SPLITTER + "motor";
+  public static final String CAT_MISC = CAT_MAIN + Configuration.CATEGORY_SPLITTER + "misc";
+  public static final String CAT_MATH = CAT_MAIN + Configuration.CATEGORY_SPLITTER + "math";
 
   public static final String commentEnergyCostExpression = "The expression that determines the cost of mining a block with a drill.\n"
       + "Note that Math.UseCustomEnergyExpression must be true, or the default will be used!\n\n"
@@ -54,55 +67,63 @@ public class Config {
       c.load();
 
       // Load the stuffs.
-      areaMinerSpeedMulti = c.getFloat("Drill.AreaMinerSpeedMultiplier", CAT_ITEM,
+      areaMinerSpeedMulti = c.getFloat("AreaMinerSpeedMultiplier", CAT_MISC,
           areaMinerSpeedMulti, 0.01f, 1.0f,
           "The dig speed of drills with Area Miner is multiplied by this.");
 
       // Battery options.
-      battery0MaxCharge = c.getInt("Battery0.MaxCharge", CAT_ITEM, battery0MaxCharge, 0,
+      battery0MaxCharge = c.getInt("MaxCharge0", CAT_BATTERY, battery0MaxCharge, 0,
           Integer.MAX_VALUE, "Maximum capacity for drills with the tier 0 battery.");
-      battery1MaxCharge = c.getInt("Battery1.MaxCharge", CAT_ITEM, battery1MaxCharge, 0,
+      battery1MaxCharge = c.getInt("MaxCharge1", CAT_BATTERY, battery1MaxCharge, 0,
           Integer.MAX_VALUE, "Maximum capacity for drills with the tier 1 battery.");
-      battery2MaxCharge = c.getInt("Battery2.MaxCharge", CAT_ITEM, battery2MaxCharge, 0,
+      battery2MaxCharge = c.getInt("MaxCharge2", CAT_BATTERY, battery2MaxCharge, 0,
           Integer.MAX_VALUE, "Maximum capacity for drills with the tier 2 battery.");
-      battery3MaxCharge = c.getInt("Battery3.MaxCharge", CAT_ITEM, battery3MaxCharge, 0,
+      battery3MaxCharge = c.getInt("MaxCharge3", CAT_BATTERY, battery3MaxCharge, 0,
           Integer.MAX_VALUE, "Maximum capacity for drills with the tier 3 battery.");
-      battery4MaxCharge = c.getInt("Battery4.MaxCharge", CAT_ITEM, battery4MaxCharge, 0,
+      battery4MaxCharge = c.getInt("MaxCharge4", CAT_BATTERY, battery4MaxCharge, 0,
           Integer.MAX_VALUE, "Maximum capacity for drills with the tier 4 battery.");
 
       // Motor options.
-      motor0Level = c.getInt("Motor0.MiningLevel", CAT_ITEM, motor0Level, 0, 1000,
+      motor0Level = c.getInt("MiningLevel0", CAT_MOTOR, motor0Level, 0, 1000,
           "The harvest level for the tier 0 motor.");
-      motor1Level = c.getInt("Motor1.MiningLevel", CAT_ITEM, motor1Level, 0, 1000,
+      motor1Level = c.getInt("MiningLevel1", CAT_MOTOR, motor1Level, 0, 1000,
           "The harvest level for the tier 1 motor.");
-      motor2Level = c.getInt("Motor2.MiningLevel", CAT_ITEM, motor2Level, 0, 1000,
+      motor2Level = c.getInt("MiningLevel2", CAT_MOTOR, motor2Level, 0, 1000,
           "The harvest level for the tier 2 motor.");
+      motor3Level = c.getInt("MiningLevel3", CAT_MOTOR, motor3Level, 0, 1000,
+          "The harvest level for the tier 3 motor.");
+      motor4Level = c.getInt("MiningLevel4", CAT_MOTOR, motor4Level, 0, 1000,
+          "The harvest level for the tier 4 motor.");
 
-      motor0Boost = c.getFloat("Motor0.SpeedBoost", CAT_ITEM, motor0Boost, 0.01f, Float.MAX_VALUE,
+      motor0Boost = c.getFloat("SpeedBoost0", CAT_MOTOR, motor0Boost, 0.01f, Float.MAX_VALUE,
           "The mining speed multiplier for drills with the tier 0 motor");
-      motor1Boost = c.getFloat("Motor1.SpeedBoost", CAT_ITEM, motor1Boost, 0.01f, Float.MAX_VALUE,
+      motor1Boost = c.getFloat("SpeedBoost1", CAT_MOTOR, motor1Boost, 0.01f, Float.MAX_VALUE,
           "The mining speed multiplier for drills with the tier 1 motor");
-      motor2Boost = c.getFloat("Motor2.SpeedBoost", CAT_ITEM, motor2Boost, 0.01f, Float.MAX_VALUE,
+      motor2Boost = c.getFloat("SpeedBoost2", CAT_MOTOR, motor2Boost, 0.01f, Float.MAX_VALUE,
           "The mining speed multiplier for drills with the tier 2 motor");
+      motor3Boost = c.getFloat("SpeedBoost3", CAT_MOTOR, motor3Boost, 0.01f, Float.MAX_VALUE,
+          "The mining speed multiplier for drills with the tier 3 motor");
+      motor4Boost = c.getFloat("SpeedBoost4", CAT_MOTOR, motor4Boost, 0.01f, Float.MAX_VALUE,
+          "The mining speed multiplier for drills with the tier 4 motor");
 
       // Show/hide stuff in NEI options.
-      showUncraftableHeads = c.getBoolean("Head.ShowUncraftables", CAT_ITEM, showUncraftableHeads,
+      showUncraftableHeads = c.getBoolean("Head.ShowUncraftables", CAT_MISC, showUncraftableHeads,
           "Show the drill heads that are not craftable with the available mods.");
-      showSpawnableDrills = c.getBoolean("Drill.ShowSpawnables", CAT_ITEM, showSpawnableDrills,
+      showSpawnableDrills = c.getBoolean("Drill.ShowSpawnables", CAT_MISC, showSpawnableDrills,
           "Show some pre-made drills for creative/cheaty purposes.");
 
       // Energy cost expression
-      useCustomEnergyExpression = c.getBoolean("Math.UseCustomEnergyExpression", CAT_ITEM,
+      useCustomEnergyExpression = c.getBoolean("UseCustomEnergyExpression", CAT_MATH,
           useCustomEnergyExpression,
-          "Use the expression entered in Math.EnergyToBreakBlock to calculate mining cost."
+          "Use the expression entered in EnergyToBreakBlock to calculate mining cost."
               + "If false, the default value will be used.");
 
       if (useCustomEnergyExpression) {
-        energyCostExpressionString = c.getString("Math.EnergyToBreakBlock", CAT_ITEM,
+        energyCostExpressionString = c.getString("EnergyToBreakBlock", CAT_MATH,
             energyCostExpressionString, commentEnergyCostExpression);
       } else {
         // Generate the config option, but don't use it.
-        c.getString("Math.EnergyToBreakBlock", CAT_ITEM, energyCostExpressionString,
+        c.getString("EnergyToBreakBlock", CAT_MATH, energyCostExpressionString,
             commentEnergyCostExpression);
       }
 

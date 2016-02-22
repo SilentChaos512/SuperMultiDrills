@@ -2,6 +2,7 @@ package net.silentchaos512.supermultidrills.item;
 
 import java.util.List;
 
+import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -11,25 +12,24 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
-import cofh.api.energy.IEnergyContainerItem;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
 
-  public static final int CREATIVE_ID = 5;
+  public static final int SUB_TYPE_COUNT = 6;
+  public static final int CREATIVE_ID = SUB_TYPE_COUNT - 1;
   public static final int CREATIVE_MAX_ENERGY = 1;
   public static final String NBT_BASE = "Battery";
   public static final String NBT_ENERGY = "Energy";
 
   public DrillBattery() {
 
-    this.icons = new IIcon[6];
+    super(SUB_TYPE_COUNT);
     this.setMaxDamage(0);
     this.setMaxStackSize(1);
     this.setHasSubtypes(true);
@@ -41,6 +41,10 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
 
     boolean addVanilla = true;
 
+    if (SuperMultiDrills.instance.foundFunOres) {
+      addRecipesFunOres();
+      addVanilla = false;
+    }
     if (SuperMultiDrills.instance.foundEnderIO) {
       addRecipesEnderIO();
       addVanilla = false;
@@ -58,25 +62,54 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
     }
   }
 
+  public ItemStack getBattery(int tier) {
+
+    ItemStack result = new ItemStack(this, 1, tier);
+//    createTagCompoundIfNeeded(result);
+    return result;
+  }
+
+  private void addRecipesFunOres() {
+
+    String line1 = "iwi";
+    String line2 = "rcr";
+
+    // Tater
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(0), line1, line2, line1, 'i',
+        "ingotIron", 'r', "dustRedstone", 'w', "ingotCopper", 'c', Items.potato));
+    // Battery 1
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(1), line1, line2, line1, 'i',
+        "plateIron", 'r', "ingotRedstoneAlloy", 'w', "plateCopper", 'c', "dustRedstone")); // TODO: Sulfur?
+    // Battery 2
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(2), line1, line2, line1, 'i',
+        "plateIron", 'r', "ingotRedstoneAlloy", 'w', "plateGold", 'c', "blockRedstone"));
+    // Battery 3
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(3), line1, line2, line1, 'i',
+        "plateIron", 'r', "ingotRedstoneAlloy", 'w', "plateElectrum", 'c', Items.ender_eye));
+    // Battery 4
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(4), line1, line2, line1, 'i',
+        "plateIron", 'r', "ingotRedstoneAlloy", 'w', "platePlatinum", 'c', "ingotPrismarinium"));
+  }
+
   /**
    * Ender IO recipes
    */
   private void addRecipesEnderIO() {
 
-    Item itemCapacitor = (Item) Item.itemRegistry.getObject("EnderIO:itemBasicCapacitor");
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "iyi", "iri", 'i',
-        "ingotIron", 'r', "dustRedstone", 'y', Items.potato));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xrx", "iri", 'i',
-        "ingotIron", 'r', "dustRedstone", 'x', "ingotConductiveIron"));
-    GameRegistry.addRecipe(
-        new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-            "dustRedstone", 'x', "ingotElectricalSteel", 'y', new ItemStack(itemCapacitor, 1, 0)));
-    GameRegistry.addRecipe(
-        new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-            "dustRedstone", 'x', "ingotEnergeticAlloy", 'y', new ItemStack(itemCapacitor, 1, 1)));
-    GameRegistry.addRecipe(
-        new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-            "dustRedstone", 'x', "ingotPhasedGold", 'y', new ItemStack(itemCapacitor, 1, 2)));
+    // Item itemCapacitor = (Item) Item.itemRegistry.getObject("EnderIO:itemBasicCapacitor");
+    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "iyi", "iri", 'i',
+    // "ingotIron", 'r', "dustRedstone", 'y', Items.potato));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xrx", "iri", 'i',
+    // "ingotIron", 'r', "dustRedstone", 'x', "ingotConductiveIron"));
+    // GameRegistry.addRecipe(
+    // new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+    // "dustRedstone", 'x', "ingotElectricalSteel", 'y', new ItemStack(itemCapacitor, 1, 0)));
+    // GameRegistry.addRecipe(
+    // new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+    // "dustRedstone", 'x', "ingotEnergeticAlloy", 'y', new ItemStack(itemCapacitor, 1, 1)));
+    // GameRegistry.addRecipe(
+    // new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+    // "dustRedstone", 'x', "ingotPhasedGold", 'y', new ItemStack(itemCapacitor, 1, 2)));
   }
 
   /**
@@ -84,22 +117,22 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
    */
   private void addRecipesMekanism() {
 
-    ItemStack tier0 = new ItemStack(this, 1, 0);
-    ItemStack tier1 = new ItemStack(this, 1, 1);
-    ItemStack tier2 = new ItemStack(this, 1, 2);
-    ItemStack tier3 = new ItemStack(this, 1, 3);
-    ItemStack tier4 = new ItemStack(this, 1, 4);
-
-    GameRegistry.addRecipe(new ShapedOreRecipe(tier0, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-        "dustRedstone", 'x', "ingotCopper", 'y', Items.potato));
-    GameRegistry.addRecipe(new ShapedOreRecipe(tier1, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-        "dustRedstone", 'x', "ingotCopper", 'y', "ingotSteel"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(tier2, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-        "dustRedstone", 'x', "ingotOsmium", 'y', tier1));
-    GameRegistry.addRecipe(new ShapedOreRecipe(tier3, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-        "dustRedstone", 'x', "alloyAdvanced", 'y', tier2));
-    GameRegistry.addRecipe(new ShapedOreRecipe(tier4, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-        "dustRedstone", 'x', "alloyElite", 'y', tier3));
+    // ItemStack tier0 = new ItemStack(this, 1, 0);
+    // ItemStack tier1 = new ItemStack(this, 1, 1);
+    // ItemStack tier2 = new ItemStack(this, 1, 2);
+    // ItemStack tier3 = new ItemStack(this, 1, 3);
+    // ItemStack tier4 = new ItemStack(this, 1, 4);
+    //
+    // GameRegistry.addRecipe(new ShapedOreRecipe(tier0, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+    // "dustRedstone", 'x', "ingotCopper", 'y', Items.potato));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(tier1, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+    // "dustRedstone", 'x', "ingotCopper", 'y', "ingotSteel"));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(tier2, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+    // "dustRedstone", 'x', "ingotOsmium", 'y', tier1));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(tier3, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+    // "dustRedstone", 'x', "alloyAdvanced", 'y', tier2));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(tier4, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+    // "dustRedstone", 'x', "alloyElite", 'y', tier3));
   }
 
   /*
@@ -107,16 +140,16 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
    */
   private void addRecipesThermalFoundation() {
 
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "xyx", "iri", 'i',
-        "ingotIron", 'r', "dustRedstone", 'x', "ingotCopper", 'y', Items.potato));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xyx", "iri", 'i',
-        "ingotIron", 'r', "dustRedstone", 'x', "ingotLead", 'y', "dustSulfur"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i',
-        "ingotIron", 'r', "dustRedstone", 'x', "ingotInvar", 'y', new ItemStack(this, 1, 1)));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i',
-        "ingotIron", 'r', "dustRedstone", 'x', "ingotElectrum", 'y', new ItemStack(this, 1, 2)));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i',
-        "ingotIron", 'r', "dustRedstone", 'x', "ingotEnderium", 'y', new ItemStack(this, 1, 3)));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "xyx", "iri", 'i',
+    // "ingotIron", 'r', "dustRedstone", 'x', "ingotCopper", 'y', Items.potato));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xyx", "iri", 'i',
+    // "ingotIron", 'r', "dustRedstone", 'x', "ingotLead", 'y', "dustSulfur"));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i',
+    // "ingotIron", 'r', "dustRedstone", 'x', "ingotInvar", 'y', new ItemStack(this, 1, 1)));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i',
+    // "ingotIron", 'r', "dustRedstone", 'x', "ingotElectrum", 'y', new ItemStack(this, 1, 2)));
+    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i',
+    // "ingotIron", 'r', "dustRedstone", 'x', "ingotEnderium", 'y', new ItemStack(this, 1, 3)));
   }
 
   /**
@@ -166,9 +199,9 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
 
     switch (stack.getItemDamage()) {
       case 5:
-        return EnumRarity.epic;
+        return EnumRarity.EPIC;
       case 4:
-        return EnumRarity.rare;
+        return EnumRarity.RARE;
       default:
         return super.getRarity(stack);
     }
@@ -178,7 +211,7 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
     ItemStack battery;
-    for (int i = 0; i < icons.length - 1; ++i) {
+    for (int i = 0; i < SUB_TYPE_COUNT - 1; ++i) {
       battery = new ItemStack(this, 1, i);
       list.add(battery); // Empty
       battery = new ItemStack(this, 1, i);
@@ -250,7 +283,7 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-    if (container.getItemDamage() == CREATIVE_ID || container.stackTagCompound == null
+    if (container.getItemDamage() == CREATIVE_ID || !container.hasTagCompound()
         || !this.hasTag(container, NBT_ENERGY)) {
       return 0;
     }
@@ -279,20 +312,20 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
 
   public void createTagCompoundIfNeeded(ItemStack stack) {
 
-    if (stack.stackTagCompound == null) {
+    if (!stack.hasTagCompound()) {
       stack.setTagCompound(new NBTTagCompound());
     }
-    if (!stack.stackTagCompound.hasKey(NBT_BASE)) {
-      stack.stackTagCompound.setTag(NBT_BASE, new NBTTagCompound());
+    if (!stack.getTagCompound().hasKey(NBT_BASE)) {
+      stack.getTagCompound().setTag(NBT_BASE, new NBTTagCompound());
     }
   }
 
   public boolean hasTag(ItemStack stack, String key) {
 
-    if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey(NBT_BASE)) {
+    if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBT_BASE)) {
       return false;
     }
-    return ((NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE)).hasKey(key);
+    return ((NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE)).hasKey(key);
   }
 
   public int getTag(ItemStack stack, String key) {
@@ -302,7 +335,7 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
     }
     this.createTagCompoundIfNeeded(stack);
 
-    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     if (tags.hasKey(key)) {
       return tags.getInteger(key);
     } else {
@@ -317,7 +350,7 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
     }
     this.createTagCompoundIfNeeded(stack);
 
-    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     tags.setInteger(key, value);
   }
 }

@@ -2,27 +2,26 @@ package net.silentchaos512.supermultidrills.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
-import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.registry.IAddRecipe;
+import net.silentchaos512.supermultidrills.registry.IHasVariants;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
 
-public class ItemSMD extends Item implements IAddRecipe {
+public class ItemSMD extends Item implements IAddRecipe, IHasVariants {
 
-  public IIcon[] icons = null;
   protected String itemName = "null";
+  protected int subItemCount = 1;
   
-  public ItemSMD() {
+  public ItemSMD(int subItemCount) {
     
-    this.setCreativeTab(SuperMultiDrills.creativeTab);
+    this.subItemCount = subItemCount;
+    setCreativeTab(SuperMultiDrills.creativeTab);
   }
   
   /**
@@ -59,15 +58,28 @@ public class ItemSMD extends Item implements IAddRecipe {
       }
     }
   }
-  
-  @Override
-  public IIcon getIconFromDamage(int meta) {
 
-    if (hasSubtypes && icons != null && meta < icons.length) {
-      return icons[meta];
-    } else {
-      return super.getIconFromDamage(meta);
+  @Override
+  public String[] getVariantNames() {
+
+    if (hasSubtypes) {
+      String[] names = new String[subItemCount];
+      for (int i = 0; i < names.length; ++i) {
+        names[i] = getFullName() + i;
+      }
+      return names;
     }
+    return new String[] { getFullName() };
+  }
+
+  public String getName() {
+
+    return itemName;
+  }
+
+  public String getFullName() {
+
+    return SuperMultiDrills.MOD_ID + ":" + itemName;
   }
 
   public String getLocalizedName(ItemStack stack) {
@@ -79,7 +91,7 @@ public class ItemSMD extends Item implements IAddRecipe {
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
     if (hasSubtypes) {
-      for (int i = 0; i < icons.length; ++i) {
+      for (int i = 0; i < subItemCount; ++i) {
         list.add(new ItemStack(this, 1, i));
       }
     } else {
@@ -103,18 +115,6 @@ public class ItemSMD extends Item implements IAddRecipe {
   public String getUnlocalizedName(String itemName) {
 
     return LocalizationHelper.ITEM_PREFIX + itemName;
-  }
-  
-  @Override
-  public void registerIcons(IIconRegister reg) {
-
-    if (this.hasSubtypes && icons != null) {
-      for (int i = 0; i < icons.length; ++i) {
-        icons[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + itemName + i);
-      }
-    } else {
-      itemIcon = reg.registerIcon(Strings.RESOURCE_PREFIX + itemName);
-    }
   }
   
   @Override

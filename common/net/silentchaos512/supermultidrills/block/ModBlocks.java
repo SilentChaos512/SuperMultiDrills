@@ -6,7 +6,7 @@ import net.silentchaos512.supermultidrills.util.LogHelper;
 
 public class ModBlocks {
 
-  public static BlockGenerator generator;
+//  public static BlockGenerator generator;
 
   public static void init() {
 

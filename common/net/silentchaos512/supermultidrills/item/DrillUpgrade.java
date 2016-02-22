@@ -2,15 +2,14 @@ package net.silentchaos512.supermultidrills.item;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
@@ -23,7 +22,7 @@ public class DrillUpgrade extends ItemSMD {
 
   public DrillUpgrade() {
 
-    icons = new IIcon[NAMES.length];
+    super(NAMES.length);
     this.setMaxDamage(0);
     this.setMaxStackSize(64);
     this.setHasSubtypes(true);
@@ -64,7 +63,7 @@ public class DrillUpgrade extends ItemSMD {
     String gold = "ingotGold";
     String diamond = "gemDiamond";
     String emerald = "gemEmerald";
-    String glass = "blockGlassColorless";
+    String glass = "blockGlass";
 
     // Saw
     ItemStack saw = new ItemStack(this, 1, this.getMetaForName(Names.UPGRADE_SAW));
@@ -123,6 +122,16 @@ public class DrillUpgrade extends ItemSMD {
   }
 
   @Override
+  public String[] getVariantNames() {
+
+    String[] result = new String[NAMES.length];
+    for (int i = 0; i < result.length; ++i) {
+      result[i] = SuperMultiDrills.MOD_ID + ":" + NAMES[i];
+    }
+    return result;
+  }
+
+  @Override
   public String getUnlocalizedName(ItemStack stack) {
 
     int meta = stack.getItemDamage();
@@ -130,13 +139,5 @@ public class DrillUpgrade extends ItemSMD {
       return super.getUnlocalizedName(stack);
     }
     return getUnlocalizedName(NAMES[meta]);
-  }
-
-  @Override
-  public void registerIcons(IIconRegister iconRegister) {
-
-    for (int i = 0; i < NAMES.length; ++i) {
-      icons[i] = iconRegister.registerIcon(Strings.RESOURCE_PREFIX + NAMES[i]);
-    }
   }
 }

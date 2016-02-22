@@ -118,7 +118,7 @@ public class RecipeUpgradeDrill implements IRecipe {
           }
         } else if (item instanceof DrillChassis) {
           // Chassis change (same as dyeing)
-          ModItems.drill.setTag(result, Drill.NBT_CHASSIS, stack.getItemDamage());
+          ModItems.drill.setTag(result, Drill.NBT_CHASSIS, ~stack.getItemDamage() & 15);
         } else if (InventoryHelper.isItemDye(stack)) {
           // Dye the chassis
           int value = ~InventoryHelper.oreDictDyeToVanilla(stack).getItemDamage() & 15;
@@ -228,4 +228,19 @@ public class RecipeUpgradeDrill implements IRecipe {
     return null;
   }
 
+  @Override
+  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+
+    for (int i = 0; i < inv.getSizeInventory(); ++i) {
+      ItemStack stack = inv.getStackInSlot(i);
+      if (stack != null) {
+        --stack.stackSize;
+        if (stack.stackSize <= 0) {
+          stack = null;
+        }
+        inv.setInventorySlotContents(i, stack);
+      }
+    }
+    return new ItemStack[] {};
+  }
 }

@@ -1,7 +1,6 @@
 package net.silentchaos512.supermultidrills.item;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.udojava.evalex.Expression;
@@ -16,7 +16,7 @@ import com.udojava.evalex.Expression;
 import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -25,6 +25,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
@@ -32,28 +33,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.silentchaos512.gems.api.IPlaceable;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
+import net.silentchaos512.supermultidrills.client.render.SmartModelDrill;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.lib.DrillAreaMiner;
 import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.lib.Strings;
 import net.silentchaos512.supermultidrills.registry.IAddRecipe;
+import net.silentchaos512.supermultidrills.registry.IHasVariants;
 import net.silentchaos512.supermultidrills.util.LocalizationHelper;
 import net.silentchaos512.supermultidrills.util.LogHelper;
 
-public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem {
+public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem, IHasVariants {
 
   /*
    * Caching the "spawnable" drills for speed. Probably doesn't make a big difference.
    */
-  private static final ArrayList<ItemStack> SPAWNABLES = new ArrayList<ItemStack>();
+  private static final List<ItemStack> SPAWNABLES = Lists.newArrayList();
 
   /*
    * Effective materials
@@ -65,14 +68,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public static final Set effectiveMaterialsExtra = Sets
       .newHashSet(new Material[] { Material.cloth, Material.gourd, Material.leaves, Material.plants,
           Material.vine, Material.web, Material.wood });
-
-  /*
-   * Render pass Ids
-   */
-  public static final int PASS_CHASSIS = 0;
-  public static final int PASS_BATTERY_GAUGE = 1;
-  public static final int PASS_HEAD = 2;
-  public static final int NUM_RENDER_PASSES = 3;
 
   /*
    * NBT keys
@@ -92,7 +87,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   /*
    * Battery gauge icons
    */
-  public final IIcon[] iconBatteryGauge = new IIcon[4];
+  // public final IIcon[] iconBatteryGauge = new IIcon[4];
 
   public Drill() {
 
@@ -110,7 +105,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)
         || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 
-    if (stack.stackTagCompound != null && !this.hasTag(stack, NBT_HEAD)) {
+    if (stack.getTagCompound() != null && !this.hasTag(stack, NBT_HEAD)) {
       // The "empty" drill that shows up in NEI.
       int i = 1;
       String itemName = Names.DRILL;
@@ -189,13 +184,13 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         list.add(EnumChatFormatting.GOLD + "" + EnumChatFormatting.ITALIC
             + LocalizationHelper.getMiscText(Strings.PRESS_CTRL));
       }
-      
+
       // Graviton generator
       if (getTagBoolean(stack, NBT_GRAVITON_GENERATOR)) {
         str = LocalizationHelper.getOtherItemKey(Names.DRILL, "GravitonGenerator");
         list.add(EnumChatFormatting.LIGHT_PURPLE + str);
       }
-      
+
       // Area Miner (since it's not an enchantment)
       if (getTagBoolean(stack, NBT_AREA_MINER)) {
         str = LocalizationHelper.getOtherItemKey(Names.DRILL, "AreaMiner");
@@ -207,23 +202,25 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    list.add(new ItemStack(item));
+    ItemStack drill = new ItemStack(item);
+    setTag(drill, NBT_CHASSIS, -1);
+    list.add(drill);
 
     if (Config.showSpawnableDrills) {
       if (SPAWNABLES.isEmpty()) {
         // Shiny drill
-        ItemStack drill = new ItemStack(item, 1, 0);
+        drill = new ItemStack(item, 1, 0);
         drill.setStackDisplayName("Shiny Multi-Drill");
         this.setTag(drill, NBT_HEAD, 11);
         this.setTag(drill, NBT_HEAD_COAT, -1);
         this.setTag(drill, NBT_MOTOR, 1);
         this.setTag(drill, NBT_BATTERY, 3);
-        this.setTag(drill, NBT_CHASSIS, 9);
+        this.setTag(drill, NBT_CHASSIS, 6);
         this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
         this.setTagBoolean(drill, NBT_SAW, false);
         this.setTagString(drill, NBT_SPECIAL, "For testing purposes and cheaters.");
         SPAWNABLES.add(drill);
-        
+
         // Ender drill
         drill = new ItemStack(item, 1, 0);
         drill.setStackDisplayName("Ender Drill");
@@ -231,7 +228,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         setTag(drill, NBT_HEAD_COAT, -1);
         setTag(drill, NBT_MOTOR, 2);
         setTag(drill, NBT_BATTERY, 4);
-        setTag(drill, NBT_CHASSIS, 7);
+        setTag(drill, NBT_CHASSIS, 8);
         setTag(drill, NBT_ENERGY, getMaxEnergyStored(drill));
         setTagBoolean(drill, NBT_SAW, true);
         setTagBoolean(drill, NBT_GRAVITON_GENERATOR, true);
@@ -245,42 +242,14 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         this.setTag(drill, NBT_HEAD_COAT, -1);
         this.setTag(drill, NBT_MOTOR, 2);
         this.setTag(drill, NBT_BATTERY, 5);
-        this.setTag(drill, NBT_CHASSIS, 10);
+        this.setTag(drill, NBT_CHASSIS, 5);
         this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
         this.setTagBoolean(drill, NBT_SAW, true);
         this.setTagString(drill, NBT_SPECIAL, "+5 coolness for getting the reference.");
         SPAWNABLES.add(drill);
-
-        // Black Jack
-        drill = new ItemStack(item, 1, 0);
-        drill.setStackDisplayName("Black Jack");
-        this.setTag(drill, NBT_HEAD, 63);
-        this.setTag(drill, NBT_HEAD_COAT, 0);
-        this.setTag(drill, NBT_MOTOR, 2);
-        this.setTag(drill, NBT_BATTERY, 4);
-        this.setTag(drill, NBT_CHASSIS, 14);
-        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
-        this.setTagBoolean(drill, NBT_SAW, true);
-        this.setTagString(drill, NBT_SPECIAL, "\"I'ma firin' mah lazors!\"");
-        SPAWNABLES.add(drill);
-
-        // Tartar Sauce
-        drill = new ItemStack(item, 1, 0);
-        drill.setStackDisplayName("Tartar Sauce");
-        this.setTag(drill, NBT_HEAD, 66);
-        this.setTag(drill, NBT_HEAD_COAT, -1);
-        this.setTag(drill, NBT_MOTOR, 2);
-        this.setTag(drill, NBT_BATTERY, 4);
-        this.setTag(drill, NBT_CHASSIS, 1);
-        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
-        this.setTagString(drill, NBT_SPECIAL, "I'll see myself out...");
-        drill.addEnchantment(Enchantment.efficiency, 5);
-        SPAWNABLES.add(drill);
       }
 
-      for (ItemStack stack : SPAWNABLES) {
-        list.add(stack);
-      }
+      list.addAll(SPAWNABLES);
     }
   }
 
@@ -335,9 +304,10 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     return new ItemStack(ModItems.drillChassis, 1, this.getTag(stack, NBT_CHASSIS));
   }
 
-  public boolean canHarvestBlock(ItemStack drill, Block block, int meta) {
+  public boolean canHarvestBlock(ItemStack drill, IBlockState state, int meta) {
 
-    if (block.getHarvestLevel(meta) > this.getHarvestLevel(drill, "")) {
+    Block block = state.getBlock();
+    if (block.getHarvestLevel(state) > this.getHarvestLevel(drill, "")) {
       return false;
     }
     boolean isEffective = effectiveMaterialsBasic.contains(block.getMaterial());
@@ -353,11 +323,14 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   }
 
   @Override
-  public float getDigSpeed(ItemStack stack, Block block, int meta) {
+  public float getDigSpeed(ItemStack stack, IBlockState state) {
 
+    Block block = state.getBlock();
     // Is this correct?
-    boolean canHarvest = ForgeHooks.isToolEffective(stack, block, meta)
-        || this.canHarvestBlock(stack, block, meta);
+    String tool = state.getBlock().getHarvestTool(state);
+    boolean canHarvest = tool == null || tool.equals("pickaxe") || tool.equals("shovel")
+        || this.getTagBoolean(stack, NBT_SAW) && tool.equals("axe")
+        || this.canHarvestBlock(block, stack);
     // I wasn't sure how to get block hardness here, as it requires a world object. There's probably
     // an easy way to do it, but it shouldn't matter in most cases, so I just used 1.
     boolean hasEnoughPower = this.getEnergyStored(stack) > 0
@@ -373,6 +346,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   public float getMotorSpeedBoost(ItemStack stack) {
 
     switch (getTag(stack, NBT_MOTOR)) {
+      case 5:
+        return DrillMotor.CREATIVE_MOTOR_BOOST;
+      case 4:
+        return Config.motor4Boost;
+      case 3:
+        return Config.motor3Boost;
       case 2:
         return Config.motor2Boost;
       case 1:
@@ -412,20 +391,20 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
   public void createTagCompoundIfNeeded(ItemStack stack) {
 
-    if (stack.stackTagCompound == null) {
+    if (stack.getTagCompound() == null) {
       stack.setTagCompound(new NBTTagCompound());
     }
-    if (!stack.stackTagCompound.hasKey(NBT_BASE)) {
-      stack.stackTagCompound.setTag(NBT_BASE, new NBTTagCompound());
+    if (!stack.getTagCompound().hasKey(NBT_BASE)) {
+      stack.getTagCompound().setTag(NBT_BASE, new NBTTagCompound());
     }
   }
 
   public boolean hasTag(ItemStack stack, String key) {
 
-    if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey(NBT_BASE)) {
+    if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey(NBT_BASE)) {
       return false;
     }
-    return ((NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE)).hasKey(key);
+    return ((NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE)).hasKey(key);
   }
 
   public int getTag(ItemStack stack, String key) {
@@ -435,7 +414,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
     this.createTagCompoundIfNeeded(stack);
 
-    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     if (tags.hasKey(key)) {
       return tags.getInteger(key);
     } else {
@@ -450,7 +429,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
     this.createTagCompoundIfNeeded(stack);
 
-    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     if (tags.hasKey(key)) {
       return tags.getBoolean(key);
     } else {
@@ -465,7 +444,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
     this.createTagCompoundIfNeeded(stack);
 
-    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     if (tags.hasKey(key)) {
       return tags.getString(key);
     } else {
@@ -480,7 +459,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
     this.createTagCompoundIfNeeded(stack);
 
-    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     tags.setInteger(key, value);
   }
 
@@ -491,7 +470,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
     this.createTagCompoundIfNeeded(stack);
 
-    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     tags.setBoolean(key, value);
   }
 
@@ -502,7 +481,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
     this.createTagCompoundIfNeeded(stack);
 
-    NBTTagCompound tags = (NBTTagCompound) stack.stackTagCompound.getTag(NBT_BASE);
+    NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     tags.setString(key, value);
   }
 
@@ -511,6 +490,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
 
     int motorLevel = this.getTag(stack, NBT_MOTOR);
     switch (motorLevel) {
+      case 5:
+        return DrillMotor.CREATIVE_MOTOR_LEVEL;
+      case 4:
+        return Config.motor4Level;
+      case 3:
+        return Config.motor3Level;
       case 2:
         return Config.motor2Level;
       case 1:
@@ -579,16 +564,16 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   }
 
   @Override
-  public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z,
-      EntityLivingBase entity) {
+  public boolean onBlockDestroyed(ItemStack stack, World world, Block block, BlockPos pos,
+      EntityLivingBase player) {
 
-    float hardness = block.getBlockHardness(world, x, y, z);
+    float hardness = block.getBlockHardness(world, pos);
     if (hardness != 0.0f) {
       int cost = getEnergyToBreakBlock(stack, hardness);
-      if (Config.printMiningCost && entity.worldObj.isRemote) {
+      if (Config.printMiningCost && player.worldObj.isRemote) {
         String str = "%d RF (%.2f hardness)";
         str = String.format(str, cost, hardness);
-        LogHelper.debug(str);
+        LogHelper.info(str);
       }
       extractEnergy(stack, cost, false);
     }
@@ -597,16 +582,16 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   }
 
   @Override
-  public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+  public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player) {
 
-    boolean canceled = super.onBlockStartBreak(stack, x, y, z, player);
+    boolean canceled = super.onBlockStartBreak(stack, pos, player);
 
     if (!canceled) {
       // Number of blocks broken (not used at this time).
       int amount = 1;
       // Try to activate Area Miner
       if (getTagBoolean(stack, NBT_AREA_MINER)) {
-        amount += DrillAreaMiner.tryActivate(stack, x, y, z, player);
+        amount += DrillAreaMiner.tryActivate(stack, pos, player);
       }
     }
 
@@ -625,7 +610,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     Multimap multimap = HashMultimap.create();
     double damage = this.getDrillMaterial(stack).getDamageVsEntity() + 4.0;
     multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-        new AttributeModifier(field_111210_e, "Tool modifier", damage, 0));
+        new AttributeModifier("Tool modifier", damage, 0));
     return multimap;
   }
 
@@ -656,7 +641,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-    if (container.stackTagCompound == null || !this.hasTag(container, NBT_ENERGY)
+    if (container.getTagCompound() == null || !this.hasTag(container, NBT_ENERGY)
         || this.getTag(container, NBT_BATTERY) == DrillBattery.CREATIVE_ID) {
       return 0;
     }
@@ -704,66 +689,21 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   }
 
   @Override
-  public IIcon getIcon(ItemStack stack, int pass) {
-
-    if (pass == PASS_CHASSIS) {
-      // Chassis
-      return ModItems.drillChassis.getIconFromDamage(0);
-    } else if (pass == PASS_HEAD) {
-      // Head
-      int head = this.getTag(stack, NBT_HEAD_COAT); // Is there a head coat?
-      if (head < 0) {
-        head = this.getTag(stack, NBT_HEAD);
-      }
-      if (head < 0 || head >= ModItems.drillHead.icons.length) {
-        head = 0;
-      }
-      return ModItems.drillHead.icons[head];
-    } else if (pass == PASS_BATTERY_GAUGE) {
-      double charge = 1.0 - this.getDurabilityForDisplay(stack);
-      int index = MathHelper.clamp_int((int) Math.round(4.0 * charge), 0, 3);
-      return iconBatteryGauge[index];
-    } else {
-      LogHelper.debug("Unknown render pass for drill! Pass " + pass);
-      return null;
-    }
-  }
-
-  @Override
   public int getColorFromItemStack(ItemStack stack, int pass) {
 
-    if (pass == PASS_CHASSIS) {
+    if (pass == SmartModelDrill.PASS_CHASSIS) {
       int color = this.getTag(stack, NBT_CHASSIS);
-      return ItemDye.field_150922_c[~color & 15];
+      color = color < 0 ? 15 : color;
+      return ItemDye.dyeColors[color & 15];
     } else {
       return 0xFFFFFF;
     }
   }
 
   @Override
-  public int getRenderPasses(int meta) {
-
-    return NUM_RENDER_PASSES;
-  }
-
-  @Override
-  public boolean requiresMultipleRenderPasses() {
-
-    return true;
-  }
-
-  @Override
-  public void registerIcons(IIconRegister reg) {
-
-    for (int i = 0; i < iconBatteryGauge.length; ++i) {
-      iconBatteryGauge[i] = reg.registerIcon(Strings.RESOURCE_PREFIX + "BatteryGauge" + i);
-    }
-  }
-
-  @Override
   public boolean showDurabilityBar(ItemStack stack) {
 
-    return stack.stackTagCompound != null && this.hasTag(stack, NBT_ENERGY)
+    return stack.getTagCompound() != null && this.hasTag(stack, NBT_ENERGY)
         && this.getEnergyStored(stack) != this.getMaxEnergyStored(stack);
   }
 
@@ -776,10 +716,8 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
   }
 
   @Override
-  public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-      int side, float hitX, float hitY, float hitZ) {
-
-    final Item bandolier = (Item) Item.itemRegistry.getObject("SilentGems:TorchBandolier");
+  public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos,
+      EnumFacing side, float hitX, float hitY, float hitZ) {
 
     boolean used = false;
     int toolSlot = player.inventory.currentItem;
@@ -792,36 +730,35 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
       nextStack = player.inventory.getStackInSlot(itemSlot);
 
       // If there's nothing there we can use, try slot 9 instead.
-      if (nextStack == null
-          || (!(nextStack.getItem() instanceof ItemBlock) && !(nextStack.getItem() == bandolier))) {
+      if (nextStack == null || (!(nextStack.getItem() instanceof ItemBlock)
+          && !(nextStack.getItem() instanceof IPlaceable))) {
         nextStack = lastStack;
         itemSlot = 8;
       }
 
       if (nextStack != null) {
         Item item = nextStack.getItem();
-        if (item instanceof ItemBlock || item == bandolier) {
-          ForgeDirection d = ForgeDirection.VALID_DIRECTIONS[side];
-
-          int px = x + d.offsetX;
-          int py = y + d.offsetY;
-          int pz = z + d.offsetZ;
+        if (item instanceof ItemBlock || item instanceof IPlaceable) {
+          BlockPos targetPos = pos.offset(side);
           int playerX = (int) Math.floor(player.posX);
           int playerY = (int) Math.floor(player.posY);
           int playerZ = (int) Math.floor(player.posZ);
 
           // Check for block overlap with player, if necessary.
           if (item instanceof ItemBlock) {
-            AxisAlignedBB blockBounds = AxisAlignedBB.getBoundingBox(px, py, pz, px + 1, py + 1,
+            int px = targetPos.getX();
+            int py = targetPos.getY();
+            int pz = targetPos.getZ();
+            AxisAlignedBB blockBounds = AxisAlignedBB.fromBounds(px, py, pz, px + 1, py + 1,
                 pz + 1);
-            AxisAlignedBB playerBounds = player.boundingBox;
-            Block block = ((ItemBlock) item).field_150939_a;
+            AxisAlignedBB playerBounds = player.getEntityBoundingBox();
+            Block block = ((ItemBlock) item).getBlock();
             if (block.getMaterial().blocksMovement() && playerBounds.intersectsWith(blockBounds)) {
               return false;
             }
           }
 
-          used = item.onItemUse(nextStack, player, world, x, y, z, side, hitX, hitY, hitZ);
+          used = item.onItemUse(nextStack, player, world, pos, side, hitX, hitY, hitZ);
           if (nextStack.stackSize < 1) {
             nextStack = null;
             player.inventory.setInventorySlotContents(itemSlot, null);
@@ -831,5 +768,23 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
     }
 
     return used;
+  }
+
+  @Override
+  public String[] getVariantNames() {
+
+    return new String[] { getFullName() };
+  }
+
+  @Override
+  public String getName() {
+
+    return Names.DRILL;
+  }
+
+  @Override
+  public String getFullName() {
+
+    return SuperMultiDrills.MOD_ID + ":" + getName();
   }
 }

@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import net.silentchaos512.supermultidrills.item.Drill;
 import net.silentchaos512.supermultidrills.item.DrillBattery;
 import net.silentchaos512.supermultidrills.item.DrillChassis;
@@ -12,9 +14,6 @@ import net.silentchaos512.supermultidrills.item.DrillMotor;
 import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.recipe.RecipeUpgradeDrill;
 import net.silentchaos512.supermultidrills.util.InventoryHelper;
-import net.silentchaos512.supermultidrills.util.LogHelper;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
 public class DrillsEventHandler {
 

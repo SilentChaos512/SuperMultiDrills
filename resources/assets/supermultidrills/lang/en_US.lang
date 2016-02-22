@@ -134,9 +134,12 @@ item.supermultidrills:DrillHead_Vibrant_alloy.name=Vibrant Alloy Drill Head
 item.supermultidrills:DrillHead_Pulsating_iron.name=Pulsating Iron Drill Head
 item.supermultidrills:DrillHead_Soularium.name=Soularium Drill Head
 
-item.supermultidrills:DrillMotor0.name=Mainstream Motor
-item.supermultidrills:DrillMotor1.name=Performance Motor
-item.supermultidrills:DrillMotor2.name=Enthusiast Motor
+item.supermultidrills:DrillMotor0.name=Rudimentary Motor
+item.supermultidrills:DrillMotor1.name=Mainstream Motor
+item.supermultidrills:DrillMotor2.name=Performance Motor
+item.supermultidrills:DrillMotor3.name=Enthusiast Motor
+item.supermultidrills:DrillMotor4.name=Elite Motor
+item.supermultidrills:DrillMotor5.name=Creative Motor
 item.supermultidrills:DrillMotor.desc1=Mining level: %d
 item.supermultidrills:DrillMotor.desc2=Mining speed: %d%%
 

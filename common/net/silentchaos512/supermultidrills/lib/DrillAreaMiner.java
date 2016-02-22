@@ -2,12 +2,14 @@ package net.silentchaos512.supermultidrills.lib;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -15,19 +17,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 import net.silentchaos512.supermultidrills.item.Drill;
-import net.silentchaos512.supermultidrills.item.ModItems;
 
 public class DrillAreaMiner {
-  
-  public static boolean isToolEffective(ItemStack tool, Block block, int meta) {
+
+  public static boolean isToolEffective(ItemStack tool, Block block) {
 
     if (!(tool.getItem() instanceof Drill)) {
       return false;
     }
-    
+
     Drill drill = (Drill) tool.getItem();
     Material material = block.getMaterial();
-    boolean toolEffective = ForgeHooks.isToolEffective(tool, block, meta);
+    boolean toolEffective = drill.canHarvestBlock(block); // ForgeHooks.isToolEffective(tool, block, meta);
 
     if (drill.canHarvestBlock(block, tool)) {
       return true;
@@ -47,16 +48,15 @@ public class DrillAreaMiner {
     return toolEffective;
   }
 
-  public static int tryActivate(ItemStack tool, int x, int y, int z, EntityPlayer player) {
+  public static int tryActivate(ItemStack tool, BlockPos pos, EntityPlayer player) {
 
-    Block block = player.worldObj.getBlock(x, y, z);
-    int meta = player.worldObj.getBlockMetadata(x, y, z);
+    Block block = player.worldObj.getBlockState(pos).getBlock();
 
     if (!(tool.getItem() instanceof ItemTool) || block == null || player.isSneaking()) {
       return 0;
     }
 
-    boolean toolEffective = isToolEffective(tool, block, meta);
+    boolean toolEffective = isToolEffective(tool, block);
     if (!toolEffective) {
       return 0;
     }
@@ -65,7 +65,7 @@ public class DrillAreaMiner {
     if (mop == null) {
       return 0;
     }
-    int sideHit = mop.sideHit;
+    int sideHit = mop.sideHit.getIndex();
 
     int xRange = 1;
     int yRange = 1;
@@ -90,6 +90,9 @@ public class DrillAreaMiner {
 
     int blocksBroken = 0;
 
+    int x = pos.getX();
+    int y = pos.getY();
+    int z = pos.getZ();
     for (int xPos = x - xRange; xPos <= x + xRange; xPos++) {
       for (int yPos = y - yRange; yPos <= y + yRange; yPos++) {
         for (int zPos = z - zRange; zPos <= z + zRange; zPos++) {
@@ -97,7 +100,8 @@ public class DrillAreaMiner {
             continue;
           }
 
-          if (breakExtraBlock(tool, player.worldObj, xPos, yPos, zPos, sideHit, player, x, y, z)) {
+          if (breakExtraBlock(tool, player.worldObj, new BlockPos(xPos, yPos, zPos), sideHit,
+              player, pos)) {
             ++blocksBroken;
           }
         }
@@ -107,10 +111,10 @@ public class DrillAreaMiner {
     return blocksBroken;
   }
 
-  public static boolean breakExtraBlock(ItemStack tool, World world, int x, int y, int z,
-      int sidehit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
+  public static boolean breakExtraBlock(ItemStack tool, World world, BlockPos pos, int sidehit,
+      EntityPlayer playerEntity, BlockPos refPos) {
 
-    if (world.isAirBlock(x, y, z))
+    if (world.isAirBlock(pos))
       return false;
 
     if (!(playerEntity instanceof EntityPlayerMP)) {
@@ -119,62 +123,62 @@ public class DrillAreaMiner {
 
     EntityPlayerMP player = (EntityPlayerMP) playerEntity;
 
-    Block block = world.getBlock(x, y, z);
-    int meta = world.getBlockMetadata(x, y, z);
+    IBlockState state = world.getBlockState(pos);
+    Block block = state.getBlock();
 
-    if (!isToolEffective(tool, block, world.getBlockMetadata(x, y, z))) {
+    if (!isToolEffective(tool, block)) {
       return false;
     }
 
-    Block refBlock = world.getBlock(refX, refY, refZ);
-    float refStrength = ForgeHooks.blockStrength(refBlock, player, world, refX, refY, refZ);
-    float strength = ForgeHooks.blockStrength(block, player, world, x, y, z);
+    IBlockState refState = world.getBlockState(refPos);
+    float refStrength = ForgeHooks.blockStrength(refState, player, world, refPos);
+    float strength = ForgeHooks.blockStrength(state, player, world, pos);
 
     // LogHelper.list(Block.getIdFromBlock(refBlock), refStrength, strength, refStrength / strength);
-    if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength / strength > 10f) {
+    if (!ForgeHooks.canHarvestBlock(block, player, world, pos) || refStrength / strength > 10f) {
       return false;
     }
 
-    BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world,
-        player.theItemInWorldManager.getGameType(), player, x, y, z);
-    if (event.isCanceled()) {
+    int xpDrop = ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(),
+        player, pos);
+    if (xpDrop < 0) {
       return false;
     }
 
     if (player.capabilities.isCreativeMode) {
-      block.onBlockHarvested(world, x, y, z, meta, player);
-      if (block.removedByPlayer(world, player, x, y, z, false)) {
-        block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+      block.onBlockHarvested(world, pos, state, player);
+      if (block.removedByPlayer(world, pos, player, true)) { // TODO: What should the boolean be?
+        block.onBlockDestroyedByPlayer(world, pos, state);
       }
 
       if (!world.isRemote) {
-        player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+        player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(world, pos));
       }
       return true;
     }
 
-    player.getCurrentEquippedItem().func_150999_a(world, block, x, y, z, player);
+    player.getCurrentEquippedItem().onBlockDestroyed(world, block, pos, player);
 
     if (!world.isRemote) {
 
-      block.onBlockHarvested(world, x, y, z, meta, player);
+      block.onBlockHarvested(world, pos, state, player);
 
-      if (block.removedByPlayer(world, player, x, y, z, true)) {
-        block.onBlockDestroyedByPlayer(world, x, y, z, meta);
-        block.harvestBlock(world, player, x, y, z, meta);
-        block.dropXpOnBlockBreak(world, x, y, z, event.getExpToDrop());
+      if (block.removedByPlayer(world, pos, player, true)) {
+        block.onBlockDestroyedByPlayer(world, pos, state);
+        block.harvestBlock(world, player, pos, state, world.getTileEntity(pos));
+        block.dropXpOnBlockBreak(world, pos, xpDrop);
       }
 
-      player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+      player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(world, pos));
     } else {
-      world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
-      if (block.removedByPlayer(world, player, x, y, z, true)) {
-        block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+      world.playAuxSFX(2001, pos, Block.getIdFromBlock(block) /* + (meta << 12) */);
+      if (block.removedByPlayer(world, pos, player, true)) {
+        block.onBlockDestroyedByPlayer(world, pos, state);
       }
 
       ItemStack itemstack = player.getCurrentEquippedItem();
       if (itemstack != null) {
-        itemstack.func_150999_a(world, block, x, y, z, player);
+        itemstack.onBlockDestroyed(world, block, pos, player);
 
         if (itemstack.stackSize == 0) {
           player.destroyCurrentEquippedItem();
@@ -196,7 +200,7 @@ public class DrillAreaMiner {
     if (!world.isRemote && player instanceof EntityPlayer)
       d1 += 1.62D;
     double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * (double) f;
-    Vec3 vec3 = Vec3.createVectorHelper(d0, d1, d2);
+    Vec3 vec3 = new Vec3(d0, d1, d2);
     float f3 = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
     float f4 = MathHelper.sin(-f2 * 0.017453292F - (float) Math.PI);
     float f5 = -MathHelper.cos(-f1 * 0.017453292F);
@@ -208,6 +212,6 @@ public class DrillAreaMiner {
       d3 = ((EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
     }
     Vec3 vec31 = vec3.addVector((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
-    return world.func_147447_a(vec3, vec31, par3, !par3, par3);
+    return world.rayTraceBlocks(vec3, vec31, par3, !par3, par3);
   }
 }

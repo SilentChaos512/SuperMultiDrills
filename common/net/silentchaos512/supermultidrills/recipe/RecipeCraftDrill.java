@@ -78,7 +78,7 @@ public class RecipeCraftDrill implements IRecipe {
     drill.setTag(stack, drill.NBT_HEAD_COAT, -1);
     drill.setTag(stack, drill.NBT_MOTOR, motor.getItemDamage());
     drill.setTag(stack, drill.NBT_BATTERY, battery.getItemDamage());
-    drill.setTag(stack, drill.NBT_CHASSIS, chassis.getItemDamage());
+    drill.setTag(stack, drill.NBT_CHASSIS, ~chassis.getItemDamage() & 15);
     drill.setTag(stack, drill.NBT_ENERGY, ModItems.drillBattery.getEnergyStored(battery));
 
     return stack;
@@ -97,4 +97,19 @@ public class RecipeCraftDrill implements IRecipe {
     return null;
   }
 
+  @Override
+  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+
+    for (int i = 0; i < inv.getSizeInventory(); ++i) {
+      ItemStack stack = inv.getStackInSlot(i);
+      if (stack != null) {
+        --stack.stackSize;
+        if (stack.stackSize <= 0) {
+          stack = null;
+        }
+        inv.setInventorySlotContents(i, stack);
+      }
+    }
+    return new ItemStack[] {};
+  }
 }

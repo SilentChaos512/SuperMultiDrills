@@ -2,12 +2,14 @@ package net.silentchaos512.supermultidrills.lib;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraftforge.oredict.OreDictionary;
-import net.silentchaos512.supermultidrills.configuration.Config;
 
 import com.udojava.evalex.Expression;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.supermultidrills.configuration.Config;
+import net.silentchaos512.supermultidrills.item.ModItems;
 
 public enum EnumDrillMaterial {
 
@@ -28,30 +30,30 @@ public enum EnumDrillMaterial {
   PLATINUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 1700, 9.0f, 4.0f, "ingotPlatinum"), // Was Shiny
 
   // Silent's Gems
-  RUBY(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 8.0f, 3.0f, "gemRuby"),
-  GARNET(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 8.0f, 3.0f, "gemGarnet"),
-  TOPAZ(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 10.0f, 4.0f, "gemTopaz"),
-  HELIODOR(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 12.0f, 5.0f, "gemHeliodor"),
-  PERIDOT(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 7.0f, 4.0f, "gemPeridot"),
-  BERYL(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 8.0f, 4.0f, "gemBeryl"),
-  AQUAMARINE(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 10.0f, 3.0f, "gemAquamarine"),
-  SAPPHIRE(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 8.0f, 3.0f, "gemSapphire"),
-  IOLITE(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 7.0f, 2.0f, "gemIolite"),
-  AMETHYST(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 8.0f, 3.0f, "gemAmethyst"),
-  MORGANITE(EnumDrillMaterial.GROUP_SILENT_GEMS, 1024, 10.0f, 4.0f, "gemMorganite"),
-  ONYX(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 10.0f, 6.0f, "gemOnyx"),
+  RUBY(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 8.0f, 3.0f, "gemRuby"),
+  GARNET(EnumDrillMaterial.GROUP_SILENT_GEMS, 512, 8.0f, 3.0f, "gemGarnet"),
+  TOPAZ(EnumDrillMaterial.GROUP_SILENT_GEMS, 512, 10.0f, 4.0f, "gemTopaz"),
+  HELIODOR(EnumDrillMaterial.GROUP_SILENT_GEMS, 368, 12.0f, 5.0f, "gemHeliodor"),
+  PERIDOT(EnumDrillMaterial.GROUP_SILENT_GEMS, 512, 7.0f, 4.0f, "gemPeridot"),
+  BERYL(EnumDrillMaterial.GROUP_SILENT_GEMS, 512, 8.0f, 4.0f, "gemBeryl"),
+  AQUAMARINE(EnumDrillMaterial.GROUP_SILENT_GEMS, 368, 10.0f, 3.0f, "gemAquamarine"),
+  SAPPHIRE(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 8.0f, 3.0f, "gemSapphire"),
+  IOLITE(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 7.0f, 2.0f, "gemIolite"),
+  AMETHYST(EnumDrillMaterial.GROUP_SILENT_GEMS, 512, 8.0f, 3.0f, "gemAmethyst"),
+  MORGANITE(EnumDrillMaterial.GROUP_SILENT_GEMS, 512, 10.0f, 4.0f, "gemMorganite"),
+  ONYX(EnumDrillMaterial.GROUP_SILENT_GEMS, 368, 10.0f, 6.0f, "gemOnyx"),
 
   // Tinker's Construct
-  STEEL(EnumDrillMaterial.GROUP_TCONSTRUCT, 750, 10.0f, 4.0f, "ingotSteel"),
-  ALUMITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 700, 8.0f, 3.0f, "ingotAlumite"),
-  COBALT(EnumDrillMaterial.GROUP_TCONSTRUCT, 800, 14.0f, 3.0f, "ingotCobalt"),
-  ARDITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 500, 8.0f, 3.0f, "ingotArdite"),
-  MANYULLYN(EnumDrillMaterial.GROUP_TCONSTRUCT, 1200, 9.0f, 4.0f, "ingotManyullyn"),
+  STEEL(EnumDrillMaterial.GROUP_TCONSTRUCT, 1000, 10.0f, 4.0f, "ingotSteel"),
+  ALUMITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 1400, 8.0f, 3.0f, "ingotAlumite"),
+  COBALT(EnumDrillMaterial.GROUP_TCONSTRUCT, 1600, 14.0f, 3.0f, "ingotCobalt"),
+  ARDITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 1000, 8.0f, 3.0f, "ingotArdite"),
+  MANYULLYN(EnumDrillMaterial.GROUP_TCONSTRUCT, 2400, 9.0f, 4.0f, "ingotManyullyn"),
   
   // Extra TiC
-  FAIRY(EnumDrillMaterial.GROUP_TCONSTRUCT, 250, 7.5f, 1.0f, "ingotFairy"),
-  POKEFENNIUM(EnumDrillMaterial.GROUP_TCONSTRUCT, 500, 8.5f, 1.0f, "ingotPokefennium"),
-  REDAURUM(EnumDrillMaterial.GROUP_TCONSTRUCT, 250, 7.5f, 1.0f, "ingotPokefennium"),
+  FAIRY(EnumDrillMaterial.GROUP_TCONSTRUCT, 500, 7.5f, 1.0f, "ingotFairy"),
+  POKEFENNIUM(EnumDrillMaterial.GROUP_TCONSTRUCT, 1000, 8.5f, 1.0f, "ingotPokefennium"),
+  REDAURUM(EnumDrillMaterial.GROUP_TCONSTRUCT, 500, 7.5f, 1.0f, "ingotPokefennium"),
   
   // More Thermal Foundation. Skipping Mana-Infused, that's Mithril.
   ENDERIUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 1100, 23.0f, 15.0f, "ingotEnderium"),
@@ -103,7 +105,21 @@ public enum EnumDrillMaterial {
   ENERGETIC_ALLOY(EnumDrillMaterial.GROUP_ENDER_IO, 150, 11.0f, 2.0f, "ingotEnergeticAlloy"),
   VIBRANT_ALLOY(EnumDrillMaterial.GROUP_ENDER_IO, 400, 14.0f, 3.0f, "ingotPhasedGold"),
   PULSATING_IRON(EnumDrillMaterial.GROUP_ENDER_IO, 850, 6.0f, 2.0f, "ingotPhasedIron"),
-  SOULARIUM(EnumDrillMaterial.GROUP_ENDER_IO, 1865, 4.0f, 1.0f, "ingotSoularium");
+  SOULARIUM(EnumDrillMaterial.GROUP_ENDER_IO, 1865, 4.0f, 1.0f, "ingotSoularium"),
+
+  // Silent's Gems again
+  RUBY_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 2304, 12.0f, 5.0f, "gemRubySuper"),
+  GARNET_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 12.0f, 5.0f, "gemGarnetSuper"),
+  TOPAZ_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 14.0f, 6.0f, "gemTopazSuper"),
+  HELIODOR_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1104, 16.0f, 7.0f, "gemHeliodorSuper"),
+  PERIDOT_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 11.0f, 6.0f, "gemPeridotSuper"),
+  BERYL_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 12.0f, 6.0f, "gemBerylSuper"),
+  AQUAMARINE_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1104, 14.0f, 5.0f, "gemAquamarineSuper"),
+  SAPPHIRE_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 2304, 12.0f, 5.0f, "gemSapphireSuper"),
+  IOLITE_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 2304, 11.0f, 4.0f, "gemIoliteSuper"),
+  AMETHYST_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 12.0f, 5.0f, "gemAmethystSuper"),
+  MORGANITE_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 14.0f, 6.0f, "gemMorganiteSuper"),
+  ONYX_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1104, 14.0f, 8.0f, "gemOnyxSuper");
   
   // Group for sorting in NEI, since metadata might be a bit scattered.
   public static final String GROUP_VANILLA = "Vanilla";
@@ -206,19 +222,17 @@ public enum EnumDrillMaterial {
       return true;
     }
 
-    String[] ores = OreDictionary.getOreNames();
-    for (String str : ores) {
-      if (str.equals(this.material)) {
-        // Ore Dictionary key exists (highly likely). Is there an item that matches that?
-        if (OreDictionary.getOres(str).isEmpty()) {
-          return false; // No item with this oredict key.
-        }
-        return true; // There is an item.
+    return !OreDictionary.getOres(material).isEmpty();
+  }
+
+  public ItemStack getHead() {
+
+    for (int i = 0; i < values().length; ++i) {
+      if (values()[i] == this) {
+        return new ItemStack(ModItems.drillHead, 1, i);
       }
     }
-
-    // No matching oredict key.
-    return false;
+    return null;
   }
   
   /**

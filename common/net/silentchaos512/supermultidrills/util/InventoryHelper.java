@@ -3,6 +3,7 @@ package net.silentchaos512.supermultidrills.util;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -64,8 +65,8 @@ public class InventoryHelper {
         if (name.equals("lightgray")) {
           name = "silver";
         }
-        for (int i = 0; i < ItemDye.field_150923_a.length; ++i) {
-          if (ItemDye.field_150923_a[i].toLowerCase().equals(name)) {
+        for (int i = 0; i < EnumDyeColor.values().length; ++i) {
+          if (EnumDyeColor.values()[i].getUnlocalizedName().toLowerCase().equals(name)) {
             return new ItemStack(Items.dye, 1, i);
           }
         }
