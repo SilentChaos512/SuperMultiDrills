@@ -12,6 +12,8 @@ public class Names {
 
   // Crafting items
   public static final String CRAFTING_ITEM = "CraftingItem";
+  public static final String BATTERY_GAUGE = "BatteryGauge";
+  public static final String HEAVY_MAGNETIC_ROD = "HeavyMagneticRod";
   public static final String MAGNETIC_ROD = "MagneticRod";
   public static final String REDSTONE_ALLOY_INGOT = "RedstoneAlloyIngot";
   public static final String REDSTONE_ALLOY_PLATE = "RedstoneAlloyPlate";

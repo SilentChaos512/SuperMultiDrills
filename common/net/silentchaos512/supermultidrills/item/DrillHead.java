@@ -29,7 +29,7 @@ public class DrillHead extends ItemSMD {
   @Override
   public void addRecipes() {
 
-    ItemStack rod = ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1);
+    ItemStack rod = ModItems.craftingItem.getStack(Names.HEAVY_MAGNETIC_ROD);
     EnumDrillMaterial material;
     for (int i = 0; i < EnumDrillMaterial.values().length; ++i) {
       material = EnumDrillMaterial.values()[i];

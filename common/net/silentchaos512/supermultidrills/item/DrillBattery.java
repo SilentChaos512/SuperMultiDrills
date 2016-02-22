@@ -45,18 +45,18 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
       addRecipesFunOres();
       addVanilla = false;
     }
-    if (SuperMultiDrills.instance.foundEnderIO) {
-      addRecipesEnderIO();
-      addVanilla = false;
-    }
-    if (SuperMultiDrills.instance.foundMekanism) {
-      addRecipesMekanism();
-      addVanilla = false;
-    }
-    if (SuperMultiDrills.instance.foundThermalFoundation) {
-      addRecipesThermalFoundation();
-      addVanilla = false;
-    }
+//    if (SuperMultiDrills.instance.foundEnderIO) {
+//      addRecipesEnderIO();
+//      addVanilla = false;
+//    }
+//    if (SuperMultiDrills.instance.foundMekanism) {
+//      addRecipesMekanism();
+//      addVanilla = false;
+//    }
+//    if (SuperMultiDrills.instance.foundThermalFoundation) {
+//      addRecipesThermalFoundation();
+//      addVanilla = false;
+//    }
     if (addVanilla) {
       addRecipesVanilla();
     }

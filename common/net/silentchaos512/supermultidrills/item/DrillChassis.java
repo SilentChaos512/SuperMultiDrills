@@ -2,8 +2,6 @@ package net.silentchaos512.supermultidrills.item;
 
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -13,14 +11,13 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.registry.IRegisterModels;
-import net.silentchaos512.supermultidrills.util.LogHelper;
 
 public class DrillChassis extends ItemSMD implements IRegisterModels {
 
@@ -44,9 +41,16 @@ public class DrillChassis extends ItemSMD implements IRegisterModels {
   @Override
   public void addRecipes() {
 
+    final boolean funOres = SuperMultiDrills.instance.foundFunOres;
+
     // Basic recipe
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this), " ir", "igi", "ii ", 'i',
-        "ingotIron", 'r', ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1), 'g', "ingotGold"));
+    //@formatter:off
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this), "bir", "igi", "ii ",
+        'i', funOres ? "plateIron" : "ingotIron",
+        'g', funOres ? "plateGold" : "ingotGold",
+        'r', ModItems.craftingItem.getStack(Names.HEAVY_MAGNETIC_ROD),
+        'b', ModItems.craftingItem.getStack(Names.BATTERY_GAUGE)));
+    //@formatter:on
 
     // Recolor recipes
     for (int i = 0; i < SUB_TYPE_COUNT; ++i) {
