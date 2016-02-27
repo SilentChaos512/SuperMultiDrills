@@ -42,7 +42,6 @@ public class SuperMultiDrillsPlugin implements IModPlugin {
     LogHelper.info("Drills JEI helper test");
     jeiHelper = arg0;
     jeiHelper.getNbtIgnoreList().ignoreNbtTagNames(ModItems.drillBattery, DrillBattery.NBT_BASE);
-//    jeiHelper.getNbtIgnoreList().ignoreNbtTagNames(ModItems.drillBattery, DrillBattery.NBT_ENERGY);
   }
 
   @Override

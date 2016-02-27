@@ -187,3 +187,7 @@ misc.supermultidrills:CreativeOnly=Creative mode only!
 misc.supermultidrills:Infinite=Infinite
 misc.supermultidrills:PressCtrl=<Press Ctrl>
 misc.supermultidrills:PressShift=<Press Shift>
+
+# WIT
+
+wit.supermultidrills:RFToBreak=%d RF to break

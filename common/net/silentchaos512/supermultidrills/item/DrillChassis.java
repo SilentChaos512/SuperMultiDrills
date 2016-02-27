@@ -27,7 +27,7 @@ public class DrillChassis extends ItemSMD implements IRegisterModels {
   public static final int BATTERY_GAUGE_LEVELS = 4;
   public static final int SUB_TYPE_COUNT = EnumDyeColor.values().length;
 
-  private ModelResourceLocation[] models = new ModelResourceLocation[BATTERY_GAUGE_LEVELS];
+  private ModelResourceLocation[] models;
 
   public DrillChassis() {
 
@@ -91,6 +91,8 @@ public class DrillChassis extends ItemSMD implements IRegisterModels {
 
   @Override
   public void registerModels() {
+
+    models = new ModelResourceLocation[BATTERY_GAUGE_LEVELS];
 
     int i;
     String[] variants = getVariantNames();

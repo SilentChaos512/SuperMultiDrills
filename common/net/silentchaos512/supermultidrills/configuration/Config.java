@@ -33,7 +33,7 @@ public class Config {
   public static boolean showSpawnableDrills = true;
 
   public static boolean useCustomEnergyExpression = false;
-  public static String energyCostExpressionString = "(300 - 0.085 * durability) * (1 + 0.06 * efficiency) * hardness";
+  public static String energyCostExpressionString = "(300 - 0.09 * durability) * (1 + 0.06 * efficiency) * hardness";
   //public static String energyCostExpressionString = "135 * (1 + COS(180 * durability / 4096)) * (1 + 0.08 * efficiency) * hardness";
   public static Expression energyCostExpression;
 

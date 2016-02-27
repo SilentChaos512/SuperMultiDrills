@@ -211,7 +211,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem,
         // Shiny drill
         drill = new ItemStack(item, 1, 0);
         drill.setStackDisplayName("Shiny Multi-Drill");
-        this.setTag(drill, NBT_HEAD, 11);
+        this.setTag(drill, NBT_HEAD, EnumDrillMaterial.PLATINUM.getMeta());
         this.setTag(drill, NBT_HEAD_COAT, -1);
         this.setTag(drill, NBT_MOTOR, 1);
         this.setTag(drill, NBT_BATTERY, 3);
@@ -224,7 +224,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem,
         // Ender drill
         drill = new ItemStack(item, 1, 0);
         drill.setStackDisplayName("Ender Drill");
-        setTag(drill, NBT_HEAD, 32);
+        setTag(drill, NBT_HEAD, EnumDrillMaterial.ENDERIUM.getMeta());
         setTag(drill, NBT_HEAD_COAT, -1);
         setTag(drill, NBT_MOTOR, 2);
         setTag(drill, NBT_BATTERY, 4);
@@ -238,7 +238,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem,
         // Mani Mani
         drill = new ItemStack(item, 1, 0);
         drill.setStackDisplayName("Mani Mani Drill");
-        this.setTag(drill, NBT_HEAD, 28);
+        this.setTag(drill, NBT_HEAD, EnumDrillMaterial.MANYULLYN.getMeta());
         this.setTag(drill, NBT_HEAD_COAT, -1);
         this.setTag(drill, NBT_MOTOR, 2);
         this.setTag(drill, NBT_BATTERY, 5);
