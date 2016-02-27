@@ -71,7 +71,11 @@ public class DrillsForgeEventHandler {
     EntityPlayer player = Minecraft.getMinecraft().thePlayer;
     ItemStack heldItem = player.getHeldItem();
 
-    if (heldItem != null && heldItem.getItem() instanceof Drill) {
+    boolean holdingDrill = heldItem != null && heldItem.getItem() instanceof Drill;
+    boolean showInfo = Config.showEnergyToBreak
+        ? (Config.showEnergyToBreakSneakOnly ? event.isSneaking : true) : false;
+
+    if (holdingDrill && showInfo) {
       int amount = ModItems.drill.getEnergyToBreakBlock(heldItem,
           event.blockState.getBlock().getBlockHardness(event.world, event.pos));
       if (amount > 0) {
@@ -81,9 +85,9 @@ public class DrillsForgeEventHandler {
     }
   }
 
-//  @SubscribeEvent
-//  public void onWitEntityInfo(WitEntityInfoEvent event) {
-//
-//    event.lines.add("Testing!");
-//  }
+  // @SubscribeEvent
+  // public void onWitEntityInfo(WitEntityInfoEvent event) {
+  //
+  // event.lines.add("Testing!");
+  // }
 }

@@ -31,10 +31,13 @@ public class Config {
 
   public static boolean showUncraftableHeads = false;
   public static boolean showSpawnableDrills = true;
+  public static boolean showEnergyToBreak = true;
+  public static boolean showEnergyToBreakSneakOnly = true;
 
   public static boolean useCustomEnergyExpression = false;
   public static String energyCostExpressionString = "(300 - 0.09 * durability) * (1 + 0.06 * efficiency) * hardness";
-  //public static String energyCostExpressionString = "135 * (1 + COS(180 * durability / 4096)) * (1 + 0.08 * efficiency) * hardness";
+  // public static String energyCostExpressionString = "135 * (1 + COS(180 * durability / 4096)) * (1 + 0.08 *
+  // efficiency) * hardness";
   public static Expression energyCostExpression;
 
   public static boolean printMiningCost = false;
@@ -67,9 +70,8 @@ public class Config {
       c.load();
 
       // Load the stuffs.
-      areaMinerSpeedMulti = c.getFloat("AreaMinerSpeedMultiplier", CAT_MISC,
-          areaMinerSpeedMulti, 0.01f, 1.0f,
-          "The dig speed of drills with Area Miner is multiplied by this.");
+      areaMinerSpeedMulti = c.getFloat("AreaMinerSpeedMultiplier", CAT_MISC, areaMinerSpeedMulti,
+          0.01f, 1.0f, "The dig speed of drills with Area Miner is multiplied by this.");
 
       // Battery options.
       battery0MaxCharge = c.getInt("MaxCharge0", CAT_BATTERY, battery0MaxCharge, 0,
@@ -111,6 +113,11 @@ public class Config {
           "Show the drill heads that are not craftable with the available mods.");
       showSpawnableDrills = c.getBoolean("Drill.ShowSpawnables", CAT_MISC, showSpawnableDrills,
           "Show some pre-made drills for creative/cheaty purposes.");
+
+      showEnergyToBreak = c.getBoolean("WIT.ShowEnergyToBreakBlock", CAT_MISC, showEnergyToBreak,
+          "Show the energy required to break the block you are looking at in WIT.");
+      showEnergyToBreakSneakOnly = c.getBoolean("WIT.ShowEnergyToBreakBlock.SneakOnly", CAT_MISC,
+          showEnergyToBreakSneakOnly, "Show energy to break block only when sneaking.");
 
       // Energy cost expression
       useCustomEnergyExpression = c.getBoolean("UseCustomEnergyExpression", CAT_MATH,
