@@ -63,30 +63,4 @@ public class DrillsForgeEventHandler {
       event.modelRegistry.putObject(modelLocation, customModel);
     }
   }
-
-  @SubscribeEvent
-  public void onWitBlockInfo(WitBlockInfoEvent event) {
-
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    ItemStack heldItem = player.getHeldItem();
-
-    boolean holdingDrill = heldItem != null && heldItem.getItem() instanceof Drill;
-    boolean showInfo = Config.showEnergyToBreak
-        ? (Config.showEnergyToBreakSneakOnly ? event.isSneaking : true) : false;
-
-    if (holdingDrill && showInfo) {
-      int amount = ModItems.drill.getEnergyToBreakBlock(heldItem,
-          event.blockState.getBlock().getBlockHardness(event.world, event.pos));
-      if (amount > 0) {
-        String str = LocalizationHelper.getLocalizedString("wit.supermultidrills:RFToBreak");
-        event.lines.add(String.format(str, amount));
-      }
-    }
-  }
-
-  // @SubscribeEvent
-  // public void onWitEntityInfo(WitEntityInfoEvent event) {
-  //
-  // event.lines.add("Testing!");
-  // }
 }

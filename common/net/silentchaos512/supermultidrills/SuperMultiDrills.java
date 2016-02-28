@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.silentchaos512.supermultidrills.block.ModBlocks;
 import net.silentchaos512.supermultidrills.compat.jei.SuperMultiDrillsPlugin;
+import net.silentchaos512.supermultidrills.compat.wit.DrillsWitHandler;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.core.handler.DrillsEventHandler;
 import net.silentchaos512.supermultidrills.core.handler.DrillsForgeEventHandler;
@@ -42,6 +43,7 @@ public class SuperMultiDrills {
   public boolean foundThermalFoundation = false;
   public boolean foundMekanism = false;
   public boolean foundFunOres = false;
+  public boolean foundWit = false;
   public int lastDrillMaterialMeta = 0;
 
   @Instance(MOD_ID)
@@ -71,19 +73,23 @@ public class SuperMultiDrills {
     foundEnderIO = Loader.isModLoaded("EnderIO");
     foundMekanism = Loader.isModLoaded("Mekanism");
     foundThermalFoundation = Loader.isModLoaded("ThermalFoundation");
+    foundWit = Loader.isModLoaded("WIT");
 
     // Log found mods.
     if (foundFunOres) {
       LogHelper.info("Found Fun Ores!");
     }
-    if (foundEnderIO) {
-      LogHelper.info("Found Ender IO!");
-    }
-    if (foundMekanism) {
-      LogHelper.info("Found Mekanism!");
-    }
-    if (foundThermalFoundation) {
-      LogHelper.info("Found Thermal Foundation!");
+//    if (foundEnderIO) {
+//      LogHelper.info("Found Ender IO!");
+//    }
+//    if (foundMekanism) {
+//      LogHelper.info("Found Mekanism!");
+//    }
+//    if (foundThermalFoundation) {
+//      LogHelper.info("Found Thermal Foundation!");
+//    }
+    if (foundWit) {
+      LogHelper.info("Found WIT!");
     }
 
     // Recipes
@@ -95,6 +101,9 @@ public class SuperMultiDrills {
     // Event handlers
     FMLCommonHandler.instance().bus().register(new DrillsEventHandler());
     MinecraftForge.EVENT_BUS.register(new DrillsForgeEventHandler());
+    if (foundWit) {
+      MinecraftForge.EVENT_BUS.register(new DrillsWitHandler());
+    }
   }
 
   @EventHandler
