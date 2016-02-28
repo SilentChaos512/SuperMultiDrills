@@ -157,15 +157,15 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
    */
   private void addRecipesVanilla() {
 
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), " x ", "xyx", "zxz", 'x',
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(0), " x ", "xyx", "zxz", 'x',
         Blocks.dirt, 'y', Items.potato, 'z', "dustRedstone"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), " x ", "xyx", "zxz", 'x',
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(1), " x ", "xyx", "zxz", 'x',
         "ingotIron", 'y', "ingotGold", 'z', "dustRedstone"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), " x ", "xyx", "zxz", 'x',
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(2), " x ", "xyx", "zxz", 'x',
         "nuggetGold", 'y', "dustGlowstone", 'z', "dustRedstone"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), " x ", "xyx", "zxz", 'x',
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(3), " x ", "xyx", "zxz", 'x',
         "ingotGold", 'y', Items.ender_pearl, 'z', "dustRedstone"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 4), " x ", "xyx", "zxz", 'x',
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(4), " x ", "xyx", "zxz", 'x',
         "gemDiamond", 'y', Items.nether_star, 'z', "dustRedstone"));
   }
 
@@ -263,7 +263,7 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
 
   public int getMaxEnergyReceived(ItemStack container) {
 
-    return Math.max(this.getMaxEnergyStored(container) / 100, 1);
+    return Math.max(this.getMaxEnergyStored(container) / 200, 1);
   }
 
   @Override
@@ -330,10 +330,9 @@ public class DrillBattery extends ItemSMD implements IEnergyContainerItem {
 
   public int getTag(ItemStack stack, String key) {
 
-    if (stack == null) {
-      return -1;
+    if (stack == null || !stack.hasTagCompound()) {
+      return 0;
     }
-    this.createTagCompoundIfNeeded(stack);
 
     NBTTagCompound tags = (NBTTagCompound) stack.getTagCompound().getTag(NBT_BASE);
     if (tags.hasKey(key)) {

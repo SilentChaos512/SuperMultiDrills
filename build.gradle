@@ -16,7 +16,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //    id "net.minecraftforge.gradle.forge" version "2.0.2"
 //}
 
-version = "1.3.0-beta2"
+version = "1.3.0-beta3"
 group = "net.silentchaos512.supermultidrills"
 archivesBaseName = "SuperMultiDrills-1.8.9"
 
@@ -37,6 +37,10 @@ repositories {
         url "http://dvs1.progwml6.com/files/maven"
         //name = "chickenbones"
         //url = "http://chickenbones.net/maven"
+    }
+
+    flatDir {
+        dirs 'libs'
     }
 }
 

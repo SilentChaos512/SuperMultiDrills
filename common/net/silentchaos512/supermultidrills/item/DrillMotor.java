@@ -4,6 +4,7 @@ import java.util.IllegalFormatException;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -120,15 +121,16 @@ public class DrillMotor extends ItemSMD {
 
   private void addRecipesVanilla() {
 
-    // FIXME
     ItemStack rod = ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1);
 
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 0), " im", "rmr", "mi ", 'i',
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 0), "iim", "rmr", "mii", 'i',
+        Blocks.cobblestone, 'm', rod, 'r', Items.redstone);
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 1), "iim", "rmr", "mii", 'i',
         Items.iron_ingot, 'm', rod, 'r', Items.redstone);
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 1), " im", "rmr", "mi ", 'i', Items.diamond,
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 2), "iim", "rmr", "mii", 'i', Items.diamond,
         'm', rod, 'r', Items.redstone);
-    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 2), " dm", "rmr", "mi ", 'i',
-        Items.ender_pearl, 'm', rod, 'r', Items.redstone, 'd', Items.diamond);
+    GameRegistry.addShapedRecipe(new ItemStack(this, 1, 3), "idm", "rmr", "mii", 'i',
+        Items.ender_eye, 'm', rod, 'r', Items.redstone, 'd', Items.diamond);
   }
 
   @Override

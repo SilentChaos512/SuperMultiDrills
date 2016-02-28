@@ -25,10 +25,10 @@ public enum EnumDrillMaterial {
   SILVER(EnumDrillMaterial.GROUP_FUN_ORES, 200, 6.0f, 1.5f, "ingotSilver"),
   LEAD(EnumDrillMaterial.GROUP_FUN_ORES, 150, 5.0f, 1.0f, "ingotLead"),
   NICKEL(EnumDrillMaterial.GROUP_FUN_ORES, 300, 6.5f, 2.5f, "ingotNickel"),
-  PLATINUM(EnumDrillMaterial.GROUP_FUN_ORES, 1700, 9.0f, 4.0f, "ingotPlatinum"),
+  PLATINUM(EnumDrillMaterial.GROUP_FUN_ORES, 900, 12.0f, 4.0f, "ingotPlatinum"),
   ALUMINIUM(EnumDrillMaterial.GROUP_FUN_ORES, 300, 6.0f, 2.5f, "ingotAluminium"),
   ZINC(EnumDrillMaterial.GROUP_FUN_ORES, 200, 3.0f, 1.5f, "ingotZinc"),
-  TITANIUM(EnumDrillMaterial.GROUP_FUN_ORES, 1000, 8.0f, 6.0f, "ingotTitanium"),
+  TITANIUM(EnumDrillMaterial.GROUP_FUN_ORES, 1600, 8.0f, 6.0f, "ingotTitanium"),
   BRONZE(EnumDrillMaterial.GROUP_FUN_ORES, 500, 6.0f, 2.0f, "ingotBronze"),
   STEEL(EnumDrillMaterial.GROUP_FUN_ORES, 1000, 8.0f, 4.0f, "ingotSteel"),
   INVAR(EnumDrillMaterial.GROUP_FUN_ORES, 450, 7.0f, 3.0f, "ingotInvar"),
@@ -70,7 +70,7 @@ public enum EnumDrillMaterial {
   AMETHYST_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 12.0f, 5.0f, "gemAmethystSuper"),
   MORGANITE_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1536, 14.0f, 6.0f, "gemMorganiteSuper"),
   ONYX_SUPER(EnumDrillMaterial.GROUP_SILENT_GEMS, 1104, 14.0f, 8.0f, "gemOnyxSuper"),
-  CRYSTALLIZED_CHAOS(EnumDrillMaterial.GROUP_SILENT_GEMS, 2048, 20.0f, 12.0f, "gemChaosCrystallized"),
+  CRYSTALLIZED_CHAOS(EnumDrillMaterial.GROUP_SILENT_GEMS, 2648, 20.0f, 12.0f, "gemChaosCrystallized"),
 
   // Tinker's Construct
   ALUMITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 1400, 8.0f, 3.0f, "ingotAlumite"),

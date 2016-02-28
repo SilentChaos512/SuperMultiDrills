@@ -621,7 +621,7 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem,
 
   public int getMaxEnergyReceived(ItemStack container) {
 
-    return this.getMaxEnergyStored(container) / 100;
+    return this.getMaxEnergyStored(container) / 200;
   }
 
   @Override

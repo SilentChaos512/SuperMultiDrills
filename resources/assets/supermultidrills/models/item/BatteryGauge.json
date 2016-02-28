@@ -1,8 +1,7 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "SuperMultiDrills:items/Blank",
-    "layer1": "SuperMultiDrills:items/DrillHead_Ferrous"
+    "layer0": "SuperMultiDrills:items/BatteryGauge3"
   },
   "display": {
     "thirdperson": {

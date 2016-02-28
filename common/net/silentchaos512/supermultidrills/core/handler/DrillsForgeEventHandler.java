@@ -10,15 +10,14 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.silentchaos512.funores.core.util.LocalizationHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.client.render.SmartModelDrill;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.item.Drill;
 import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.lib.Names;
+import net.silentchaos512.supermultidrills.util.LocalizationHelper;
 import net.silentchaos512.wit.api.WitBlockInfoEvent;
-import net.silentchaos512.wit.api.WitEntityInfoEvent;
 
 public class DrillsForgeEventHandler {
 
