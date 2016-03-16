@@ -607,11 +607,12 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem,
   @Override
   public Multimap getAttributeModifiers(ItemStack stack) {
 
-    Multimap multimap = HashMultimap.create();
+    Multimap map = super.getItemAttributeModifiers();
+    map.removeAll(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
     double damage = this.getDrillMaterial(stack).getDamageVsEntity() + 4.0;
-    multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-        new AttributeModifier("Tool modifier", damage, 0));
-    return multimap;
+    map.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
+        new AttributeModifier(itemModifierUUID, "Tool modifier", damage, 0));
+    return map;
   }
 
   public int getMaxEnergyExtracted(ItemStack container) {
