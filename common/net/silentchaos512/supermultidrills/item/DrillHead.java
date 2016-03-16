@@ -36,8 +36,10 @@ public class DrillHead extends ItemSMD {
     EnumDrillMaterial material;
     for (int i = 0; i < EnumDrillMaterial.values().length; ++i) {
       material = EnumDrillMaterial.values()[i];
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, i), " mm", "mim", "im ",
-          'm', material.getMaterial(), 'i', rod));
+      if (!material.isDisabled()) {
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, i), " mm", "mim", "im ",
+            'm', material.getMaterial(), 'i', rod));
+      }
     }
   }
 
@@ -86,7 +88,9 @@ public class DrillHead extends ItemSMD {
     for (String group : EnumDrillMaterial.GROUPS_ORDERED) {
       ArrayList<EnumDrillMaterial> sub = EnumDrillMaterial.getAllInGroup(group);
       for (EnumDrillMaterial material : sub) {
-        list.add(new ItemStack(this, 1, material.ordinal()));
+        if (!material.isDisabled()) {
+          list.add(new ItemStack(this, 1, material.ordinal()));
+        }
       }
     }
   }

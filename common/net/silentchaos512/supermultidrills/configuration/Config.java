@@ -2,10 +2,10 @@ package net.silentchaos512.supermultidrills.configuration;
 
 import java.io.File;
 
+import com.udojava.evalex.Expression;
+
 import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.supermultidrills.util.LogHelper;
-
-import com.udojava.evalex.Expression;
 
 public class Config {
 
@@ -24,6 +24,16 @@ public class Config {
   public static boolean showUncraftableHeads = false;
   public static boolean showSpawnableDrills = true;
 
+  public static boolean disableBotaniaHeads = false;
+  public static boolean disableEnderIOHeads = false;
+  public static boolean disableMetallurgyHeads = false;
+  public static boolean disableSilentGemsHeads = false;
+  public static boolean disableThermalFoundationHeads = false;
+  public static boolean disableTinkersConstructHeads = false;
+  public static boolean disableAllThermalFoundationRecipes = false;
+  public static boolean disableAllEnderIORecipes = false;
+  public static boolean disableAllMekanismRecipes = false;
+
   public static boolean useCustomEnergyExpression = false;
   public static String energyCostExpressionString = "(280 - 0.085 * durability) * (1 + 0.08 * efficiency) * hardness";
   public static Expression energyCostExpression;
@@ -32,6 +42,7 @@ public class Config {
 
   public static final String CAT_DEBUG = "debug";
   public static final String CAT_ITEM = "items";
+  public static final String CAT_RECIPE = "recipes";
 
   public static final String commentEnergyCostExpression = "The expression that determines the cost of mining a block with a drill.\n"
       + "Note that Math.UseCustomEnergyExpression must be true, or the default will be used!\n\n"
@@ -53,7 +64,27 @@ public class Config {
     try {
       c.load();
 
-      // Load the stuffs.
+      disableBotaniaHeads = c.getBoolean("Head.DisableBotania", CAT_ITEM, false,
+          "Disable drill head group's recipes.");
+      disableEnderIOHeads = c.getBoolean("Head.DisableEnderIO", CAT_ITEM, false,
+          "Disable drill head group's recipes.");
+      disableMetallurgyHeads = c.getBoolean("Head.DisableMetallurgy", CAT_ITEM, false,
+          "Disable drill head group's recipes.");
+      disableSilentGemsHeads = c.getBoolean("Head.DisableSilentsGems", CAT_ITEM, false,
+          "Disable drill head group's recipes.");
+      disableThermalFoundationHeads = c.getBoolean("Head.DisableThermalFoundation", CAT_ITEM, false,
+          "Disable drill head group's recipes.");
+      disableTinkersConstructHeads = c.getBoolean("Head.DisableTinkersConstruct", CAT_ITEM, false,
+          "Disable drill head group's recipes.");
+
+      disableAllThermalFoundationRecipes = c.getBoolean("DisableThermalFoundation", CAT_RECIPE,
+          false,
+          "Disables all recipes that use Thermal Foundation materials (does not iclude drill heads).");
+      disableAllEnderIORecipes = c.getBoolean("DisableEnderIO", CAT_RECIPE, false,
+          "Disables all recipes that use Ender IO materials (does not iclude drill heads).");
+      disableAllMekanismRecipes = c.getBoolean("DisableMekanism", CAT_RECIPE, false,
+          "Disables all recipes that use Mekanism materials (does not iclude drill heads).");
+
       areaMinerSpeedMulti = c.getFloat("Drill.AreaMinerSpeedMultiplier", CAT_ITEM,
           areaMinerSpeedMulti, 0.01f, 1.0f,
           "The dig speed of drills with Area Miner is multiplied by this.");

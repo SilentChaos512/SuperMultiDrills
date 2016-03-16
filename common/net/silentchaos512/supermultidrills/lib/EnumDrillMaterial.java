@@ -42,27 +42,27 @@ public enum EnumDrillMaterial {
   ONYX(EnumDrillMaterial.GROUP_SILENT_GEMS, 768, 10.0f, 6.0f, "gemOnyx"),
 
   // Tinker's Construct
-  STEEL(EnumDrillMaterial.GROUP_TCONSTRUCT, 750, 10.0f, 4.0f, "ingotSteel"),
-  ALUMITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 700, 8.0f, 3.0f, "ingotAlumite"),
-  COBALT(EnumDrillMaterial.GROUP_TCONSTRUCT, 800, 14.0f, 3.0f, "ingotCobalt"),
-  ARDITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 500, 8.0f, 3.0f, "ingotArdite"),
-  MANYULLYN(EnumDrillMaterial.GROUP_TCONSTRUCT, 1200, 9.0f, 4.0f, "ingotManyullyn"),
-  
+  STEEL(EnumDrillMaterial.GROUP_TCONSTRUCT, 900, 10.0f, 4.0f, "ingotSteel"),
+  ALUMITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 1050, 8.0f, 3.0f, "ingotAlumite"),
+  COBALT(EnumDrillMaterial.GROUP_TCONSTRUCT, 1200, 14.0f, 3.0f, "ingotCobalt"),
+  ARDITE(EnumDrillMaterial.GROUP_TCONSTRUCT, 750, 8.0f, 3.0f, "ingotArdite"),
+  MANYULLYN(EnumDrillMaterial.GROUP_TCONSTRUCT, 1800, 9.0f, 4.0f, "ingotManyullyn"),
+
   // Extra TiC
   FAIRY(EnumDrillMaterial.GROUP_TCONSTRUCT, 250, 7.5f, 1.0f, "ingotFairy"),
   POKEFENNIUM(EnumDrillMaterial.GROUP_TCONSTRUCT, 500, 8.5f, 1.0f, "ingotPokefennium"),
   REDAURUM(EnumDrillMaterial.GROUP_TCONSTRUCT, 250, 7.5f, 1.0f, "ingotPokefennium"),
-  
+
   // More Thermal Foundation. Skipping Mana-Infused, that's Mithril.
   ENDERIUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 1100, 23.0f, 15.0f, "ingotEnderium"),
-  SIGNALUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 800, 13.0f, 10.0f, "ingotSignalum"),
+  SIGNALUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 800, 13.0f, 6.0f, "ingotSignalum"),
   LUMIUM(EnumDrillMaterial.GROUP_THERMAL_FOUNDATION, 1500, 3.0f, 8.0f, "ingotLumium"),
-  
+
   // Botania
   MANASTEEL(EnumDrillMaterial.GROUP_BOTANIA, 300, 6.2f, 1.0f, "ingotManasteel"),
   TERRASTEEL(EnumDrillMaterial.GROUP_BOTANIA, 2300, 9.0f, 2.0f, "ingotTerrasteel"),
   ELEMENTIUM(EnumDrillMaterial.GROUP_BOTANIA, 720, 6.2f, 1.0f, "ingotElvenElementium"),
-  
+
   // Metallurgy 4
   HEPATIZON(EnumDrillMaterial.GROUP_METALLURGY, 300, 8.0f, 1.0f, "ingotHepatizon"),
   DAMASCUS_STEEL(EnumDrillMaterial.GROUP_METALLURGY, 500, 6.0f, 2.0f, "ingotDamascusSteel"),
@@ -95,7 +95,7 @@ public enum EnumDrillMaterial {
   TARTARITE(EnumDrillMaterial.GROUP_METALLURGY, 3000, 14.0f, 5.0f, "ingotTartarite"),
   EXIMITE(EnumDrillMaterial.GROUP_METALLURGY, 1000, 8.0f, 3.0f, "ingotEximite"),
   DESICHALKOS(EnumDrillMaterial.GROUP_METALLURGY, 1800, 10.0f, 4.0f, "ingotDesichalkos"),
-  
+
   // Ender IO (aside from Dark Steel, these numbers are made up).
   DARK_STEEL(EnumDrillMaterial.GROUP_ENDER_IO, 1561, 7.0f, 1.0f, "ingotDarkSteel"),
   ELECTRICAL_STEEL(EnumDrillMaterial.GROUP_ENDER_IO, 300, 6.0f, 2.0f, "ingotElectricalSteel"),
@@ -104,7 +104,7 @@ public enum EnumDrillMaterial {
   VIBRANT_ALLOY(EnumDrillMaterial.GROUP_ENDER_IO, 400, 14.0f, 3.0f, "ingotPhasedGold"),
   PULSATING_IRON(EnumDrillMaterial.GROUP_ENDER_IO, 850, 6.0f, 2.0f, "ingotPhasedIron"),
   SOULARIUM(EnumDrillMaterial.GROUP_ENDER_IO, 1865, 4.0f, 1.0f, "ingotSoularium");
-  
+
   // Group for sorting in NEI, since metadata might be a bit scattered.
   public static final String GROUP_VANILLA = "Vanilla";
   public static final String GROUP_THERMAL_FOUNDATION = "Thermal Foundation";
@@ -113,8 +113,9 @@ public enum EnumDrillMaterial {
   public static final String GROUP_TCONSTRUCT = "Tinker's Construct";
   public static final String GROUP_BOTANIA = "Botania";
   public static final String GROUP_METALLURGY = "Metallurgy";
-  public static final String[] GROUPS_ORDERED = new String[] { GROUP_VANILLA, GROUP_THERMAL_FOUNDATION,
-    GROUP_ENDER_IO, GROUP_SILENT_GEMS, GROUP_BOTANIA, GROUP_TCONSTRUCT, GROUP_METALLURGY };
+  public static final String[] GROUPS_ORDERED = new String[] { GROUP_VANILLA,
+      GROUP_THERMAL_FOUNDATION, GROUP_ENDER_IO, GROUP_SILENT_GEMS, GROUP_BOTANIA, GROUP_TCONSTRUCT,
+      GROUP_METALLURGY };
 
   private final int durability;
   private final float efficiency;
@@ -122,7 +123,8 @@ public enum EnumDrillMaterial {
   private final String material;
   private final String group;
 
-  private EnumDrillMaterial(String group, int durability, float efficiency, float damage, String material) {
+  private EnumDrillMaterial(String group, int durability, float efficiency, float damage,
+      String material) {
 
     this.group = group;
     this.durability = durability;
@@ -153,13 +155,13 @@ public enum EnumDrillMaterial {
 
   public String getMaterialName() {
 
-//    if (this == IRON) {
-//      return "Iron";
-//    } else if (this == GOLD) {
-//      return "Gold";
-//    } else if (this == DIAMOND) {
-//      return "Diamond";
-//    }
+    // if (this == IRON) {
+    // return "Iron";
+    // } else if (this == GOLD) {
+    // return "Gold";
+    // } else if (this == DIAMOND) {
+    // return "Diamond";
+    // }
 
     // Strip ingot/gem/etc, leaving just the material (ie, Iron, DarkSteel, Ruby)
     for (int i = 0; i < this.material.length(); ++i) {
@@ -170,7 +172,7 @@ public enum EnumDrillMaterial {
 
     return this.material;
   }
-  
+
   public String getGroup() {
 
     return this.group;
@@ -186,7 +188,7 @@ public enum EnumDrillMaterial {
     exp.setVariable("hardness", BigDecimal.valueOf(1));
     exp.setVariable("mining_speed", BigDecimal.valueOf(this.efficiency));
     exp.setVariable("motor_boost", BigDecimal.valueOf(1));
-    
+
     float result = exp.eval().floatValue();
     if (result < 0.0f) {
       result = 0.0f; // Energy cost should be non-negative!
@@ -195,8 +197,8 @@ public enum EnumDrillMaterial {
   }
 
   /**
-   * Determines if a drill head can be crafted, ie there is some item that matches the ore
-   * dictionary entry of the material.
+   * Determines if a drill head can be crafted, ie there is some item that matches the ore dictionary entry of the
+   * material.
    * 
    * @return
    */
@@ -204,6 +206,11 @@ public enum EnumDrillMaterial {
 
     if (this == IRON || this == GOLD || this == DIAMOND) {
       return true;
+    }
+
+    // Disabled in config?
+    if (isDisabled()) {
+      return false;
     }
 
     String[] ores = OreDictionary.getOreNames();
@@ -220,22 +227,33 @@ public enum EnumDrillMaterial {
     // No matching oredict key.
     return false;
   }
-  
+
+  public boolean isDisabled() {
+
+    return (Config.disableBotaniaHeads && group.equals(GROUP_BOTANIA))
+        || (Config.disableEnderIOHeads && group.equals(GROUP_ENDER_IO))
+        || (Config.disableMetallurgyHeads && group.equals(GROUP_METALLURGY))
+        || (Config.disableSilentGemsHeads && group.equals(GROUP_SILENT_GEMS))
+        || (Config.disableThermalFoundationHeads && group.equals(GROUP_THERMAL_FOUNDATION))
+        || (Config.disableTinkersConstructHeads && group.equals(GROUP_TCONSTRUCT));
+  }
+
   /**
    * Returns a list of all drill materials in the specified group.
+   * 
    * @param group
    * @return
    */
   public static ArrayList<EnumDrillMaterial> getAllInGroup(String group) {
-    
+
     ArrayList<EnumDrillMaterial> list = new ArrayList<EnumDrillMaterial>();
-    
+
     for (EnumDrillMaterial material : values()) {
       if (material.group.equals(group)) {
         list.add(material);
       }
     }
-    
+
     return list;
   }
 
