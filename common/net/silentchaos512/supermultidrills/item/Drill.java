@@ -263,19 +263,6 @@ public class Drill extends ItemTool implements IAddRecipe, IEnergyContainerItem 
         this.setTagBoolean(drill, NBT_SAW, true);
         this.setTagString(drill, NBT_SPECIAL, "\"I'ma firin' mah lazors!\"");
         SPAWNABLES.add(drill);
-
-        // Tartar Sauce
-        drill = new ItemStack(item, 1, 0);
-        drill.setStackDisplayName("Tartar Sauce");
-        this.setTag(drill, NBT_HEAD, 66);
-        this.setTag(drill, NBT_HEAD_COAT, -1);
-        this.setTag(drill, NBT_MOTOR, 2);
-        this.setTag(drill, NBT_BATTERY, 4);
-        this.setTag(drill, NBT_CHASSIS, 1);
-        this.setTag(drill, NBT_ENERGY, this.getMaxEnergyStored(drill));
-        this.setTagString(drill, NBT_SPECIAL, "I'll see myself out...");
-        drill.addEnchantment(Enchantment.efficiency, 5);
-        SPAWNABLES.add(drill);
       }
 
       for (ItemStack stack : SPAWNABLES) {

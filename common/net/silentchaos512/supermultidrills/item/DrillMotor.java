@@ -31,15 +31,15 @@ public class DrillMotor extends ItemSMD {
 
     boolean addVanilla = true;
 
-    if (SuperMultiDrills.instance.foundEnderIO) {
+    if (SuperMultiDrills.instance.foundEnderIO && !Config.disableAllEnderIORecipes) {
       addRecipesEnderIO();
       addVanilla = false;
     }
-    if (SuperMultiDrills.instance.foundMekanism) {
+    if (SuperMultiDrills.instance.foundMekanism && !Config.disableAllMekanismRecipes) {
       addRecipesMekanism();
       addVanilla = false;
     }
-    if (SuperMultiDrills.instance.foundThermalFoundation) {
+    if (SuperMultiDrills.instance.foundThermalFoundation && !Config.disableAllThermalFoundationRecipes) {
       addRecipesThermalFoundation();
       addVanilla = false;
     }

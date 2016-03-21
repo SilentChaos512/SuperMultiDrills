@@ -79,11 +79,11 @@ public class Config {
 
       disableAllThermalFoundationRecipes = c.getBoolean("DisableThermalFoundation", CAT_RECIPE,
           false,
-          "Disables all recipes that use Thermal Foundation materials (does not iclude drill heads).");
+          "Disables all recipes that use Thermal Foundation materials (does not include drill heads).");
       disableAllEnderIORecipes = c.getBoolean("DisableEnderIO", CAT_RECIPE, false,
-          "Disables all recipes that use Ender IO materials (does not iclude drill heads).");
+          "Disables all recipes that use Ender IO materials (does not include drill heads).");
       disableAllMekanismRecipes = c.getBoolean("DisableMekanism", CAT_RECIPE, false,
-          "Disables all recipes that use Mekanism materials (does not iclude drill heads).");
+          "Disables all recipes that use Mekanism materials (does not include drill heads).");
 
       areaMinerSpeedMulti = c.getFloat("Drill.AreaMinerSpeedMultiplier", CAT_ITEM,
           areaMinerSpeedMulti, 0.01f, 1.0f,
