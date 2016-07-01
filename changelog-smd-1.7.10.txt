@@ -1,5 +1,10 @@
 Super Multi-Drills Changelog
 
+1.2.1
+Added: Config options to disable drill head groups.
+Added: Config options to disable mod-specific recipes.
+Rebalanced some materials a bit. 
+
 1.2.0
 Added: Motor mining speed bonuses (configurable per motor).
 Added: Area Miner upgrade. Just like the enchantment in Silent's Gems, it allows a drill to mine a 3x3 area, at the cost of speed.
