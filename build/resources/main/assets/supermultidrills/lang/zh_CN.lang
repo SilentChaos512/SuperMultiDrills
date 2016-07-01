@@ -1,0 +1,158 @@
+# Creative tabs
+
+itemGroup.tabSuperMultiDrills=Super Multi-Drills
+
+# Item localizations
+
+item.supermultidrills:Drill.name=复合钻头
+item.supermultidrills:Drill.desc1=钻头的状态和效率取决于
+item.supermultidrills:Drill.desc2=使用的部件的材料与等级.
+item.supermultidrills:Drill.desc3=
+item.supermultidrills:Drill.desc4=钻头可以与新的部件
+item.supermultidrills:Drill.desc5=合成来升级(钻头, 马达, 等等.)
+item.supermultidrills:Drill.desc6=
+item.supermultidrills:Drill.desc7=Craft with any Drill Head, Motor, Battery,
+item.supermultidrills:Drill.desc8=and Chassis (shapeless).
+item.supermultidrills:Drill.Energy=能量:
+item.supermultidrills:Drill.Head=钻头材料:
+item.supermultidrills:Drill.HeadCoat=(用 %s涂抹)
+item.supermultidrills:Drill.MiningLevel=挖掘等级:
+item.supermultidrills:Drill.MiningSpeed=挖掘速度:
+item.supermultidrills:Drill.MiningCost=运转成本:
+item.supermultidrills:Drill.RFPerHardness=RF/方块硬度
+item.supermultidrills:Drill.AttackDamage=攻击伤害:
+item.supermultidrills:Drill.PlusSaw=+ 锯片模组
+
+item.supermultidrills:DrillBattery0.name=钻头能源供应器: 马铃薯
+item.supermultidrills:DrillBattery1.name=钻头能源供应器: 小型
+item.supermultidrills:DrillBattery2.name=钻头能源供应器: 中型
+item.supermultidrills:DrillBattery3.name=钻头能源供应器: 大型
+item.supermultidrills:DrillBattery4.name=钻头能源供应器: 终极
+item.supermultidrills:DrillBattery5.name=钻头能源供应器: 创造
+item.supermultidrills:DrillBattery.Capacity=容量:
+item.supermultidrills:DrillBattery.Potato=你期待一个马铃薯能做什么?
+
+item.supermultidrills:DrillChassis0.name=白色钻头机架
+item.supermultidrills:DrillChassis1.name=橙色钻头机架
+item.supermultidrills:DrillChassis2.name=品红色钻头机架
+item.supermultidrills:DrillChassis3.name=淡蓝色钻头机架
+item.supermultidrills:DrillChassis4.name=黄色钻头机架
+item.supermultidrills:DrillChassis5.name=黄绿色钻头机架
+item.supermultidrills:DrillChassis6.name=粉红色钻头机架
+item.supermultidrills:DrillChassis7.name=灰色钻头机架
+item.supermultidrills:DrillChassis8.name=银色钻头机架
+item.supermultidrills:DrillChassis9.name=蓝绿色钻头机架
+item.supermultidrills:DrillChassis10.name=紫色钻头机架
+item.supermultidrills:DrillChassis11.name=蓝色钻头机架
+item.supermultidrills:DrillChassis12.name=棕色钻头机架
+item.supermultidrills:DrillChassis13.name=绿色钻头机架
+item.supermultidrills:DrillChassis14.name=红色钻头机架
+item.supermultidrills:DrillChassis15.name=黑色钻头机架
+
+item.supermultidrills:DrillHead_Iron.name=铁钻头
+item.supermultidrills:DrillHead_Gold.name=金钻头
+item.supermultidrills:DrillHead_Diamond.name=钻石钻头
+item.supermultidrills:DrillHead_Copper.name=铜钻头
+item.supermultidrills:DrillHead_Tin.name=锡钻头
+item.supermultidrills:DrillHead_Silver.name=银钻头
+item.supermultidrills:DrillHead_Lead.name=铅钻头
+item.supermultidrills:DrillHead_Ferrous.name=镍钻头
+item.supermultidrills:DrillHead_Electrum.name=琥珀金钻头
+item.supermultidrills:DrillHead_Invar.name=因瓦合金钻头
+item.supermultidrills:DrillHead_Bronze.name=青铜钻头
+item.supermultidrills:DrillHead_Platinum.name=铂钻头
+item.supermultidrills:DrillHead_Ruby.name=红宝石钻头
+item.supermultidrills:DrillHead_Garnet.name=石榴石钻头
+item.supermultidrills:DrillHead_Topaz.name=黄玉钻头
+item.supermultidrills:DrillHead_Heliodor.name=金绿柱石钻头
+item.supermultidrills:DrillHead_Peridot.name=橄榄石钻头
+item.supermultidrills:DrillHead_Beryl.name=电气石钻头
+item.supermultidrills:DrillHead_Aquamarine.name=海蓝宝石钻头
+item.supermultidrills:DrillHead_Sapphire.name=蓝宝石钻头
+item.supermultidrills:DrillHead_Iolite.name=堇青石钻头
+item.supermultidrills:DrillHead_Amethyst.name=紫晶钻头
+item.supermultidrills:DrillHead_Morganite.name=铯绿柱石钻头
+item.supermultidrills:DrillHead_Onyx.name=缟玛瑙钻头
+item.supermultidrills:DrillHead_Steel.name=刚钻头
+item.supermultidrills:DrillHead_Alumite.name=耐酸铝钻头
+item.supermultidrills:DrillHead_Cobalt.name=钴钻头
+item.supermultidrills:DrillHead_Ardite.name=阿迪特钻头
+item.supermultidrills:DrillHead_Manyullyn.name=马玉灵钻头
+item.supermultidrills:DrillHead_Fairy.name=精灵钻头
+item.supermultidrills:DrillHead_Pokefennium.name=Pokefennium 钻头
+item.supermultidrills:DrillHead_Redaurum.name=RedAurum 钻头
+item.supermultidrills:DrillHead_Enderium.name=末影钻头
+item.supermultidrills:DrillHead_Signalum.name=信素钻头
+item.supermultidrills:DrillHead_Lumium.name=Lumium 钻头
+item.supermultidrills:DrillHead_Dark_steel.name=玄钢钻头
+item.supermultidrills:DrillHead_Manasteel.name=磁钢钻头
+item.supermultidrills:DrillHead_Terrasteel.name=泰拉钢钻头
+item.supermultidrills:DrillHead_Elementium.name=源质钢钻头
+item.supermultidrills:DrillHead_Hepatizon.name=幽魂结晶钻头
+item.supermultidrills:DrillHead_Damascus_steel.name=大马士革钢钻头
+item.supermultidrills:DrillHead_Angmallen.name=金铁钻头
+item.supermultidrills:DrillHead_Brass.name=黄铜钻头
+item.supermultidrills:DrillHead_Ignatius.name=伊格内休斯钻头
+item.supermultidrills:DrillHead_Shadow_iron.name=暗影铁钻头
+item.supermultidrills:DrillHead_Shadow_steel.name=暗影钢钻头
+item.supermultidrills:DrillHead_Midasium.name=溶火金钻头
+item.supermultidrills:DrillHead_Vyroxeres.name=幽冥剧毒晶钻头
+item.supermultidrills:DrillHead_Ceruclase.name=暗影秘银钻头
+item.supermultidrills:DrillHead_Inolashite.name=秘银蓝金钻头
+item.supermultidrills:DrillHead_Kalendrite.name=幽冥魂石钻头
+item.supermultidrills:DrillHead_Amordrine.name=魔石钻头
+item.supermultidrills:DrillHead_Vulcanite.name=熔岩结晶钻头
+item.supermultidrills:DrillHead_Sanguinite.name=狱炎石钻头
+item.supermultidrills:DrillHead_Prometheum.name=幻金钻头
+item.supermultidrills:DrillHead_Deep_iron.name=暗铁钻头
+item.supermultidrills:DrillHead_Black_steel.name=黒钢钻头
+item.supermultidrills:DrillHead_Oureclase.name=地晶钻头
+item.supermultidrills:DrillHead_Astral_silver.name=星银钻头
+item.supermultidrills:DrillHead_Vyroxeres.name=幽冥剧毒晶钻头
+item.supermultidrills:DrillHead_Carmot.name=耀金钻头
+item.supermultidrills:DrillHead_Mithril.name=秘银钻头
+item.supermultidrills:DrillHead_Quicksilver.name=银钻钻头
+item.supermultidrills:DrillHead_Haderoth.name=幻铜钻头
+item.supermultidrills:DrillHead_Orichalcum.name=Orichalcum 钻头
+item.supermultidrills:DrillHead_Celenegil.name=幽冥毒晶钻头
+item.supermultidrills:DrillHead_Adamantine.name=艾德曼合金钻头
+item.supermultidrills:DrillHead_Atlarus.name=精金钻头
+item.supermultidrills:DrillHead_Tartarite.name=熔火石钻头
+item.supermultidrills:DrillHead_Eximite.name=虚空石钻头
+item.supermultidrills:DrillHead_Desichalkos.name=虚空魂石钻头
+
+item.supermultidrills:DrillMotor0.name=入门级马达
+item.supermultidrills:DrillMotor1.name=性能级马达
+item.supermultidrills:DrillMotor2.name=发烧级马达
+item.supermultidrills:DrillMotor.desc=挖掘等级 %d
+
+item.supermultidrills:MagneticRod.name=磁铁芯
+
+item.supermultidrills:DrillUpgrade.desc=和钻头合成来应用升级模组.
+
+item.supermultidrills:UpgradeFortune.name=升级模组: 时运模组
+item.supermultidrills:UpgradeFortune.desc1=应用时运升级
+item.supermultidrills:UpgradeFortune.desc2=(每1个升级提升1级时运)
+
+item.supermultidrills:UpgradeSaw.name=升级模组: 锯片模组
+item.supermultidrills:UpgradeSaw.desc1=使钻头可以用作斧子
+item.supermultidrills:UpgradeSaw.desc2=像木头那样的东西. 别问我怎么用.
+
+item.supermultidrills:UpgradeSilk.name=升级模组: 精准
+item.supermultidrills:UpgradeSilk.desc=应用精准采集
+
+item.supermultidrills:UpgradeSpeed.name=升及模组: 效率
+item.supermultidrills:UpgradeSpeed.desc1=应用效率升级
+item.supermultidrills:UpgradeSpeed.desc2=(每1个升级提升1级效率)
+
+# Misc text
+
+misc.supermultidrills:CostPerHardness=每等级硬度消耗: %.1f
+misc.supermultidrills:MiningSpeed=挖掘速度: %.1f
+misc.supermultidrills:Damage=攻击伤害: %.1f
+
+misc.supermultidrills:Cheater=作弊者!
+misc.supermultidrills:CreativeOnly=只应用于创造模式!
+misc.supermultidrills:Infinite=无限
+misc.supermultidrills:PressCtrl=<Press Ctrl>
+misc.supermultidrills:PressShift=<Press Shift>

@@ -1,0 +1,140 @@
+Symbol range map extraction starting
+Processing 46 files
+startProcessing "cofh\api\CoFHAPIProps.java" md5: aa09e189962e655332bb647caf525db5
+endProcessing "cofh\api\CoFHAPIProps.java"
+
+startProcessing "cofh\api\energy\EnergyStorage.java" md5: aed8f33e2f60e1ac383b162b4e345d9d
+endProcessing "cofh\api\energy\EnergyStorage.java"
+
+startProcessing "cofh\api\energy\IEnergyConnection.java" md5: 1ec9c4b32b6c0cd4c1055ff8bb8e7e68
+endProcessing "cofh\api\energy\IEnergyConnection.java"
+
+startProcessing "cofh\api\energy\IEnergyContainerItem.java" md5: a985d1343e0dc56d2084c49aa2bf54ab
+endProcessing "cofh\api\energy\IEnergyContainerItem.java"
+
+startProcessing "cofh\api\energy\IEnergyHandler.java" md5: 79f1b780132205822680a19fc2373de2
+endProcessing "cofh\api\energy\IEnergyHandler.java"
+
+startProcessing "cofh\api\energy\IEnergyProvider.java" md5: 7796bb09eabdac41fe1db0d5d240644a
+endProcessing "cofh\api\energy\IEnergyProvider.java"
+
+startProcessing "cofh\api\energy\IEnergyReceiver.java" md5: 6c440aac1e9247f101fa29208b078ad7
+endProcessing "cofh\api\energy\IEnergyReceiver.java"
+
+startProcessing "cofh\api\energy\IEnergyStorage.java" md5: ae744caca22eed0cae2f46644ce8472b
+endProcessing "cofh\api\energy\IEnergyStorage.java"
+
+startProcessing "cofh\api\energy\ItemEnergyContainer.java" md5: 069cb9b33e6ee38d8adec0c0ed6f67d0
+endProcessing "cofh\api\energy\ItemEnergyContainer.java"
+
+startProcessing "cofh\api\energy\TileEnergyHandler.java" md5: 1b8b3674b98d7f994949237326984250
+endProcessing "cofh\api\energy\TileEnergyHandler.java"
+
+startProcessing "cofh\api\energy\package-info.java" md5: a3b6df5f87d9617085c799f1191b09aa
+endProcessing "cofh\api\energy\package-info.java"
+
+startProcessing "cofh\api\package-info.java" md5: 039693518a46372672cdba745f38fcf1
+endProcessing "cofh\api\package-info.java"
+
+startProcessing "com\udojava\evalex\Expression.java" md5: bfbd3cc9e0c16f5af73270c42f8f3252
+endProcessing "com\udojava\evalex\Expression.java"
+
+startProcessing "net\silentchaos512\gems\api\IBlockPlacer.java" md5: f506b86e92ccdbec38b82e2f950339dd
+endProcessing "net\silentchaos512\gems\api\IBlockPlacer.java"
+
+startProcessing "net\silentchaos512\supermultidrills\SuperMultiDrills.java" md5: 14be8d8de0abdb6e352902fd9175ea34
+endProcessing "net\silentchaos512\supermultidrills\SuperMultiDrills.java"
+
+startProcessing "net\silentchaos512\supermultidrills\TileGenerator.java" md5: c36915042c290509ccb702bee54f2273
+endProcessing "net\silentchaos512\supermultidrills\TileGenerator.java"
+
+startProcessing "net\silentchaos512\supermultidrills\block\BlockGenerator.java" md5: 2c8c937b4c85430b2f3ed2b8797a501e
+endProcessing "net\silentchaos512\supermultidrills\block\BlockGenerator.java"
+
+startProcessing "net\silentchaos512\supermultidrills\block\ModBlocks.java" md5: 0eaa311233e4dc41c4d46e0d65da8f21
+endProcessing "net\silentchaos512\supermultidrills\block\ModBlocks.java"
+
+startProcessing "net\silentchaos512\supermultidrills\client\render\DrillItemOverridesHandler.java" md5: c1524cd86b279830d788bad092eeba32
+endProcessing "net\silentchaos512\supermultidrills\client\render\DrillItemOverridesHandler.java"
+
+startProcessing "net\silentchaos512\supermultidrills\client\render\ModelDrill.java" md5: 8815461a784a94e5d8d1cf77d794e4d7
+endProcessing "net\silentchaos512\supermultidrills\client\render\ModelDrill.java"
+
+startProcessing "net\silentchaos512\supermultidrills\compat\jei\SuperMultiDrillsPlugin.java" md5: d057b3172ea5944c9615d57bbebfd06d
+endProcessing "net\silentchaos512\supermultidrills\compat\jei\SuperMultiDrillsPlugin.java"
+
+startProcessing "net\silentchaos512\supermultidrills\compat\wit\DrillsWitHandler.java" md5: b5cedcf455a51fee46128c46b7ed4ca6
+endProcessing "net\silentchaos512\supermultidrills\compat\wit\DrillsWitHandler.java"
+
+startProcessing "net\silentchaos512\supermultidrills\configuration\Config.java" md5: e174dcc2898bb6cb656ed84a48264e91
+endProcessing "net\silentchaos512\supermultidrills\configuration\Config.java"
+
+startProcessing "net\silentchaos512\supermultidrills\core\handler\DrillsClientEvents.java" md5: 85ab3949ef2becb58a4b9e808dccbc85
+endProcessing "net\silentchaos512\supermultidrills\core\handler\DrillsClientEvents.java"
+
+startProcessing "net\silentchaos512\supermultidrills\core\handler\DrillsCommonEvents.java" md5: 15cc5facd75e3229d29a44148524bde0
+endProcessing "net\silentchaos512\supermultidrills\core\handler\DrillsCommonEvents.java"
+
+startProcessing "net\silentchaos512\supermultidrills\gui\GuiGenerator.java" md5: 457636218c41bc1d9d5477380df75174
+endProcessing "net\silentchaos512\supermultidrills\gui\GuiGenerator.java"
+
+startProcessing "net\silentchaos512\supermultidrills\gui\GuiHandlerSuperMultiDrills.java" md5: 91c153eb643aec3bb6cdde2eedbf95ab
+endProcessing "net\silentchaos512\supermultidrills\gui\GuiHandlerSuperMultiDrills.java"
+
+startProcessing "net\silentchaos512\supermultidrills\inventory\ContainerGenerator.java" md5: cc9cc82df4dc90af95b42af2bc85cfd9
+endProcessing "net\silentchaos512\supermultidrills\inventory\ContainerGenerator.java"
+
+startProcessing "net\silentchaos512\supermultidrills\item\CraftingItem.java" md5: 850be5dc9a393e02c00113b340e84ea6
+endProcessing "net\silentchaos512\supermultidrills\item\CraftingItem.java"
+
+startProcessing "net\silentchaos512\supermultidrills\item\Drill.java" md5: 6e27c7f564b2d88a6aa99642596e8ac7
+endProcessing "net\silentchaos512\supermultidrills\item\Drill.java"
+
+startProcessing "net\silentchaos512\supermultidrills\item\DrillBattery.java" md5: 995660bd3140bd48d96314708e55fa39
+endProcessing "net\silentchaos512\supermultidrills\item\DrillBattery.java"
+
+startProcessing "net\silentchaos512\supermultidrills\item\DrillChassis.java" md5: 0b0e5b3ab203ec8d1d7f9f2f90b22d00
+endProcessing "net\silentchaos512\supermultidrills\item\DrillChassis.java"
+
+startProcessing "net\silentchaos512\supermultidrills\item\DrillHead.java" md5: 15bd75f93fe37d5f9987c09c3fb98360
+endProcessing "net\silentchaos512\supermultidrills\item\DrillHead.java"
+
+startProcessing "net\silentchaos512\supermultidrills\item\DrillMotor.java" md5: 4b3ce7149b345a2c5260cf1e871a9209
+endProcessing "net\silentchaos512\supermultidrills\item\DrillMotor.java"
+
+startProcessing "net\silentchaos512\supermultidrills\item\DrillUpgrade.java" md5: dab47d7852540a4fbe9162465edfb442
+endProcessing "net\silentchaos512\supermultidrills\item\DrillUpgrade.java"
+
+startProcessing "net\silentchaos512\supermultidrills\item\ModItems.java" md5: df1a398d3d16d990c238db196324a2aa
+endProcessing "net\silentchaos512\supermultidrills\item\ModItems.java"
+
+startProcessing "net\silentchaos512\supermultidrills\lib\ColorHandlers.java" md5: c0f0e0cba14119f4ee4ae9af4fb695ad
+endProcessing "net\silentchaos512\supermultidrills\lib\ColorHandlers.java"
+
+startProcessing "net\silentchaos512\supermultidrills\lib\DrillAreaMiner.java" md5: 8250b51bf8ad472af575256d8f6d889f
+endProcessing "net\silentchaos512\supermultidrills\lib\DrillAreaMiner.java"
+
+startProcessing "net\silentchaos512\supermultidrills\lib\EnumDrillMaterial.java" md5: ec8d229fb1eaf4cd95994f283f8fec5f
+endProcessing "net\silentchaos512\supermultidrills\lib\EnumDrillMaterial.java"
+
+startProcessing "net\silentchaos512\supermultidrills\lib\Names.java" md5: 37c728b7d82fcdd184b6b3e211c5bf3f
+endProcessing "net\silentchaos512\supermultidrills\lib\Names.java"
+
+startProcessing "net\silentchaos512\supermultidrills\lib\Strings.java" md5: 4f3b97c85661fd09f9cee596ac1ca1c3
+endProcessing "net\silentchaos512\supermultidrills\lib\Strings.java"
+
+startProcessing "net\silentchaos512\supermultidrills\proxy\DrillsClientProxy.java" md5: 03ff9612fb40b0e5218c60431d61ca10
+endProcessing "net\silentchaos512\supermultidrills\proxy\DrillsClientProxy.java"
+
+startProcessing "net\silentchaos512\supermultidrills\proxy\DrillsCommonProxy.java" md5: 52b7ada6e292af44a2d70efefadb7d1c
+endProcessing "net\silentchaos512\supermultidrills\proxy\DrillsCommonProxy.java"
+
+startProcessing "net\silentchaos512\supermultidrills\recipe\RecipeCraftDrill.java" md5: ffcaeb9ac5e2ed8f8f752a333d10b3c3
+endProcessing "net\silentchaos512\supermultidrills\recipe\RecipeCraftDrill.java"
+
+startProcessing "net\silentchaos512\supermultidrills\recipe\RecipeUpgradeDrill.java" md5: fd25bab2ee6b3673e85c53320890dd7d
+endProcessing "net\silentchaos512\supermultidrills\recipe\RecipeUpgradeDrill.java"
+
+startProcessing "net\silentchaos512\supermultidrills\util\InventoryHelper.java" md5: 55672170280b1dddc4fa2a41de6e33a2
+endProcessing "net\silentchaos512\supermultidrills\util\InventoryHelper.java"
+
