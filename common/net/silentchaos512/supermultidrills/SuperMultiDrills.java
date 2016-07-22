@@ -112,9 +112,6 @@ public class SuperMultiDrills {
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
 
-    if (event.getSide() == Side.CLIENT && Loader.isModLoaded("JustEnoughItems")) {
-      SuperMultiDrillsPlugin.doItemBlacklisting();
-    }
   }
 
   public static CreativeTabs creativeTab = new CreativeTabs("tabSuperMultiDrills") {

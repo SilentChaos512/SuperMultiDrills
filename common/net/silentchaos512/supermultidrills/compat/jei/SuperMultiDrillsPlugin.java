@@ -20,6 +20,7 @@ public class SuperMultiDrillsPlugin implements IModPlugin {
 
     jeiHelper = reg.getJeiHelpers();
     IGuiHelper guiHelper = jeiHelper.getGuiHelper();
+    doItemBlacklisting();
   }
 
   public static void doItemBlacklisting() {
