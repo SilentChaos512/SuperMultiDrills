@@ -155,6 +155,9 @@ public class RecipeUpgradeDrill implements IRecipe {
     }
 
     int meta = upgrade.getItemDamage();
+    int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, drill);
+    int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, drill);
+
     if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_SAW)) {
       // Saw
       if (ModItems.drill.getTagBoolean(drill, Drill.NBT_SAW)) {
@@ -163,13 +166,13 @@ public class RecipeUpgradeDrill implements IRecipe {
       ModItems.drill.setTagBoolean(drill, Drill.NBT_SAW, true);
     } else if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_FORTUNE)) {
       // Fortune
-      if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, drill) > 0) {
+      if (fortuneLevel >= 3 || silkTouchLevel > 0) {
         return null;
       }
       return this.increaseEnchantmentLevel(drill, Enchantments.FORTUNE, 3);
     } else if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_SILK)) {
       // Silk
-      if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, drill) > 0) {
+      if (silkTouchLevel >= 1 || fortuneLevel > 0) {
         return null;
       }
       return this.increaseEnchantmentLevel(drill, Enchantments.SILK_TOUCH, 1);
