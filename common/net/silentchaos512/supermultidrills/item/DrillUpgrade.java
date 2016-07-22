@@ -10,6 +10,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.lib.item.ItemNamedSubtypesSorted;
+import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.lib.Names;
 
@@ -31,8 +32,12 @@ public class DrillUpgrade extends ItemNamedSubtypesSorted {
       return;
     }
 
-    list.add(TextFormatting.DARK_GRAY
-        + SuperMultiDrills.localizationHelper.getItemSubText(Names.DRILL_UPGRADE, "desc"));
+    LocalizationHelper loc = SuperMultiDrills.localizationHelper;
+    String upgradeName = NAMES[stack.getItemDamage()];
+
+    for (String line : loc.getItemDescriptionLines(upgradeName))
+      list.add(TextFormatting.GREEN + line);
+    list.add(TextFormatting.DARK_GRAY + loc.getItemSubText(Names.DRILL_UPGRADE, "desc"));
   }
 
   @Override
@@ -71,8 +76,8 @@ public class DrillUpgrade extends ItemNamedSubtypesSorted {
 
     // Area Miner
     ItemStack areaMiner = new ItemStack(this, 1, getMetaFor(Names.UPGRADE_AREA_MINER));
-    GameRegistry.addRecipe(new ShapedOreRecipe(areaMiner, "oto", "oto", "rgr", 'o', "obsidian",
-        't', Blocks.TNT, 'r', rod, 'g', gold));
+    GameRegistry.addRecipe(new ShapedOreRecipe(areaMiner, "oto", "oto", "rgr", 'o', "obsidian", 't',
+        Blocks.TNT, 'r', rod, 'g', gold));
 
     // Graviton Generator
     ItemStack gravitonGenerator = new ItemStack(this, 1,
