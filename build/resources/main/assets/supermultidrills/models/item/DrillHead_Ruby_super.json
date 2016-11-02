@@ -1,9 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "SuperMultiDrills:items/Blank",
-    "layer1": "SuperMultiDrills:items/DrillHead_Ruby",
-    "layer2": "SuperMultiDrills:items/DrillHead_Super"
-  }
-}
-
