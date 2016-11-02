@@ -45,10 +45,6 @@ public class DrillMotor extends ItemSL {
       addRecipesMekanism();
       addVanilla = false;
     }
-    if (SuperMultiDrills.instance.foundThermalFoundation) {
-      addRecipesThermalFoundation();
-      addVanilla = false;
-    }
     if (addVanilla) {
       addRecipesVanilla();
     }
@@ -105,26 +101,23 @@ public class DrillMotor extends ItemSL {
 
   private void addRecipesMekanism() {
 
-    // ItemStack rod = ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1);
-    //
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), " im", "gmg", "mi ", 'i',
-    // "ingotIron", 'm', rod, 'g', "alloyAdvanced"));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), " im", "gmg", "mi ", 'i',
-    // "ingotOsmium", 'm', rod, 'g', "alloyElite"));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), " im", "gmg", "mi ", 'i',
-    // "ingotRefinedObsidian", 'm', rod, 'g', "alloyUltimate"));
-  }
+    ItemStack rod = ModItems.craftingItem.magneticRod;
 
-  private void addRecipesThermalFoundation() {
-
-    // ItemStack rod = ModItems.craftingItem.getStack(Names.MAGNETIC_ROD, 1);
-    //
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), " im", "gmg", "mi ", 'i',
-    // "ingotIron", 'm', rod, 'g', "gearTin"));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), " im", "gmg", "mi ", 'i',
-    // "gemDiamond", 'm', rod, 'g', "gearElectrum"));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), " im", "gmg", "mi ", 'i',
-    // "ingotSilver", 'm', rod, 'g', "gearEnderium"));
+    // Motor0
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "icm", "ama", "mci", 'i',
+        "ingotTin", 'c', "ingotCopper", 'a', "ingotCopper", 'm', rod));
+    // Motor1
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "icm", "ama", "mci", 'i',
+        "ingotBronze", 'c', "circuitBasic", 'a', "ingotOsmium", 'm', rod));
+    // Motor2
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "icm", "ama", "mci", 'i',
+        "gemDiamond", 'c', "circuitAdvanced", 'a', "alloyAdvanced", 'm', rod));
+    // Motor3
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), "icm", "ama", "mci", 'i',
+        "ingotRefinedGlowstone", 'c', "circuitElite", 'a', "alloyElite", 'm', rod));
+    // Motor4
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 4), "icm", "ama", "mci", 'i',
+        "ingotRefinedObsidian", 'c', "circuitUltimate", 'a', "alloyUltimate", 'm', rod));
   }
 
   private void addRecipesVanilla() {

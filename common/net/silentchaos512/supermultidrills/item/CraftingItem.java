@@ -17,6 +17,12 @@ public class CraftingItem extends ItemNamedSubtypesSorted {
   public static final String[] NAMES = { Names.MAGNETIC_ROD, Names.HEAVY_MAGNETIC_ROD,
       Names.BATTERY_GAUGE, Names.REDSTONE_ALLOY_INGOT, Names.REDSTONE_ALLOY_PLATE };
 
+  public ItemStack magneticRod = getStack(Names.MAGNETIC_ROD);
+  public ItemStack heavyMagneticRod = getStack(Names.HEAVY_MAGNETIC_ROD);
+  public ItemStack batteryGauge = getStack(Names.BATTERY_GAUGE);
+  public ItemStack redstoneAlloyIngot = getStack(Names.REDSTONE_ALLOY_INGOT);
+  public ItemStack redstoneAlloyPlate = getStack(Names.REDSTONE_ALLOY_PLATE);
+
   public CraftingItem() {
 
     super(NAMES, NAMES, SuperMultiDrills.MOD_ID, Names.CRAFTING_ITEM);

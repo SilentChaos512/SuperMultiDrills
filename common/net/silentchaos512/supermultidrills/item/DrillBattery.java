@@ -46,14 +46,11 @@ public class DrillBattery extends ItemSL implements IEnergyContainerItem {
       addRecipesEnderIO();
       addVanilla = false;
     }
-    // if (SuperMultiDrills.instance.foundMekanism) {
-    // addRecipesMekanism();
-    // addVanilla = false;
-    // }
-    // if (SuperMultiDrills.instance.foundThermalFoundation) {
-    // addRecipesThermalFoundation();
-    // addVanilla = false;
-    // }
+    if (SuperMultiDrills.instance.foundMekanism) {
+      addRecipesMekanism();
+      addVanilla = false;
+    }
+
     if (addVanilla) {
       addRecipesVanilla();
     }
@@ -92,20 +89,20 @@ public class DrillBattery extends ItemSL implements IEnergyContainerItem {
    */
   private void addRecipesEnderIO() {
 
-     Item itemCapacitor = (Item) Item.getByNameOrId("EnderIO:itemBasicCapacitor");
-     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "iyi", "iri", 'i',
-     "ingotIron", 'r', "dustRedstone", 'y', Items.POTATO));
-     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xrx", "iri", 'i',
-     "ingotIron", 'r', "dustRedstone", 'x', "ingotConductiveIron"));
-     GameRegistry.addRecipe(
-     new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-     "dustRedstone", 'x', "ingotElectricalSteel", 'y', new ItemStack(itemCapacitor, 1, 0)));
-     GameRegistry.addRecipe(
-     new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-     "dustRedstone", 'x', "ingotEnergeticAlloy", 'y', new ItemStack(itemCapacitor, 1, 1)));
-     GameRegistry.addRecipe(
-     new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-     "dustRedstone", 'x', "ingotVibrantAlloy", 'y', new ItemStack(itemCapacitor, 1, 2)));
+    Item itemCapacitor = (Item) Item.getByNameOrId("EnderIO:itemBasicCapacitor");
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "iyi", "iri", 'i',
+        "ingotIron", 'r', "dustRedstone", 'y', Items.POTATO));
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xrx", "iri", 'i',
+        "ingotIron", 'r', "dustRedstone", 'x', "ingotConductiveIron"));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+            "dustRedstone", 'x', "ingotElectricalSteel", 'y', new ItemStack(itemCapacitor, 1, 0)));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+            "dustRedstone", 'x', "ingotEnergeticAlloy", 'y', new ItemStack(itemCapacitor, 1, 1)));
+    GameRegistry.addRecipe(
+        new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i', "ingotIron", 'r',
+            "dustRedstone", 'x', "ingotVibrantAlloy", 'y', new ItemStack(itemCapacitor, 1, 2)));
   }
 
   /**
@@ -113,39 +110,24 @@ public class DrillBattery extends ItemSL implements IEnergyContainerItem {
    */
   private void addRecipesMekanism() {
 
-    // ItemStack tier0 = new ItemStack(this, 1, 0);
-    // ItemStack tier1 = new ItemStack(this, 1, 1);
-    // ItemStack tier2 = new ItemStack(this, 1, 2);
-    // ItemStack tier3 = new ItemStack(this, 1, 3);
-    // ItemStack tier4 = new ItemStack(this, 1, 4);
-    //
-    // GameRegistry.addRecipe(new ShapedOreRecipe(tier0, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-    // "dustRedstone", 'x', "ingotCopper", 'y', Items.potato));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(tier1, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-    // "dustRedstone", 'x', "ingotCopper", 'y', "ingotSteel"));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(tier2, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-    // "dustRedstone", 'x', "ingotOsmium", 'y', tier1));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(tier3, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-    // "dustRedstone", 'x', "alloyAdvanced", 'y', tier2));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(tier4, "iri", "xyx", "iri", 'i', "ingotIron", 'r',
-    // "dustRedstone", 'x', "alloyElite", 'y', tier3));
-  }
+    String line1 = "iwi";
+    String line2 = "rcr";
 
-  /*
-   * Thermal Foundation recipes
-   */
-  private void addRecipesThermalFoundation() {
-
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 0), "iri", "xyx", "iri", 'i',
-    // "ingotIron", 'r', "dustRedstone", 'x', "ingotCopper", 'y', Items.potato));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 1), "iri", "xyx", "iri", 'i',
-    // "ingotIron", 'r', "dustRedstone", 'x', "ingotLead", 'y', "dustSulfur"));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 2), "iri", "xyx", "iri", 'i',
-    // "ingotIron", 'r', "dustRedstone", 'x', "ingotInvar", 'y', new ItemStack(this, 1, 1)));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 3), "iri", "xyx", "iri", 'i',
-    // "ingotIron", 'r', "dustRedstone", 'x', "ingotElectrum", 'y', new ItemStack(this, 1, 2)));
-    // GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, 4), "iri", "xyx", "iri", 'i',
-    // "ingotIron", 'r', "dustRedstone", 'x', "ingotEnderium", 'y', new ItemStack(this, 1, 3)));
+    // Tater
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(0), line1, line2, line1, 'i', "ingotIron",
+        'r', "dustRedstone", 'w', "ingotCopper", 'c', Items.POTATO));
+    // Battery 1
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(1), line1, line2, line1, 'i', "ingotIron",
+        'r', "dustRedstone", 'w', "battery", 'c', "ingotCopper"));
+    // Battery 2
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(2), line1, line2, line1, 'i', "ingotIron",
+        'r', "alloyAdvanced", 'w', "battery", 'c', getBattery(1)));
+    // Battery 3
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(3), line1, line2, line1, 'i', "ingotIron",
+        'r', "alloyElite", 'w', "battery", 'c', getBattery(2)));
+    // Battery 4
+    GameRegistry.addRecipe(new ShapedOreRecipe(getBattery(4), line1, line2, line1, 'i', "ingotIron",
+        'r', "alloyUltimate", 'w', "battery", 'c', getBattery(3)));
   }
 
   /**

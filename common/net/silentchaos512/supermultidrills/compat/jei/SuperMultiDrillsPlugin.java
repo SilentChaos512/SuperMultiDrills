@@ -5,7 +5,9 @@ import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.lib.EnumDrillMaterial;
@@ -40,5 +42,19 @@ public class SuperMultiDrillsPlugin implements IModPlugin {
   @Override
   public void onRuntimeAvailable(IJeiRuntime arg0) {
 
+  }
+
+  @Override
+  public void registerIngredients(IModIngredientRegistration arg0) {
+
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void registerItemSubtypes(ISubtypeRegistry arg0) {
+
+    // TODO Auto-generated method stub
+    
   }
 }

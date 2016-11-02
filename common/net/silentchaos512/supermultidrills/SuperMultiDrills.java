@@ -55,7 +55,6 @@ public class SuperMultiDrills {
   };
 
   public boolean foundEnderIO = false;
-  public boolean foundThermalFoundation = false;
   public boolean foundMekanism = false;
   public boolean foundFunOres = false;
   public boolean foundWit = false;
@@ -88,7 +87,6 @@ public class SuperMultiDrills {
     foundFunOres = Loader.isModLoaded("FunOres");
     foundEnderIO = Loader.isModLoaded("EnderIO");
     foundMekanism = Loader.isModLoaded("Mekanism");
-    foundThermalFoundation = Loader.isModLoaded("ThermalFoundation");
     foundWit = Loader.isModLoaded("WIT");
 
     // Log found mods.
@@ -98,8 +96,6 @@ public class SuperMultiDrills {
       logHelper.info("Found Ender IO!");
     if (foundMekanism)
       logHelper.info("Found Mekanism!");
-    if (foundThermalFoundation)
-      logHelper.info("Found Thermal Foundation!");
     if (foundWit)
       logHelper.info("Found WIT!");
 
