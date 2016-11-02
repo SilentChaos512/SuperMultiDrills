@@ -20,6 +20,14 @@ public class DrillUpgrade extends ItemNamedSubtypesSorted {
       Names.UPGRADE_FORTUNE, Names.UPGRADE_SHARPNESS, Names.UPGRADE_AREA_MINER,
       Names.UPGRADE_GRAVITON_GENERATOR };
 
+  public ItemStack saw = getStack(Names.UPGRADE_SAW);
+  public ItemStack speed = getStack(Names.UPGRADE_SPEED);
+  public ItemStack silk = getStack(Names.UPGRADE_SILK);
+  public ItemStack fortune = getStack(Names.UPGRADE_FORTUNE);
+  public ItemStack sharpness = getStack(Names.UPGRADE_SHARPNESS);
+  public ItemStack areaMiner = getStack(Names.UPGRADE_AREA_MINER);
+  public ItemStack gravitonGenerator = getStack(Names.UPGRADE_GRAVITON_GENERATOR);
+
   public DrillUpgrade() {
 
     super(NAMES, NAMES, SuperMultiDrills.MOD_ID, Names.DRILL_UPGRADE);

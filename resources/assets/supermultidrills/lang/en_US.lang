@@ -4,6 +4,9 @@ itemGroup.tabSuperMultiDrills=Super Multi-Drills
 
 # Item localizations
 
+item.supermultidrills:DisassemblyKit.name=Disassembly Kit
+item.supermultidrills:DisassemblyKit.desc=Craft with a drill to get all the parts back.
+
 item.supermultidrills:Drill.name=Multi-Drill
 item.supermultidrills:Drill.desc1=The exact appearance and stats will depend
 item.supermultidrills:Drill.desc2=on the parts used.

@@ -11,10 +11,11 @@ public class InventoryHelper {
 
   public static void addItemToInventoryOrDrop(EntityPlayer player, ItemStack stack) {
 
-    if (!player.inventory.addItemStackToInventory(stack)) {
+    ItemStack toDrop = stack.copy();
+    if (!player.inventory.addItemStackToInventory(toDrop) && !player.worldObj.isRemote) {
       // Spawn item entity
       EntityItem entityItem = new EntityItem(player.worldObj, player.posX, player.posY + 1.5,
-          player.posZ, stack);
+          player.posZ, toDrop);
       player.worldObj.spawnEntityInWorld(entityItem);
     }
   }

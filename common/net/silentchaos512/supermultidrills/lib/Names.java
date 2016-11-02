@@ -9,6 +9,7 @@ public class Names {
   public static final String DRILL_MOTOR = "DrillMotor";
   public static final String DRILL_BATTERY = "DrillBattery";
   public static final String DRILL_CHASSIS = "DrillChassis";
+  public static final String DISASSEMBLER = "DisassemblyKit";
 
   // Crafting items
   public static final String CRAFTING_ITEM = "CraftingItem";

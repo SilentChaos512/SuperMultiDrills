@@ -18,6 +18,7 @@ public class ModItems {
   public static DrillChassis drillChassis = new DrillChassis();
   public static DrillUpgrade drillUpgrade = new DrillUpgrade();
   public static CraftingItem craftingItem = new CraftingItem();
+  public static ItemDisassemblyKit disassemblyKit = new ItemDisassemblyKit();
 
   public static void init(SRegistry reg) {
 
@@ -28,18 +29,6 @@ public class ModItems {
     reg.registerItem(drillChassis);
     reg.registerItem(drillUpgrade);
     reg.registerItem(craftingItem);
-  }
-
-  public static void initItemRecipes(SRegistry reg) {
-
-    try {
-      reg.addRecipeHandler(RecipeCraftDrill.class, "RecipeCraftDrill", Category.SHAPELESS,
-          "after:minecraft:shapeless");
-      reg.addRecipeHandler(RecipeUpgradeDrill.class, "RecipeUpgradeDrill", Category.SHAPELESS,
-          "after:minecraft:shapeless");
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    reg.registerItem(disassemblyKit);
   }
 }

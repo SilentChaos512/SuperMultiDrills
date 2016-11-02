@@ -14,15 +14,14 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import net.silentchaos512.lib.registry.SRegistry;
 import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.lib.util.LogHelper;
 import net.silentchaos512.supermultidrills.block.ModBlocks;
-import net.silentchaos512.supermultidrills.compat.jei.SuperMultiDrillsPlugin;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.proxy.DrillsCommonProxy;
+import net.silentchaos512.supermultidrills.recipe.ModRecipes;
 
 @Mod(modid = SuperMultiDrills.MOD_ID, name = SuperMultiDrills.MOD_NAME, version = SuperMultiDrills.VERSION_NUMBER)
 public class SuperMultiDrills {
@@ -100,7 +99,7 @@ public class SuperMultiDrills {
       logHelper.info("Found WIT!");
 
     // Recipes
-    ModItems.initItemRecipes(registry);
+    ModRecipes.init(registry);
 
     proxy.init(registry);
   }
