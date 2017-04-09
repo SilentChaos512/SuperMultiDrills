@@ -95,7 +95,7 @@ public class ModelDrill implements IPerspectiveAwareModel {
 
     double charge = 1.0 - ModItems.drill.getDurabilityForDisplay(drill);
     final int levels = DrillChassis.BATTERY_GAUGE_LEVELS;
-    int index = MathHelper.clamp_int((int) Math.round(levels * charge), 0, levels - 1);
+    int index = MathHelper.clamp((int) Math.round(levels * charge), 0, levels - 1);
     ModelResourceLocation modelLocation = ModItems.drillChassis.getModelForChargeLevel(index);
     return modelManager.getModel(modelLocation);
   }

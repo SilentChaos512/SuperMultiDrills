@@ -37,6 +37,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -44,9 +45,11 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.silentchaos512.gems.api.IBlockPlacer;
 import net.silentchaos512.lib.registry.IRegistryObject;
+import net.silentchaos512.lib.util.ItemHelper;
 import net.silentchaos512.lib.util.LocalizationHelper;
+import net.silentchaos512.lib.util.StackHelper;
+import net.silentchaos512.lib.util.WorldHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
-import net.silentchaos512.supermultidrills.client.render.ModelDrill;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.lib.ColorHandlers;
 import net.silentchaos512.supermultidrills.lib.DrillAreaMiner;
@@ -195,8 +198,18 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
     }
   }
 
-  @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  // getSubItems 1.10.2
+  public void func_150895_a(Item item, CreativeTabs tab, List<ItemStack> list) {
+
+    compatGetSubItems(item, tab, list);
+  }
+
+  public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+
+    compatGetSubItems(item, tab, list);
+  }
+
+  protected void compatGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     ItemStack drill = new ItemStack(item);
     setTag(drill, NBT_CHASSIS, -1);
@@ -478,8 +491,14 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
     tags.setString(key, value);
   }
 
-  @Override
+  // 1.10.2 (Forge method, so no obfuscation)
   public int getHarvestLevel(ItemStack stack, String toolClass) {
+
+    return getHarvestLevel(stack, toolClass, null, null);
+  }
+
+  @Override
+  public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState state) {
 
     int motorLevel = this.getTag(stack, NBT_MOTOR);
     switch (motorLevel) {
@@ -509,34 +528,6 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
     }
   }
 
-  // Can harvest block? Direct copy from ItemPickaxe.
-  // public boolean func_150897_b(Block block) {
-  //
-  // return block == Blocks.obsidian ? this.toolMaterial.getHarvestLevel() == 3
-  // : (block != Blocks.diamond_block
-  // && block != Blocks.diamond_ore
-  // ? (block != Blocks.emerald_ore
-  // && block != Blocks.emerald_block
-  // ? (block != Blocks.gold_block
-  // && block != Blocks.gold_ore
-  // ? (block != Blocks.iron_block
-  // && block != Blocks.iron_ore
-  // ? (block != Blocks.lapis_block && block != Blocks.lapis_ore
-  // ? (block != Blocks.redstone_ore
-  // && block != Blocks.lit_redstone_ore
-  // ? (block.getMaterial() == Material.ROCK ? true
-  // : (block.getMaterial() == Material.IRON
-  // ? true
-  // : block
-  // .getMaterial() == Material.ANVIL))
-  // : this.toolMaterial.getHarvestLevel() >= 2)
-  // : this.toolMaterial.getHarvestLevel() >= 1)
-  // : this.toolMaterial.getHarvestLevel() >= 1)
-  // : this.toolMaterial.getHarvestLevel() >= 2)
-  // : this.toolMaterial.getHarvestLevel() >= 2)
-  // : this.toolMaterial.getHarvestLevel() >= 2);
-  // }
-
   @Override
   public int getItemEnchantability(ItemStack stack) {
 
@@ -546,7 +537,7 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
   @Override
   public boolean hasEffect(ItemStack stack) {
 
-    return false; // Prevents the enchanted item glowing effect
+    return false; // Prevents the enchanted item glowing effect (broken for multi-layer models)
   }
 
   @Override
@@ -563,7 +554,7 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
     float hardness = state.getBlockHardness(world, pos);
     if (hardness != 0.0f) {
       int cost = getEnergyToBreakBlock(stack, hardness);
-      if (Config.printMiningCost && player.worldObj.isRemote) {
+      if (Config.printMiningCost && player.world.isRemote) {
         String str = "%d RF (%.2f hardness)";
         str = String.format(str, cost, hardness);
         SuperMultiDrills.logHelper.info(str);
@@ -606,9 +597,9 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
 
     if (slot == EntityEquipmentSlot.MAINHAND) {
       double damage = this.getDrillMaterial(stack).getDamageVsEntity() + 4.0;
-      map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(),
+      map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
           new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", damage, 0));
-      map.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(),
+      map.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
           new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -3.0f, 0));
     }
     return map;
@@ -674,7 +665,7 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
   public int getDamage(ItemStack stack) {
 
     int value = (int) (100 * this.getDurabilityForDisplay(stack));
-    return MathHelper.clamp_int(value, 0, 99);
+    return MathHelper.clamp(value, 0, 99);
   }
 
   @Override
@@ -697,8 +688,7 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
     } else if (pass == ColorHandlers.TINT_INDEX_HEAD) {
       EnumDrillMaterial material = getDrillMaterial(stack);
       return material.getTint();
-    }
-    else {
+    } else {
       return 0xFFFFFF;
     }
   }
@@ -718,23 +708,35 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
     return (double) (energyMax - energy) / (double) energyMax;
   }
 
+  // 1.10.2 onItemUse
+  public EnumActionResult func_180614_a(ItemStack stack, EntityPlayer player, World world, BlockPos pos,
+      EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+
+    return onItemUse(player, world, pos, hand, side, hitX, hitY, hitZ);
+  }
+
   @Override
-  public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos,
+  public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos,
       EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
     // If block is in offhand, allow that to place instead.
-    ItemStack stackOffHand = player.inventory.offHandInventory[0];
-    if (stackOffHand != null && stackOffHand.getItem() instanceof ItemBlock) {
+    ItemStack stackOffHand = player.getHeldItemOffhand();
+    if (StackHelper.isValid(stackOffHand) && stackOffHand.getItem() instanceof ItemBlock) {
       ItemBlock itemBlock = (ItemBlock) stackOffHand.getItem();
-      if (itemBlock.canPlaceBlockOnSide(world, pos, side, player, stackOffHand)) {
+      BlockPos target = pos;
+
+      if (!itemBlock.getBlock().isReplaceable(world, pos))
+        target = pos.offset(side);
+
+      if (player.canPlayerEdit(target, side, stackOffHand) && WorldHelper.mayPlace(world,
+          itemBlock.block, target, false, side, player, stackOffHand))
         return EnumActionResult.PASS;
-      }
     }
 
     EnumActionResult result = EnumActionResult.PASS;
     int toolSlot = player.inventory.currentItem;
     int itemSlot = toolSlot + 1;
-    ItemStack nextStack = null;
+    ItemStack nextStack = StackHelper.empty();
     ItemStack lastStack = player.inventory.getStackInSlot(8); // Slot 9 in hotbar
 
     if (toolSlot < 8) {
@@ -742,13 +744,13 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
       nextStack = player.inventory.getStackInSlot(itemSlot);
 
       // If there's nothing there we can use, try slot 9 instead.
-      if (nextStack == null || (!(nextStack.getItem() instanceof ItemBlock)
+      if (StackHelper.isEmpty(nextStack) || (!(nextStack.getItem() instanceof ItemBlock)
           && !(nextStack.getItem() instanceof IBlockPlacer))) {
         nextStack = lastStack;
         itemSlot = 8;
       }
 
-      if (nextStack != null) {
+      if (StackHelper.isValid(nextStack)) {
         Item item = nextStack.getItem();
         if (item instanceof ItemBlock || item instanceof IBlockPlacer) {
           BlockPos targetPos = pos.offset(side);
@@ -763,17 +765,26 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
             int pz = targetPos.getZ();
             AxisAlignedBB blockBounds = new AxisAlignedBB(px, py, pz, px + 1, py + 1, pz + 1);
             AxisAlignedBB playerBounds = player.getEntityBoundingBox();
-            Block block = ((ItemBlock) item).getBlock();
-            IBlockState state = block.getStateFromMeta(nextStack.getItemDamage());
+            ItemBlock itemBlock = (ItemBlock) item;
+            Block block = itemBlock.getBlock();
+            IBlockState state = block.getStateFromMeta(itemBlock.getMetadata(nextStack));
             if (state.getMaterial().blocksMovement() && playerBounds.intersectsWith(blockBounds)) {
-              return EnumActionResult.PASS;
+              return EnumActionResult.FAIL;
             }
           }
 
-          result = item.onItemUse(nextStack, player, world, pos, hand, side, hitX, hitY, hitZ);
-          if (nextStack.stackSize < 1) {
-            nextStack = null;
-            player.inventory.setInventorySlotContents(itemSlot, null);
+          int prevSize = StackHelper.getCount(nextStack);
+          result = ItemHelper.useItemAsPlayer(nextStack, player, world, pos, side, hitX, hitY, hitZ);
+
+          // Don't consume in creative mode?
+          if (player.capabilities.isCreativeMode) {
+            StackHelper.setCount(nextStack, prevSize);
+          }
+
+          // Remove empty stacks.
+          if (StackHelper.isEmpty(nextStack)) {
+            nextStack = StackHelper.empty();
+            player.inventory.setInventorySlotContents(itemSlot, StackHelper.empty());
           }
         }
       }
@@ -785,7 +796,7 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
   @Override
   public List<ModelResourceLocation> getVariants() {
 
-    return Lists.newArrayList(new ModelResourceLocation(getFullName(), "inventory"));
+    return Lists.newArrayList(new ModelResourceLocation(getFullName().toLowerCase(), "inventory"));
   }
 
   @Override
@@ -797,7 +808,7 @@ public class Drill extends ItemTool implements IRegistryObject, IEnergyContainer
   @Override
   public String getModId() {
 
-    return SuperMultiDrills.MOD_ID.toLowerCase();
+    return SuperMultiDrills.MOD_ID;
   }
 
   @Override

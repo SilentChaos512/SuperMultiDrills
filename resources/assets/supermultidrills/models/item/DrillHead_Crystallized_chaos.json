@@ -1,9 +1,9 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "SuperMultiDrills:items/Blank",
-    "layer1": "SuperMultiDrills:items/DrillHead_Crystallized_chaos",
-    "layer2": "SuperMultiDrills:items/DrillHead_Super"
+    "layer0": "supermultidrills:items/blank",
+    "layer1": "supermultidrills:items/drillhead_crystallized_chaos",
+    "layer2": "supermultidrills:items/drillhead_super"
   }
 }
 

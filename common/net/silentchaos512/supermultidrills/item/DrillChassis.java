@@ -13,6 +13,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -20,7 +21,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.lib.item.ItemSL;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.lib.Names;
-import scala.reflect.internal.Trees.Super;
 
 public class DrillChassis extends ItemSL {
 
@@ -60,18 +60,8 @@ public class DrillChassis extends ItemSL {
     }
   }
 
-//  @Override
-//  public int getColorFromItemStack(ItemStack stack, int pass) {
-//
-//    if (pass == PASS_CHASSIS) {
-//      return ItemDye.dyeColors[~stack.getItemDamage() & 15];
-//    } else {
-//      return 0xFFFFFF;
-//    }
-//  }
-
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  public void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     for (int i = 0; i < SUB_TYPE_COUNT; ++i) {
       list.add(new ItemStack(this, 1, i));
@@ -83,7 +73,7 @@ public class DrillChassis extends ItemSL {
 
     List<ModelResourceLocation> result = Lists.newArrayList();
     for (int i = 0; i < BATTERY_GAUGE_LEVELS; ++i)
-      result.add(new ModelResourceLocation(getFullName() + i, "inventory"));
+      result.add(new ModelResourceLocation(getFullName().toLowerCase() + i, "inventory"));
     return result;
   }
 
@@ -101,21 +91,17 @@ public class DrillChassis extends ItemSL {
     }
     // Register for actual items.
     for (i = 0; i < SUB_TYPE_COUNT; ++i) {
+      ModelLoader.registerItemVariants(this, models[0]);
       mesher.register(this, i, models[0]);
     }
     // Register fakes (I feel like there's a better way?)
     for (; i < SUB_TYPE_COUNT + models.length; ++i) {
+      ModelLoader.registerItemVariants(this, models[i - SUB_TYPE_COUNT]);
       mesher.register(this, i, models[i - SUB_TYPE_COUNT]);
     }
 
     return true;
   }
-
-//  @Override
-//  public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining) {
-//
-//    return models[0];
-//  }
 
   public ModelResourceLocation getModelForChargeLevel(int level) {
 

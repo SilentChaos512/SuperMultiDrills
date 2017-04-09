@@ -15,7 +15,7 @@ public class DrillsWitHandler {
   @SubscribeEvent
   public void onWitBlockInfo(WitBlockInfoEvent event) {
 
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayer player = Minecraft.getMinecraft().player;
     ItemStack heldItem = player.getHeldItemMainhand();
 
     boolean holdingDrill = heldItem != null && heldItem.getItem() instanceof Drill;

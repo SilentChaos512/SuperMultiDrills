@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.lib.item.ItemSL;
 import net.silentchaos512.lib.util.LocalizationHelper;
+import net.silentchaos512.lib.util.StackHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.lib.Names;
@@ -186,7 +187,7 @@ public class DrillBattery extends ItemSL implements IEnergyContainerItem {
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  public void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     ItemStack battery;
     for (int i = 0; i < SUB_TYPE_COUNT - 1; ++i) {
@@ -308,7 +309,7 @@ public class DrillBattery extends ItemSL implements IEnergyContainerItem {
 
   public int getTag(ItemStack stack, String key) {
 
-    if (stack == null || !stack.hasTagCompound()) {
+    if (StackHelper.isEmpty(stack) || !stack.hasTagCompound()) {
       return 0;
     }
 
@@ -322,7 +323,7 @@ public class DrillBattery extends ItemSL implements IEnergyContainerItem {
 
   public void setTag(ItemStack stack, String key, int value) {
 
-    if (stack == null) {
+    if (StackHelper.isEmpty(stack)) {
       return;
     }
     this.createTagCompoundIfNeeded(stack);

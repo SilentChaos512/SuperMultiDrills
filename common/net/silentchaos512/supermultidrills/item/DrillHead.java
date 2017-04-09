@@ -78,7 +78,7 @@ public class DrillHead extends ItemSL {
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  public void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     for (String group : EnumDrillMaterial.GROUPS_ORDERED) {
       ArrayList<EnumDrillMaterial> sub = EnumDrillMaterial.getAllInGroup(group);
@@ -94,7 +94,7 @@ public class DrillHead extends ItemSL {
     List<ModelResourceLocation> result = Lists.newArrayList();
     for (EnumDrillMaterial mat : EnumDrillMaterial.values()) {
       String str = getFullName() + "_" + mat.toString();
-      result.add(new ModelResourceLocation(str, "inventory"));
+      result.add(new ModelResourceLocation(str.toLowerCase(), "inventory"));
     }
     return result;
   }

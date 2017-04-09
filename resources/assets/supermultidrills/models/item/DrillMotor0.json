@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "SuperMultiDrills:items/DrillMotor0"
+    "layer0": "supermultidrills:items/drillmotor0"
   }
 }
 

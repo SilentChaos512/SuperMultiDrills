@@ -49,7 +49,7 @@ public class DrillAreaMiner {
 
   public static int tryActivate(ItemStack tool, BlockPos pos, EntityPlayer player) {
 
-    IBlockState state = player.worldObj.getBlockState(pos);
+    IBlockState state = player.world.getBlockState(pos);
 
     if (!(tool.getItem() instanceof ItemTool) || state == null || player.isSneaking()) {
       return 0;
@@ -60,7 +60,7 @@ public class DrillAreaMiner {
       return 0;
     }
 
-    RayTraceResult mop = raytraceFromEntity(player.worldObj, player, false, 4.5);
+    RayTraceResult mop = raytraceFromEntity(player.world, player, false, 4.5);
     if (mop == null) {
       return 0;
     }
@@ -99,7 +99,7 @@ public class DrillAreaMiner {
             continue;
           }
 
-          if (breakExtraBlock(tool, player.worldObj, new BlockPos(xPos, yPos, zPos), sideHit,
+          if (breakExtraBlock(tool, player.world, new BlockPos(xPos, yPos, zPos), sideHit,
               player, pos)) {
             ++blocksBroken;
           }

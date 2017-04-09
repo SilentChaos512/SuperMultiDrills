@@ -6,10 +6,10 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.silentchaos512.lib.recipe.IRecipeSL;
 import net.silentchaos512.lib.util.DyeHelper;
+import net.silentchaos512.lib.util.StackHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.item.Drill;
 import net.silentchaos512.supermultidrills.item.DrillBattery;
@@ -21,54 +21,7 @@ import net.silentchaos512.supermultidrills.item.ModItems;
 import net.silentchaos512.supermultidrills.lib.Names;
 import net.silentchaos512.supermultidrills.util.InventoryHelper;
 
-public class RecipeUpgradeDrill implements IRecipe {
-
-  @Override
-  public boolean matches(InventoryCrafting inv, World world) {
-
-    int countDrill = 0;
-    int countBattery = 0;
-    int countChassis = 0;
-    int countHead = 0;
-    int countHeadMaterial = 0;
-    int countMotor = 0;
-    int countDye = 0;
-    ItemStack stack;
-
-    for (int i = 0; i < inv.getSizeInventory(); ++i) {
-      stack = inv.getStackInSlot(i);
-      if (stack != null) {
-        // Dye
-        boolean isDye = DyeHelper.isItemDye(stack);
-
-        Item item = stack.getItem();
-        if (item instanceof Drill) {
-          ++countDrill;
-        } else if (item instanceof DrillBattery) {
-          ++countBattery;
-        } else if (item instanceof DrillChassis) {
-          ++countChassis;
-        } else if (item instanceof DrillHead) {
-          ++countHead;
-        } else if (item instanceof DrillMotor) {
-          ++countMotor;
-        } else if (item instanceof DrillUpgrade) {
-          ;
-        } else if (isDye) {
-          ++countDye;
-        } else if (InventoryHelper.isDrillHeadMaterial(stack)) {
-          ++countHeadMaterial;
-        } else {
-          return false;
-        }
-      }
-    }
-
-    // return countDrill == 1 && countUpgrade >= 1;
-    boolean flagColor = countChassis <= 1 && countDye <= 1 && !(countChassis == 1 && countDye == 1);
-    return countDrill == 1 && countBattery <= 1 && countHead <= 1 && countHeadMaterial <= 1
-        && countMotor <= 1 && flagColor;
-  }
+public class RecipeUpgradeDrill implements IRecipeSL {
 
   @Override
   public ItemStack getCraftingResult(InventoryCrafting inv) {
@@ -79,7 +32,7 @@ public class RecipeUpgradeDrill implements IRecipe {
     // Find the drill
     for (int i = 0; i < inv.getSizeInventory(); ++i) {
       stack = inv.getStackInSlot(i);
-      if (stack != null && stack.getItem() instanceof Drill) {
+      if (StackHelper.isValid(stack) && stack.getItem() instanceof Drill) {
         drill = stack;
         break;
       }
@@ -87,17 +40,17 @@ public class RecipeUpgradeDrill implements IRecipe {
 
     // Did we get a drill?
     if (drill == null) {
-      return null;
+      return StackHelper.empty();
     }
 
     // Copy the drill, we can't modify the original!
-    ItemStack result = drill.copy();
+    ItemStack result = StackHelper.safeCopy(drill);
 
     // Find and apply all upgrades
     Item item;
     for (int i = 0; i < inv.getSizeInventory(); ++i) {
       stack = inv.getStackInSlot(i);
-      if (stack != null) {
+      if (StackHelper.isValid(stack)) {
         item = stack.getItem();
         if (item instanceof DrillUpgrade) {
           // Upgrades
@@ -143,15 +96,15 @@ public class RecipeUpgradeDrill implements IRecipe {
 
   private ItemStack applyDrillUpgrade(ItemStack drill, ItemStack upgrade) {
 
-    // If the upgrade cannot be applied, null will be returned, so this could happen.
-    if (drill == null) {
-      return null;
+    // If the upgrade cannot be applied, empty will be returned, so this could happen.
+    if (StackHelper.isEmpty(drill)) {
+      return StackHelper.empty();
     }
 
-    // This shouldn't happen, but you can never check for null too often, right?
-    if (upgrade == null) {
+    // This shouldn't happen, but...
+    if (StackHelper.isEmpty(upgrade)) {
       SuperMultiDrills.logHelper.warning("RecipeUpgradeDrill.applyDrillUpgrade: upgrade is null!");
-      return null;
+      return StackHelper.empty();
     }
 
     int meta = upgrade.getItemDamage();
@@ -161,19 +114,19 @@ public class RecipeUpgradeDrill implements IRecipe {
     if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_SAW)) {
       // Saw
       if (ModItems.drill.getTagBoolean(drill, Drill.NBT_SAW)) {
-        return null;
+        return StackHelper.empty();
       }
       ModItems.drill.setTagBoolean(drill, Drill.NBT_SAW, true);
     } else if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_FORTUNE)) {
       // Fortune
       if (fortuneLevel >= 3 || silkTouchLevel > 0) {
-        return null;
+        return StackHelper.empty();
       }
       return this.increaseEnchantmentLevel(drill, Enchantments.FORTUNE, 3);
     } else if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_SILK)) {
       // Silk
       if (silkTouchLevel >= 1 || fortuneLevel > 0) {
-        return null;
+        return StackHelper.empty();
       }
       return this.increaseEnchantmentLevel(drill, Enchantments.SILK_TOUCH, 1);
     } else if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_SPEED)) {
@@ -185,13 +138,13 @@ public class RecipeUpgradeDrill implements IRecipe {
     } else if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_AREA_MINER)) {
       // Area Miner
       if (ModItems.drill.getTagBoolean(drill, Drill.NBT_AREA_MINER)) {
-        return null;
+        return StackHelper.empty();
       }
       ModItems.drill.setTagBoolean(drill, Drill.NBT_AREA_MINER, true);
     } else if (meta == ModItems.drillUpgrade.getMetaFor(Names.UPGRADE_GRAVITON_GENERATOR)) {
       // Graviton Generator
       if (ModItems.drill.getTagBoolean(drill, Drill.NBT_GRAVITON_GENERATOR)) {
-        return null;
+        return StackHelper.empty();
       }
       ModItems.drill.setTagBoolean(drill, Drill.NBT_GRAVITON_GENERATOR, true);
     }
@@ -215,37 +168,8 @@ public class RecipeUpgradeDrill implements IRecipe {
         }
       }
     } else {
-      return null;
+      return StackHelper.empty();
     }
     return drill;
-  }
-
-  @Override
-  public int getRecipeSize() {
-
-    return 9;
-  }
-
-  @Override
-  public ItemStack getRecipeOutput() {
-
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-
-    for (int i = 0; i < inv.getSizeInventory(); ++i) {
-      ItemStack stack = inv.getStackInSlot(i);
-      if (stack != null) {
-        --stack.stackSize;
-        if (stack.stackSize <= 0) {
-          stack = null;
-        }
-        inv.setInventorySlotContents(i, stack);
-      }
-    }
-    return new ItemStack[] {};
   }
 }

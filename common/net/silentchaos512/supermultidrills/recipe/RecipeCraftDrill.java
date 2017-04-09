@@ -2,8 +2,9 @@ package net.silentchaos512.supermultidrills.recipe;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.silentchaos512.lib.recipe.IRecipeSL;
+import net.silentchaos512.lib.util.StackHelper;
 import net.silentchaos512.supermultidrills.item.Drill;
 import net.silentchaos512.supermultidrills.item.DrillBattery;
 import net.silentchaos512.supermultidrills.item.DrillChassis;
@@ -11,36 +12,7 @@ import net.silentchaos512.supermultidrills.item.DrillHead;
 import net.silentchaos512.supermultidrills.item.DrillMotor;
 import net.silentchaos512.supermultidrills.item.ModItems;
 
-public class RecipeCraftDrill implements IRecipe {
-
-  @Override
-  public boolean matches(InventoryCrafting inv, World world) {
-
-    int countHead = 0;
-    int countMotor = 0;
-    int countBattery = 0;
-    int countChassis = 0;
-    ItemStack stack;
-
-    for (int i = 0; i < inv.getSizeInventory(); ++i) {
-      stack = inv.getStackInSlot(i);
-      if (stack != null) {
-        if (stack.getItem() instanceof DrillHead) {
-          ++countHead;
-        } else if (stack.getItem() instanceof DrillMotor) {
-          ++countMotor;
-        } else if (stack.getItem() instanceof DrillBattery) {
-          ++countBattery;
-        } else if (stack.getItem() instanceof DrillChassis) {
-          ++countChassis;
-        } else {
-          return false;
-        }
-      }
-    }
-
-    return countHead == 1 && countMotor == 1 && countBattery == 1 && countChassis == 1;
-  }
+public class RecipeCraftDrill implements IRecipeSL {
 
   @Override
   public ItemStack getCraftingResult(InventoryCrafting inv) {
@@ -53,7 +25,7 @@ public class RecipeCraftDrill implements IRecipe {
 
     for (int i = 0; i < inv.getSizeInventory(); ++i) {
       stack = inv.getStackInSlot(i);
-      if (stack != null) {
+      if (StackHelper.isValid(stack)) {
         if (stack.getItem() instanceof DrillHead) {
           head = stack;
         } else if (stack.getItem() instanceof DrillMotor) {
@@ -63,13 +35,13 @@ public class RecipeCraftDrill implements IRecipe {
         } else if (stack.getItem() instanceof DrillChassis) {
           chassis = stack;
         } else {
-          return null;
+          return StackHelper.empty();
         }
       }
     }
 
     if (head == null || motor == null || battery == null || chassis == null) {
-      return null;
+      return StackHelper.empty();
     }
 
     Drill drill = ModItems.drill;
@@ -82,34 +54,5 @@ public class RecipeCraftDrill implements IRecipe {
     drill.setTag(stack, drill.NBT_ENERGY, ModItems.drillBattery.getEnergyStored(battery));
 
     return stack;
-  }
-
-  @Override
-  public int getRecipeSize() {
-
-    // Supposedly determines recipe priority? Seems too inconsistent to rely on.
-    return 10;
-  }
-
-  @Override
-  public ItemStack getRecipeOutput() {
-
-    return null;
-  }
-
-  @Override
-  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-
-    for (int i = 0; i < inv.getSizeInventory(); ++i) {
-      ItemStack stack = inv.getStackInSlot(i);
-      if (stack != null) {
-        --stack.stackSize;
-        if (stack.stackSize <= 0) {
-          stack = null;
-        }
-        inv.setInventorySlotContents(i, stack);
-      }
-    }
-    return new ItemStack[] {};
   }
 }

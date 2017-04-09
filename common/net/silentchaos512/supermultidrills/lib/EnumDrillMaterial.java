@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.udojava.evalex.Expression;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.silentchaos512.lib.util.StackHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.configuration.Config;
 import net.silentchaos512.supermultidrills.item.ModItems;
@@ -285,7 +285,7 @@ public enum EnumDrillMaterial {
       return true;
     }
 
-    return !OreDictionary.getOres(material).isEmpty();
+    return !StackHelper.getOres(material).isEmpty();
   }
 
   public ItemStack getHead() {

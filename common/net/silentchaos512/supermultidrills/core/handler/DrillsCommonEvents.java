@@ -33,7 +33,7 @@ public class DrillsCommonEvents {
     if (event.craftMatrix instanceof InventoryCrafting) {
       InventoryCrafting inv = (InventoryCrafting) event.craftMatrix;
       EntityPlayer player = event.player;
-      World world = player.worldObj;
+      World world = player.world;
 
       if (ModRecipes.upgradeDrill.matches(inv, world))
         handleDrillUpgrade(inv, player, world);
