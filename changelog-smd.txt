@@ -1,5 +1,8 @@
 Super Multi-Drills Changelog
 
+1.4.3
+Updated for Silent Lib 1.1.0
+
 1.4.2
 Added: Mekanism recipes are back. They are probably different since I created them from scratch.
 Added: Disassembly Kit. Craft with a drill to take it apart, getting back all components and upgrades. Some data may get lost, such as custom names, so keep that in mind. Don't forget that most parts can be replaced by simply crafting them with a drill!

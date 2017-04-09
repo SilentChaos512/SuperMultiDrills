@@ -16,7 +16,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //    id "net.minecraftforge.gradle.forge" version "2.0.2"
 //}
 
-version = "1.4.1"
+version = "1.4.3"
 
 group = "net.silentchaos512.supermultidrills"
 archivesBaseName = "SuperMultiDrills-1.10.2"
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.9.4:3.6.7.216"
+    deobfCompile "mezz.jei:jei_1.10.2:3.13.0.338"
 }
 
 sourceSets {
