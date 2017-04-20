@@ -21,8 +21,6 @@ import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
@@ -30,6 +28,7 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.silentchaos512.lib.util.ModelHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.item.Drill;
 import net.silentchaos512.supermultidrills.item.DrillChassis;
@@ -115,8 +114,8 @@ public class ModelDrill implements IPerspectiveAwareModel {
     }
 
     EnumDrillMaterial material = EnumDrillMaterial.values()[head];
-    ModelResourceLocation modelLocation = new ModelResourceLocation(
-        SuperMultiDrills.MOD_ID + ":DrillHead_" + material.toString(), "inventory");
+    ModelResourceLocation modelLocation = ModelHelper.getResource(SuperMultiDrills.MOD_ID,
+        "DrillHead_" + material.toString());
     return modelManager.getModel(modelLocation);
   }
 
