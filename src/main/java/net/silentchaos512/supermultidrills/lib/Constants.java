@@ -15,5 +15,5 @@ public class Constants {
     public static final Tag<Item> DRILL_BATTERIES_TAG = new ItemTags.Wrapper(SuperMultiDrills.getId("drill_batteries"));
 
     // FIXME: Add configs
-    public static final Expression DRILL_ENERGY_EXPR = new Expression("(300 - 0.09 * durability) * (1 + 0.06 * efficiency) * hardness");
+    public static final Expression DRILL_ENERGY_EXPR = new Expression("25 + e^(7 - 0.003 * durability) * (1 + 0.06 * efficiency) * hardness");
 }

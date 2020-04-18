@@ -30,19 +30,27 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.silentchaos512.gear.api.item.GearType;
 import net.silentchaos512.gear.api.item.ICoreTool;
+import net.silentchaos512.gear.api.parts.PartType;
 import net.silentchaos512.gear.api.stats.ItemStat;
 import net.silentchaos512.gear.api.stats.ItemStats;
 import net.silentchaos512.gear.api.stats.StatInstance;
 import net.silentchaos512.gear.client.util.GearClientHelper;
 import net.silentchaos512.gear.util.GearData;
 import net.silentchaos512.gear.util.GearHelper;
+import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.capability.EnergyStorageItemImpl;
 import net.silentchaos512.supermultidrills.lib.Constants;
+import net.silentchaos512.supermultidrills.part.BatteryPart;
+import net.silentchaos512.supermultidrills.part.ChassisPart;
+import net.silentchaos512.supermultidrills.part.MotorPart;
+import net.silentchaos512.supermultidrills.util.EnergyUtil;
+import net.silentchaos512.supermultidrills.util.TextUtil;
 import net.silentchaos512.utils.Color;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -129,6 +137,33 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         return Optional.empty();
     }
 
+    @Override
+    public Optional<StatInstance> getStatModifier(ItemStat stat) {
+        if (stat == ItemStats.ENCHANTABILITY)
+            return Optional.of(StatInstance.makeGearMod(-0.5f));
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean requiresPartOfType(PartType type) {
+        return type == BatteryPart.TYPE
+                || type == ChassisPart.TYPE
+                || type == MotorPart.TYPE
+                || ICoreTool.super.requiresPartOfType(type);
+    }
+
+    @Override
+    public Set<ItemStat> getRelevantStats(@Nonnull ItemStack stack) {
+        return ImmutableSet.of(
+                ItemStats.HARVEST_LEVEL,
+                ItemStats.HARVEST_SPEED,
+                ItemStats.MELEE_DAMAGE,
+                ItemStats.ATTACK_SPEED,
+                ItemStats.ENCHANTABILITY,
+                ItemStats.RARITY
+        );
+    }
+
     //region Harvest tool overrides
 
     @Override
@@ -160,6 +195,8 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        TextUtil.addEnergyInfo(stack, tooltip);
+
         GearClientHelper.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
@@ -175,7 +212,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
             IEnergyStorage energy = optional.orElseThrow(IllegalStateException::new);
             boolean canHarvest = this.canHarvestBlock(state);
             // Just assume hardness of 1, since we don't have a World object
-            boolean hasEnoughPower = energy.getEnergyStored() > DrillItem.getEnergyToBreakBlock(stack, state, 1);
+            boolean hasEnoughPower = energy.getEnergyStored() > getEnergyToBreakBlock(stack, state, 1);
 
             return canHarvest && hasEnoughPower ? GearHelper.getDestroySpeed(stack, state, EXTRA_MATERIALS) : 1.0f;
         }
@@ -225,10 +262,8 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     @Override
     public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> {
-            int energyUsed = getEnergyToBreakBlock(stack, Blocks.STONE.getDefaultState(), 1);
-            e.extractEnergy(energyUsed, false);
-        });
+        int cost = getEnergyToBreakBlock(stack, Blocks.STONE.getDefaultState(), 1);
+        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> EnergyUtil.drainEnergy(e, cost));
         return GearHelper.hitEntity(stack, target, attacker);
     }
 
@@ -242,12 +277,13 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         float hardness = state.getBlockHardness(worldIn, pos);
         if (hardness != 0.0f) {
             int cost = getEnergyToBreakBlock(stack, state, hardness);
+            SuperMultiDrills.LOGGER.debug("onBlockDestroyed {} (h={})", cost, hardness);
 //            if (Config.printMiningCost && entityLiving.world.isRemote) {
 //                String str = "%d RF (%.2f hardness)";
 //                str = String.format(str, cost, hardness);
 //                SuperMultiDrills.logHelper.info(str);
 //            }
-            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(cost, false));
+            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> EnergyUtil.drainEnergy(e, cost));
         }
 
         return GearHelper.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
@@ -306,10 +342,11 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack);
         int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack);
         int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
+        float durability = GearData.getStat(stack, ItemStats.DURABILITY);
 
         // FIXME
         Expression exp = Constants.DRILL_ENERGY_EXPR;
-        exp.setVariable("durability", BigDecimal.valueOf(stack.getMaxDamage()));
+        exp.setVariable("durability", BigDecimal.valueOf(durability));
         exp.setVariable("efficiency", BigDecimal.valueOf(efficiencyLevel));
         exp.setVariable("silk_touch", BigDecimal.valueOf(silkTouchLevel));
         exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
@@ -317,7 +354,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         exp.setVariable("mining_speed", BigDecimal.valueOf(GearHelper.getDestroySpeed(stack, state, EXTRA_MATERIALS)));
         //exp.setVariable("motor_boost", BigDecimal.valueOf(getMotorSpeedBoost(stack)));
 
-        int result = exp.eval().intValue();
+        int result = (int) Math.round(25 + Math.exp(7 - 0.0003 * durability) * (1 + 0.06 * efficiencyLevel) * hardness); //exp.eval().intValue();
         if (result < 0) {
             result = 0; // Energy cost should be non-negative!
         }

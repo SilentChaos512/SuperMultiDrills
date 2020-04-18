@@ -19,6 +19,9 @@
         "translate": true,
         "name": "part.supermultidrills.motor.test"
     },
+    "name_prefix": {
+        "translate": "part.supermultidrills.motor.test.prefix"
+    },
     "textures": {
         "all": {
             "normal_color": "white",

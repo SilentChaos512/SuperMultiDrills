@@ -1,6 +1,18 @@
 {
+    "item.supermultidrills.battery_gauge": "Battery Gauge",
     "item.supermultidrills.drill": "Drill",
     "item.supermultidrills.drill.nameProper": "%s Drill",
     "item.supermultidrills.drill_chassis": "Drill Chassis",
-    "item.supermultidrills.drill_chassis.color": "Color: %s"
+    "item.supermultidrills.drill_chassis.color": "Color: %s",
+    "item.supermultidrills.drill_head": "Drill Head",
+    "item.supermultidrills.saw_upgrade": "Saw Upgrade",
+    "item.supermultidrills.test_battery": "Test Battery",
+    "misc.supermultidrills.energy": "%s FE",
+    "misc.supermultidrills.energyPerTick": "%s FE/t",
+    "misc.supermultidrills.energyWithMax": "%s / %s FE",
+    "part.supermultidrills.chassis": "Drill Chassis",
+    "part.supermultidrills.motor.test": "Test Motor",
+    "part.supermultidrills.motor.test.prefix": "Tester's",
+    "part.supermultidrills.rod.heavy_iron": "Heavy Iron Rod",
+    "part.supermultidrills.saw": "Saw"
 }

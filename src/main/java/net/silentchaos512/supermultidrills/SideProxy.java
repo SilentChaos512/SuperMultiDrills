@@ -3,6 +3,7 @@ package net.silentchaos512.supermultidrills;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.*;
@@ -37,6 +38,7 @@ class SideProxy implements IProxy {
 //        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModContainers::registerAll);
 //        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::registerAll);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, ModItems::registerAll);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, ModRecipeStuff::registerRecipeSerializers);
 //        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModTileEntities::registerAll);
 
         MinecraftForge.EVENT_BUS.addListener(SideProxy::serverAboutToStart);

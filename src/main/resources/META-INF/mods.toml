@@ -10,7 +10,7 @@ authors="SilentChaos512"
     modId="supermultidrills"
     version="${file.jarVersion}"
     displayName="Super Multi-Drills"
-    updateJSONURL="https://raw.githubusercontent.com/SilentChaos512/SuperMultiDrills/1.15/update.json"
+#    updateJSONURL="https://raw.githubusercontent.com/SilentChaos512/SuperMultiDrills/1.15/update.json"
     description='''
     Downloads: https://www.curseforge.com/minecraft/mc-mods/super-multi-drills (I do not upload anywhere else)
     Changelog: https://github.com/SilentChaos512/SuperMultiDrills/blob/1.15/CHANGELOG.md
@@ -39,6 +39,6 @@ authors="SilentChaos512"
 [[dependencies.supermultidrills]]
     modId="silentgear"
     mandatory=true
-    versionRange="[1,)"
+    versionRange="[1.6,)"
     ordering="AFTER"
     side="BOTH"

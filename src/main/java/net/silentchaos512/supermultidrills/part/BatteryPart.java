@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 public class BatteryPart extends AbstractGearPart implements IUpgradePart {
     private static final ResourceLocation TYPE_ID = SuperMultiDrills.getId("battery");
-    public static final PartType TYPE = PartType.create(TYPE_ID, "SMDb", new Serializer<>(TYPE_ID, BatteryPart::new));
+    public static final PartType TYPE = PartType.create(TYPE_ID, new Serializer<>(TYPE_ID, BatteryPart::new));
     public static final IPartPosition POSITION = new IPartPosition() {
         @Override
         public String getTexturePrefix() {

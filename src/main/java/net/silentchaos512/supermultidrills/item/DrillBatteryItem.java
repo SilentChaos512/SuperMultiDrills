@@ -58,11 +58,7 @@ public class DrillBatteryItem extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        // Apparently, addInformation can be called before caps are initialized
-        if (CapabilityEnergy.ENERGY == null) return;
-
-        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e ->
-                tooltip.add(TextUtil.energyWithMax(e.getEnergyStored(), e.getMaxEnergyStored())));
+        TextUtil.addEnergyInfo(stack, tooltip);
     }
 
     @Override

@@ -2,6 +2,8 @@
   "parent": "item/handheld",
   "textures": {
     "layer0": "supermultidrills:item/drill_chassis",
-    "layer1": "supermultidrills:item/drill_head"
+    "layer1": "supermultidrills:item/drill_head",
+    "layer2": "supermultidrills:item/battery_gauge_3",
+    "layer3": "supermultidrills:item/drill_highlight"
   }
 }

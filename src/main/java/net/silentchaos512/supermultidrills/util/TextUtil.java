@@ -1,8 +1,12 @@
 package net.silentchaos512.supermultidrills.util;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
+
+import java.util.List;
 
 public final class TextUtil {
     private static final String ENERGY_FORMAT = "%,d";
@@ -23,5 +27,11 @@ public final class TextUtil {
         String s1 = String.format(ENERGY_FORMAT, amount);
         String s2 = String.format(ENERGY_FORMAT, max);
         return translate("misc", "energyWithMax", s1, s2);
+    }
+
+    public static void addEnergyInfo(ItemStack stack, List<ITextComponent> tooltip) {
+        if (CapabilityEnergy.ENERGY == null) return;
+        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e ->
+                tooltip.add(energyWithMax(e.getEnergyStored(), e.getMaxEnergyStored())));
     }
 }
