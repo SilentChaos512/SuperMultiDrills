@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "# #",
+        " G "
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:ingots/iron"
+        },
+        "G": {
+            "item": "supermultidrills:battery_gauge"
+        }
+    },
+    "result": {
+        "item": "supermultidrills:drill_chassis"
+    }
+}

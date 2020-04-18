@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "supermultidrills:item/drill_chassis",
+    "layer1": "supermultidrills:item/drill_head"
+  }
+}

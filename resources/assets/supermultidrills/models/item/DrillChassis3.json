@@ -1,9 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "supermultidrills:items/drillchassis",
-    "layer1": "supermultidrills:items/blank",
-    "layer2": "supermultidrills:items/batterygauge3"
-  }
-}
-

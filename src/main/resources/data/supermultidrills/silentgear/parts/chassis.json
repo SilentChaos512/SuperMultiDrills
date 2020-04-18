@@ -1,0 +1,23 @@
+{
+    "type": "supermultidrills:chassis",
+    "stats": [],
+    "traits": [],
+    "crafting_items": {
+        "normal": {
+            "item": "supermultidrills:drill_chassis"
+        }
+    },
+    "name": {
+        "translate": true,
+        "name": "part.supermultidrills.chassis"
+    },
+    "textures": {
+        "all": {
+            "normal_color": "white",
+            "fallback_color": "white"
+        }
+    },
+    "availability": {
+        "gear_blacklist": []
+    }
+}

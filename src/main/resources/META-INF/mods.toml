@@ -1,0 +1,44 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+issueTrackerURL="https://github.com/SilentChaos512/SuperMultiDrills/issues"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/super-multi-drills"
+#logoFile="examplemod.png" #optional
+credits=""
+authors="SilentChaos512"
+
+[[mods]]
+    modId="supermultidrills"
+    version="${file.jarVersion}"
+    displayName="Super Multi-Drills"
+    updateJSONURL="https://raw.githubusercontent.com/SilentChaos512/SuperMultiDrills/1.15/update.json"
+    description='''
+    Downloads: https://www.curseforge.com/minecraft/mc-mods/super-multi-drills (I do not upload anywhere else)
+    Changelog: https://github.com/SilentChaos512/SuperMultiDrills/blob/1.15/CHANGELOG.md
+    Source: https://github.com/SilentChaos512/SuperMultiDrills/
+    Issues: https://github.com/SilentChaos512/SuperMultiDrills/issues
+    '''
+
+[[dependencies.supermultidrills]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.supermultidrills]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.supermultidrills]]
+    modId="silentlib"
+    mandatory=true
+    versionRange="[4,)"
+    ordering = "NONE"
+    side = "BOTH"
+[[dependencies.supermultidrills]]
+    modId="silentgear"
+    mandatory=true
+    versionRange="[1,)"
+    ordering="AFTER"
+    side="BOTH"
