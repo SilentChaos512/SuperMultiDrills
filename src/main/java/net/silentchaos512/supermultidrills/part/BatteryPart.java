@@ -96,6 +96,18 @@ public class BatteryPart extends AbstractGearPart implements IUpgradePart {
     }
 
     @Override
+    public void onRemoveFromGear(ItemStack gear, PartData part) {
+        // Reset energy value (since that isn't updated in the parts list)
+        gear.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> {
+            part.getCraftingItem().getCapability(CapabilityEnergy.ENERGY).ifPresent(partEnergy -> {
+                if (partEnergy instanceof EnergyStorageItemImpl) {
+                    ((EnergyStorageItemImpl) partEnergy).setEnergyStored(e.getEnergyStored());
+                }
+            });
+        });
+    }
+
+    @Override
     public PartData randomizeData() {
         int batteriesCount = ModItems.BATTERIES.size();
         int index = MathHelper.clamp(1 + SuperMultiDrills.random.nextInt(batteriesCount), 2, batteriesCount - 1);

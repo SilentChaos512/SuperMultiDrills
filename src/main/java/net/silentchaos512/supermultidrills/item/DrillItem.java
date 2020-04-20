@@ -93,7 +93,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     public static final String NBT_CHASSIS_COLOR = "SMD.ChassisColor";
 
     public DrillItem() {
-        super(ItemTier.DIAMOND, 0, 0, GearHelper.getBuilder(ToolType.PICKAXE).addToolType(ToolType.SHOVEL, 3));
+        super(ItemTier.DIAMOND, 0, 0, GearHelper.getBuilder(ToolType.PICKAXE).addToolType(ToolType.SHOVEL, 3).group(SuperMultiDrills.ITEM_GROUP));
     }
 
     //region Energy and Drills Properties

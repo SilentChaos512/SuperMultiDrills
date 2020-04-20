@@ -23,7 +23,7 @@ public final class ModItems {
     private ModItems() {}
 
     public static void registerAll(RegistryEvent.Register<Item> event) {
-        drillBlueprint = register("drill_blueprint", new GearBlueprintItem(false, () -> drill));
+        drillBlueprint = register("drill_blueprint", new GearBlueprintItem(false, () -> drill, new Item.Properties().group(SuperMultiDrills.ITEM_GROUP)));
         drill = register("drill", new DrillItem());
         net.silentchaos512.gear.init.ModItems.gearClasses.put(SuperMultiDrills.getId("drill"), drill);
         drillHead = register("drill_head", new DrillHeadItem());
