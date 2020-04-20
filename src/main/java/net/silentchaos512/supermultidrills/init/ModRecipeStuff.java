@@ -1,11 +1,13 @@
 package net.silentchaos512.supermultidrills.init;
 
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.silentchaos512.supermultidrills.crafting.ingredient.BatteryIngredient;
 import net.silentchaos512.supermultidrills.crafting.recipe.ChassisColorRecipe;
+import net.silentchaos512.supermultidrills.crafting.recipe.DrillHeadSwapRecipe;
 import net.silentchaos512.supermultidrills.crafting.recipe.DrillRecipe;
 
 public final class ModRecipeStuff {
@@ -16,7 +18,13 @@ public final class ModRecipeStuff {
     }
 
     public static void registerRecipeSerializers(RegistryEvent.Register<IRecipeSerializer<?>> event) {
-        IRecipeSerializer.register(ChassisColorRecipe.NAME.toString(), ChassisColorRecipe.SERIALIZER);
-        IRecipeSerializer.register(DrillRecipe.NAME.toString(), DrillRecipe.SERIALIZER);
+        register(ChassisColorRecipe.NAME, ChassisColorRecipe.SERIALIZER);
+        register(DrillHeadSwapRecipe.NAME, DrillHeadSwapRecipe.SERIALIZER);
+        register(DrillRecipe.NAME, DrillRecipe.SERIALIZER);
+    }
+
+    private static void register(ResourceLocation id, IRecipeSerializer<?> serializer) {
+        serializer.setRegistryName(id);
+        ForgeRegistries.RECIPE_SERIALIZERS.register(serializer);
     }
 }

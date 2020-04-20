@@ -1,0 +1,14 @@
+{
+    "type": "supermultidrills:drill_head_swap",
+    "ingredients": [
+        {
+            "item": "supermultidrills:drill"
+        },
+        {
+            "item": "supermultidrills:drill_head"
+        }
+    ],
+    "result": {
+        "item": "supermultidrills:drill"
+    }
+}

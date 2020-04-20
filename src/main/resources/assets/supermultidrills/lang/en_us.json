@@ -1,4 +1,5 @@
 {
+    "itemGroup.supermultidrills": "Super Multi-Drills",
     "item.supermultidrills.basic_motor": "Basic Motor",
     "item.supermultidrills.battery_gauge": "Battery Gauge",
     "item.supermultidrills.creative_battery": "Tater Battery",
@@ -8,10 +9,13 @@
     "item.supermultidrills.drill.nameProper": "%s Drill",
     "item.supermultidrills.drill_chassis": "Drill Chassis",
     "item.supermultidrills.drill_chassis.color": "Color: %s",
+    "item.supermultidrills.drill_chassis.info": "Can be dyed any color",
     "item.supermultidrills.drill_head": "Drill Head",
+    "item.supermultidrills.drill_head.nameProper": "%s Drill Head",
     "item.supermultidrills.elite_motor": "Elite Motor",
     "item.supermultidrills.enthusiast_motor": "Enthusiast Motor",
     "item.supermultidrills.extreme_battery": "Extreme Battery",
+    "item.supermultidrills.heavy_iron_rod": "Heavy Iron Rod",
     "item.supermultidrills.large_battery": "Large Battery",
     "item.supermultidrills.medium_battery": "Medium Battery",
     "item.supermultidrills.performant_motor": "Performant Motor",
@@ -39,5 +43,8 @@
     "part.supermultidrills.motor.test": "Test Motor",
     "part.supermultidrills.motor.test.prefix": "Tester's",
     "part.supermultidrills.rod.heavy_iron": "Heavy Iron Rod",
-    "part.supermultidrills.saw": "Saw"
+    "part.supermultidrills.saw": "Saw",
+    "part.supermultidrills.type.battery": "Drill Battery",
+    "part.supermultidrills.type.chassis": "Drill Chassis",
+    "part.supermultidrills.type.motor": "Drill Motor"
 }

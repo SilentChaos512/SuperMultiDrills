@@ -49,5 +49,6 @@ public class DrillChassisItem extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         String colorStr = Color.format(getColor(stack));
         tooltip.add(TextUtil.translate("item", "drill_chassis.color", colorStr));
+        tooltip.add(TextUtil.translate("item", "drill_chassis.info"));
     }
 }

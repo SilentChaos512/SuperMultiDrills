@@ -64,11 +64,15 @@ public class DrillBatteryItem extends Item {
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
-            items.add(new ItemStack(this));
-
             ItemStack full = new ItemStack(this);
-            full.getOrCreateTag().putInt("Energy", capacity);
+            full.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> {
+                if (e instanceof EnergyStorageItemImpl) {
+                    ((EnergyStorageItemImpl) e).setEnergyStored(e.getMaxEnergyStored());
+                }
+            });
             items.add(full);
+
+            items.add(new ItemStack(this));
         }
     }
 

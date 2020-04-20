@@ -1,5 +1,6 @@
 {
   "parent": "item/handheld",
+  "__comment__": "TODO: Make the battery gauge work, support tip upgrades",
   "textures": {
     "layer0": "supermultidrills:item/drill_chassis",
     "layer1": "supermultidrills:item/drill_head",
