@@ -7,7 +7,8 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.silentchaos512.supermultidrills.item.CraftingItems;
+import net.silentchaos512.gear.util.GearGenerator;
+import net.silentchaos512.supermultidrills.init.ModItems;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,10 +41,6 @@ public class SuperMultiDrills {
         return "0.0.0";
     }
 
-    public static String getLongVersion() {
-        return "1.14.3-" + getVersion();
-    }
-
     public static boolean isDevBuild() {
         // TODO: Is there a better way? Guess it works though...
         String version = getVersion();
@@ -57,7 +54,7 @@ public class SuperMultiDrills {
     public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(CraftingItems.TEST_MOTOR);
+            return GearGenerator.create(ModItems.drill, 3);
         }
     };
 }

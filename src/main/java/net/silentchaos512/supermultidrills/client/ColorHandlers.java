@@ -28,7 +28,7 @@ public class ColorHandlers {
             // Head
             return GearData.getHeadColor(stack, true);
         }
-        if (tintIndex == 3) {
+        if (tintIndex == 4) {
             // Tip
             PartData part = GearData.getPartOfType(stack, PartType.TIP);
             if (part == null) return Color.VALUE_WHITE;

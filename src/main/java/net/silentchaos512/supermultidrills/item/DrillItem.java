@@ -2,7 +2,6 @@ package net.silentchaos512.supermultidrills.item;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
-import com.udojava.evalex.Expression;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
@@ -21,6 +20,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.Capability;
@@ -35,6 +35,7 @@ import net.silentchaos512.gear.api.stats.ItemStat;
 import net.silentchaos512.gear.api.stats.ItemStats;
 import net.silentchaos512.gear.api.stats.StatInstance;
 import net.silentchaos512.gear.client.util.GearClientHelper;
+import net.silentchaos512.gear.parts.PartData;
 import net.silentchaos512.gear.util.GearData;
 import net.silentchaos512.gear.util.GearHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
@@ -49,8 +50,6 @@ import net.silentchaos512.utils.Color;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -90,12 +89,14 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     /*
      * NBT keys
      */
-    public static final String NBT_BATTERY_CAPACITY = "BatteryCapacity";
-    public static final String NBT_CHASSIS_COLOR = "ChassisColor";
+    public static final String NBT_BATTERY_CAPACITY = "SMD.BatteryCapacity";
+    public static final String NBT_CHASSIS_COLOR = "SMD.ChassisColor";
 
     public DrillItem() {
         super(ItemTier.DIAMOND, 0, 0, GearHelper.getBuilder(ToolType.PICKAXE).addToolType(ToolType.SHOVEL, 3));
     }
+
+    //region Energy and Drills Properties
 
     @Nullable
     @Override
@@ -104,12 +105,42 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
             @Nonnull
             @Override
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                // TODO: capacity and transfer rates?
-                if (cap == CapabilityEnergy.ENERGY)
-                    return LazyOptional.of(() -> new EnergyStorageItemImpl(stack, 1000000, 1000, 1000)).cast();
+                if (cap == CapabilityEnergy.ENERGY) {
+                    int capacity = getBatteryCapacity(stack);
+                    // TODO: Transfer rate?
+                    return LazyOptional.of(() -> new EnergyStorageItemImpl(stack, capacity, 100_000, 100_000)).cast();
+                }
                 return LazyOptional.empty();
             }
         };
+    }
+
+    private static IEnergyStorage getBatteryCapability(ItemStack stack) {
+        PartData part = GearData.getPartOfType(stack, BatteryPart.TYPE);
+        if (part != null) {
+            ItemStack battery = part.getCraftingItem();
+            SuperMultiDrills.LOGGER.debug("getBatteryCapability: {}", battery);
+            LazyOptional<IEnergyStorage> optional = battery.getCapability(CapabilityEnergy.ENERGY);
+            return optional.orElse(new EnergyStorageItemImpl(battery, 1_000_000, 1000, 1000));
+        }
+        return new EnergyStorageItemImpl(stack, 1_000_000, 1000, 1000);
+    }
+
+    public static int getBatteryCapacity(ItemStack stack) {
+        CompoundNBT tag = stack.getOrCreateTag();
+        if (tag.contains(NBT_BATTERY_CAPACITY)) {
+            return tag.getInt(NBT_BATTERY_CAPACITY);
+        }
+
+        // Battery capacity tag is missing, calculate it from the battery itself
+        IEnergyStorage energy = getBatteryCapability(stack);
+        int capacity = energy.getMaxEnergyStored();
+        tag.putInt(NBT_BATTERY_CAPACITY, capacity);
+        return capacity;
+    }
+
+    public static void setBatteryCapacity(ItemStack stack, int capacity) {
+        stack.getOrCreateTag().putInt(NBT_BATTERY_CAPACITY, capacity);
     }
 
     private static float getChargeRatio(ItemStack stack) {
@@ -120,6 +151,51 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         }
         return 0;
     }
+
+    public static int getEnergyToBreakBlock(ItemStack stack, BlockState state, float hardness) {
+        return Math.round(getBaseEnergyCost(stack) * hardness);
+    }
+
+    public static int getBaseEnergyCost(ItemStack stack) {
+        int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack);
+        int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack);
+        int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
+        float durability = GearData.getStat(stack, ItemStats.DURABILITY);
+
+        // FIXME
+//        Expression exp = Constants.DRILL_ENERGY_EXPR;
+//        exp.setVariable("durability", BigDecimal.valueOf(durability));
+//        exp.setVariable("efficiency", BigDecimal.valueOf(efficiencyLevel));
+//        exp.setVariable("silk_touch", BigDecimal.valueOf(silkTouchLevel));
+//        exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
+//        exp.setVariable("hardness", BigDecimal.valueOf(hardness));
+//        exp.setVariable("mining_speed", BigDecimal.valueOf(GearHelper.getDestroySpeed(stack, state, EXTRA_MATERIALS)));
+//        exp.setVariable("motor_boost", BigDecimal.valueOf(getMotorSpeedBoost(stack)));
+
+        int result = (int) Math.round(25 + Math.exp(7 - 0.0003 * durability) * (1 + 0.06 * efficiencyLevel)); //exp.eval().intValue();
+        if (result < 0) {
+            result = 0; // Energy cost should be non-negative!
+        }
+        return result;
+    }
+
+    public static int getChassisColor(ItemStack stack) {
+        if (stack.getOrCreateTag().contains(NBT_CHASSIS_COLOR))
+            return stack.getOrCreateTag().getInt(NBT_CHASSIS_COLOR);
+        return Color.VALUE_WHITE;
+    }
+
+    public static void setChassisColor(ItemStack stack, int color) {
+        stack.getOrCreateTag().putInt(NBT_CHASSIS_COLOR, color);
+    }
+
+    public static boolean hasSaw(ItemStack stack) {
+        return GearData.hasPart(stack, Constants.SAW_UPGRADE);
+    }
+
+    //endregion
+
+    //region Gear properties
 
     @Override
     public GearType getGearType() {
@@ -164,30 +240,30 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         );
     }
 
+    //endregion
+
     //region Harvest tool overrides
 
     @Override
     public boolean canHarvestBlock(ItemStack stack, BlockState state) {
         // Forge ItemStack-sensitive version
-        return canHarvestBlock(state, getStatInt(stack, ItemStats.HARVEST_LEVEL));
-    }
-
-    @Override
-    public boolean canHarvestBlock(BlockState state) {
-        // Vanilla version... Not good because we can't get the actual harvest level.
-        // Assume a very high level since we can't get the actual value.
-        return canHarvestBlock(state, 10);
-    }
-
-    private boolean canHarvestBlock(BlockState state, int toolLevel) {
+        int harvestLevel = getStatInt(stack, ItemStats.HARVEST_LEVEL);
         // Wrong harvest level?
-        if (state.getBlock().getHarvestLevel(state) > toolLevel)
+        if (state.getBlock().getHarvestLevel(state) > harvestLevel)
             return false;
         // Included in base or extra materials?
         Material material = state.getMaterial();
-        if (EFFECTIVE_MATERIALS.contains(material) /*|| EXTRA_MATERIALS.contains(material)*/)
+        if (EFFECTIVE_MATERIALS.contains(material) || (hasSaw(stack) && EXTRA_MATERIALS.contains(material)))
             return true;
-        return super.canHarvestBlock(state);
+        return super.canHarvestBlock(stack, state);
+    }
+
+    @Deprecated
+    @Override
+    public boolean canHarvestBlock(BlockState state) {
+        // Vanilla version... Not good because we can't get the actual harvest level.
+        Material material = state.getMaterial();
+        return EFFECTIVE_MATERIALS.contains(material) || super.canHarvestBlock(state);
     }
     //endregion
 
@@ -196,6 +272,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         TextUtil.addEnergyInfo(stack, tooltip);
+        tooltip.add(new TranslationTextComponent("item.supermultidrills.drill.energyPerUse", getBaseEnergyCost(stack)));
 
         GearClientHelper.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -210,7 +287,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
         if (optional.isPresent()) {
             IEnergyStorage energy = optional.orElseThrow(IllegalStateException::new);
-            boolean canHarvest = this.canHarvestBlock(state);
+            boolean canHarvest = this.canHarvestBlock(stack, state);
             // Just assume hardness of 1, since we don't have a World object
             boolean hasEnoughPower = energy.getEnergyStored() > getEnergyToBreakBlock(stack, state, 1);
 
@@ -223,12 +300,12 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
         return GearHelper.getHarvestLevel(stack, tool, blockState, EXTRA_MATERIALS);
     }
+
 //    @Override
 //    public void setHarvestLevel(String toolClass, int level) {
 //        super.setHarvestLevel(toolClass, level);
 //        GearHelper.setHarvestLevel(this, toolClass, level, this.toolClasses);
 //    }
-
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
@@ -322,43 +399,8 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         return canceled;
     }
 
-    //endregion
-
-    public static boolean hasSaw(ItemStack stack) {
-        return GearData.hasPart(stack, Constants.SAW_UPGRADE);
-    }
-
-    @Override
-    public int getDamage(ItemStack stack) {
-        int value = (int) (100 * this.getDurabilityForDisplay(stack));
-        return MathHelper.clamp(value, 0, 99);
-    }
-
     @Override
     public void setDamage(ItemStack stack, int damage) {
-    }
-
-    public static int getEnergyToBreakBlock(ItemStack stack, BlockState state, float hardness) {
-        int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack);
-        int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack);
-        int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
-        float durability = GearData.getStat(stack, ItemStats.DURABILITY);
-
-        // FIXME
-        Expression exp = Constants.DRILL_ENERGY_EXPR;
-        exp.setVariable("durability", BigDecimal.valueOf(durability));
-        exp.setVariable("efficiency", BigDecimal.valueOf(efficiencyLevel));
-        exp.setVariable("silk_touch", BigDecimal.valueOf(silkTouchLevel));
-        exp.setVariable("fortune", BigDecimal.valueOf(fortuneLevel));
-        exp.setVariable("hardness", BigDecimal.valueOf(hardness));
-        exp.setVariable("mining_speed", BigDecimal.valueOf(GearHelper.getDestroySpeed(stack, state, EXTRA_MATERIALS)));
-        //exp.setVariable("motor_boost", BigDecimal.valueOf(getMotorSpeedBoost(stack)));
-
-        int result = (int) Math.round(25 + Math.exp(7 - 0.0003 * durability) * (1 + 0.06 * efficiencyLevel) * hardness); //exp.eval().intValue();
-        if (result < 0) {
-            result = 0; // Energy cost should be non-negative!
-        }
-        return result;
     }
 
     @Override
@@ -376,15 +418,11 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         return MathHelper.hsvToRGB((1 + getChargeRatio(stack)) / 3.0F, 1.0F, 1.0F);
     }
 
-    // Colors
-
-    public static int getChassisColor(ItemStack stack) {
-        if (stack.getOrCreateTag().contains(NBT_CHASSIS_COLOR))
-            return stack.getOrCreateTag().getInt(NBT_CHASSIS_COLOR);
-        return Color.VALUE_WHITE;
+    @Override
+    public int getDamage(ItemStack stack) {
+        int value = (int) (100 * this.getDurabilityForDisplay(stack));
+        return MathHelper.clamp(value, 0, 99);
     }
 
-    public static void setChassisColor(ItemStack stack, int color) {
-        stack.getOrCreateTag().putInt(NBT_CHASSIS_COLOR, color);
-    }
+    //endregion
 }

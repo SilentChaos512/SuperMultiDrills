@@ -11,7 +11,7 @@ import java.util.List;
 public final class TextUtil {
     private static final String ENERGY_FORMAT = "%,d";
 
-    private TextUtil() {throw new IllegalArgumentException("Utility class");}
+    private TextUtil() {throw new IllegalAccessError("Utility class");}
 
     public static ITextComponent translate(String prefix, String suffix, Object... params) {
         String key = String.format("%s.%s.%s", prefix, SuperMultiDrills.MOD_ID, suffix);

@@ -1,6 +1,7 @@
 package net.silentchaos512.supermultidrills.capability;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.EnergyStorage;
 
 public class EnergyStorageItemImpl extends EnergyStorage {
@@ -41,10 +42,12 @@ public class EnergyStorageItemImpl extends EnergyStorage {
     }
 
     public void setEnergyStored(int amount) {
-        stack.getOrCreateTag().putInt("Energy", amount);
+        stack.getOrCreateTag().putInt("Energy", MathHelper.clamp(amount, 0, this.capacity));
     }
 
+    @Deprecated
     public void setCapacity(int value) {
         this.capacity = value;
+        this.energy = MathHelper.clamp(this.energy, 0, this.capacity);
     }
 }

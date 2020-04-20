@@ -1,6 +1,10 @@
 {
     "replace": false,
     "values": [
-        "supermultidrills:test_battery"
+        "supermultidrills:tater_battery",
+        "supermultidrills:small_battery",
+        "supermultidrills:medium_battery",
+        "supermultidrills:large_battery",
+        "supermultidrills:extreme_battery"
     ]
 }

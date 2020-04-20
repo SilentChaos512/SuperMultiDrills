@@ -12,7 +12,11 @@ public enum CraftingItems implements IItemProvider {
     BATTERY_GAUGE,
     REDSTONE_ALLOY_INGOT,
     REDSTONE_ALLOY_PLATE,
-    TEST_MOTOR,
+    RUDIMENTARY_MOTOR,
+    BASIC_MOTOR,
+    PERFORMANT_MOTOR,
+    ENTHUSIAST_MOTOR,
+    ELITE_MOTOR,
     SAW_UPGRADE,
     ;
 

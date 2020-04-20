@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
@@ -30,16 +31,14 @@ class SideProxy implements IProxy {
         SuperMultiDrills.LOGGER.info("Register part type: {}", ChassisPart.TYPE);
         SuperMultiDrills.LOGGER.info("Register part type: {}", MotorPart.TYPE);
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(SideProxy::commonSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(SideProxy::imcEnqueue);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(SideProxy::imcProcess);
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(SideProxy::commonSetup);
+        modEventBus.addListener(SideProxy::imcEnqueue);
+        modEventBus.addListener(SideProxy::imcProcess);
+        modEventBus.addListener(SideProxy::gatherData);
 
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModBlocks::registerAll);
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModContainers::registerAll);
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::registerAll);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, ModItems::registerAll);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, ModRecipeStuff::registerRecipeSerializers);
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModTileEntities::registerAll);
+        modEventBus.addGenericListener(Item.class, ModItems::registerAll);
+        modEventBus.addGenericListener(IRecipeSerializer.class, ModRecipeStuff::registerRecipeSerializers);
 
         MinecraftForge.EVENT_BUS.addListener(SideProxy::serverAboutToStart);
         MinecraftForge.EVENT_BUS.addListener(SideProxy::serverStarted);
@@ -56,9 +55,11 @@ class SideProxy implements IProxy {
     private static void commonSetup(FMLCommonSetupEvent event) {
     }
 
-    private static void imcEnqueue(InterModEnqueueEvent event) {}
+    private static void imcEnqueue(InterModEnqueueEvent event) {
+    }
 
-    private static void imcProcess(InterModProcessEvent event) {}
+    private static void imcProcess(InterModProcessEvent event) {
+    }
 
     private static void serverAboutToStart(FMLServerAboutToStartEvent event) {
     }
@@ -71,6 +72,12 @@ class SideProxy implements IProxy {
 
     private static void serverStopping(FMLServerStoppingEvent event) {
         server = null;
+    }
+
+    private static void gatherData(GatherDataEvent event) {
+//        DataGenerator generator = event.getGenerator();
+//        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+//        generator.addProvider(new DataGenModels(generator, existingFileHelper));
     }
 
     @Nullable
@@ -92,9 +99,6 @@ class SideProxy implements IProxy {
         }
 
         private static void clientSetup(FMLClientSetupEvent event) {
-//            ModEntities.registerRenderers(event);
-//            ModTileEntities.registerRenderers(event);
-//            ModContainers.registerScreens(event);
         }
 
         @Nullable
