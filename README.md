@@ -1,4 +1,8 @@
-# SuperMultiDrills
-A Minecraft mod that adds drills powered by Redstone Flux.
+# Super Multi-Drills
 
-More info and downloads here: http://minecraft.curseforge.com/mc-mods/230238-super-multi-drills
+A Minecraft mod that adds drills powered by Forge Energy (FE). This is now an add-on for [Silent Gear](https://www.curseforge.com/minecraft/mc-mods/silent-gear)
+
+## Links
+
+- [More info and downloads on Curse](https://www.curseforge.com/minecraft/mc-mods/super-multi-drills)
+- [Silent Gear repo](https://github.com/SilentChaos512/Silent-Gear)
