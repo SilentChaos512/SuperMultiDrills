@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " ##",
+    "/R/",
+    "E##"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/gold"
+    },
+    "/": {
+      "tag": "forge:rods/blaze"
+    },
+    "R": {
+      "tag": "forge:ingots/redstone_alloy"
+    },
+    "E": {
+      "tag": "forge:ender_pearls"
+    }
+  },
+  "result": {
+    "item": "supermultidrills:enthusiast_motor"
+  }
+}

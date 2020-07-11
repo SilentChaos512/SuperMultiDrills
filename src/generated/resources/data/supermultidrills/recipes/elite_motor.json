@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " ##",
+    "/R/",
+    "E##"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:gems/diamond"
+    },
+    "/": {
+      "item": "minecraft:ender_eye"
+    },
+    "R": {
+      "tag": "forge:ingots/redstone_alloy"
+    },
+    "E": {
+      "tag": "forge:gems/prismarine"
+    }
+  },
+  "result": {
+    "item": "supermultidrills:elite_motor"
+  }
+}

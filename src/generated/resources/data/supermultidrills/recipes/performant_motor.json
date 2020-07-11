@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " ##",
+    "/R/",
+    " ##"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/iron"
+    },
+    "/": {
+      "tag": "forge:nuggets/gold"
+    },
+    "R": {
+      "tag": "forge:ingots/redstone_alloy"
+    }
+  },
+  "result": {
+    "item": "supermultidrills:performant_motor"
+  }
+}

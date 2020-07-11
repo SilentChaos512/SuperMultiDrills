@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#/#",
+    "R# "
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/iron"
+    },
+    "/": {
+      "item": "supermultidrills:heavy_iron_rod"
+    },
+    "R": {
+      "tag": "forge:ingots/redstone_alloy"
+    }
+  },
+  "result": {
+    "item": "supermultidrills:saw_upgrade"
+  }
+}
