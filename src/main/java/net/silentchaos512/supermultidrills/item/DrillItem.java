@@ -1,5 +1,6 @@
 package net.silentchaos512.supermultidrills.item;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
@@ -50,6 +51,7 @@ import net.silentchaos512.utils.Color;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -94,6 +96,11 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     public DrillItem() {
         super(ItemTier.DIAMOND, 0, 0, GearHelper.getBuilder(ToolType.PICKAXE).addToolType(ToolType.SHOVEL, 3).group(SuperMultiDrills.ITEM_GROUP));
+    }
+
+    @Override
+    public Collection<PartType> getRequiredParts() {
+        return ImmutableList.of(PartType.MAIN, PartType.ROD, MotorPart.TYPE, BatteryPart.TYPE, ChassisPart.TYPE);
     }
 
     //region Energy and Drills Properties
@@ -218,14 +225,6 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         if (stat == ItemStats.ENCHANTABILITY)
             return Optional.of(StatInstance.makeGearMod(-0.5f));
         return Optional.empty();
-    }
-
-    @Override
-    public boolean requiresPartOfType(PartType type) {
-        return type == BatteryPart.TYPE
-                || type == ChassisPart.TYPE
-                || type == MotorPart.TYPE
-                || ICoreTool.super.requiresPartOfType(type);
     }
 
     @Override

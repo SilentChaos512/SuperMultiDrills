@@ -12,7 +12,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.silentchaos512.supermultidrills.client.ColorHandlers;
-import net.silentchaos512.supermultidrills.data.DataGenerators;
+import net.silentchaos512.supermultidrills.data.SmdDataGenerators;
 import net.silentchaos512.supermultidrills.init.Registration;
 import net.silentchaos512.supermultidrills.part.BatteryPart;
 import net.silentchaos512.supermultidrills.part.ChassisPart;
@@ -32,7 +32,7 @@ class SideProxy implements IProxy {
         Registration.register();
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(DataGenerators::onGatherData);
+        modEventBus.addListener(SmdDataGenerators::onGatherData);
         modEventBus.addListener(SideProxy::commonSetup);
         modEventBus.addListener(SideProxy::imcEnqueue);
         modEventBus.addListener(SideProxy::imcProcess);

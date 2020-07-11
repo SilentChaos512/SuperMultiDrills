@@ -1,4 +1,4 @@
-package net.silentchaos512.supermultidrills.data.recipe;
+package net.silentchaos512.supermultidrills.data;
 
 import net.minecraft.data.*;
 import net.minecraft.item.Items;
