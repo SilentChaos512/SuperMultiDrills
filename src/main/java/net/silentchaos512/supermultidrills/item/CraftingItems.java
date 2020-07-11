@@ -2,8 +2,9 @@ package net.silentchaos512.supermultidrills.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.IItemProvider;
+import net.silentchaos512.lib.registry.ItemRegistryObject;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
-import net.silentchaos512.utils.Lazy;
+import net.silentchaos512.supermultidrills.init.Registration;
 
 import java.util.Locale;
 
@@ -20,10 +21,13 @@ public enum CraftingItems implements IItemProvider {
     SAW_UPGRADE,
     ;
 
-    private final Lazy<Item> item;
+    @SuppressWarnings("NonFinalFieldInEnum") private ItemRegistryObject<Item> item;
 
-    CraftingItems() {
-        this.item = Lazy.of(() -> new Item(new Item.Properties().group(SuperMultiDrills.ITEM_GROUP)));
+    public static void register() {
+        for (CraftingItems item : values()) {
+            item.item = new ItemRegistryObject<>(Registration.ITEMS.register(item.getName(), () ->
+                    new Item(new Item.Properties().group(SuperMultiDrills.ITEM_GROUP))));
+        }
     }
 
     @Override

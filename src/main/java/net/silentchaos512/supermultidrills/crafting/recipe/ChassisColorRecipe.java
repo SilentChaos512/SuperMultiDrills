@@ -11,8 +11,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.silentchaos512.lib.collection.StackList;
-import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.init.ModItems;
+import net.silentchaos512.supermultidrills.init.ModRecipes;
 import net.silentchaos512.supermultidrills.item.DrillChassisItem;
 
 import javax.annotation.Nonnull;
@@ -20,9 +20,6 @@ import java.util.Collection;
 import java.util.Optional;
 
 public class ChassisColorRecipe extends SpecialRecipe {
-    public static final ResourceLocation NAME = SuperMultiDrills.getId("color_chassis");
-    public static final Serializer SERIALIZER = new Serializer();
-
     public ChassisColorRecipe(ResourceLocation recipeId) {
         super(recipeId);
     }
@@ -46,7 +43,7 @@ public class ChassisColorRecipe extends SpecialRecipe {
     }
 
     private static boolean isDrillChassis(ItemStack stack) {
-        return stack.getItem() == ModItems.drillChassis;
+        return stack.getItem() == ModItems.DRILL_CHASSIS.get();
     }
 
     // Largely copied from RecipesArmorDyes
@@ -108,22 +105,16 @@ public class ChassisColorRecipe extends SpecialRecipe {
     @Nonnull
     @Override
     public ItemStack getRecipeOutput() {
-        return new ItemStack(ModItems.drillChassis);
-    }
-
-    @Override
-    public boolean isDynamic() {
-        // Don't show in recipe book
-        return true;
+        return new ItemStack(ModItems.DRILL_CHASSIS);
     }
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return ModRecipes.CHASSIS_COLOR.get();
     }
 
     public static final class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ChassisColorRecipe> {
-        private Serializer() {}
+        public Serializer() {}
 
         @Override
         public ChassisColorRecipe read(ResourceLocation recipeId, JsonObject json) {

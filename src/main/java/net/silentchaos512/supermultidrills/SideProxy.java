@@ -2,8 +2,6 @@ package net.silentchaos512.supermultidrills;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,8 +12,8 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.silentchaos512.supermultidrills.client.ColorHandlers;
-import net.silentchaos512.supermultidrills.init.ModItems;
-import net.silentchaos512.supermultidrills.init.ModRecipeStuff;
+import net.silentchaos512.supermultidrills.data.DataGenerators;
+import net.silentchaos512.supermultidrills.init.Registration;
 import net.silentchaos512.supermultidrills.part.BatteryPart;
 import net.silentchaos512.supermultidrills.part.ChassisPart;
 import net.silentchaos512.supermultidrills.part.MotorPart;
@@ -31,14 +29,14 @@ class SideProxy implements IProxy {
         SuperMultiDrills.LOGGER.info("Register part type: {}", ChassisPart.TYPE);
         SuperMultiDrills.LOGGER.info("Register part type: {}", MotorPart.TYPE);
 
+        Registration.register();
+
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(DataGenerators::onGatherData);
         modEventBus.addListener(SideProxy::commonSetup);
         modEventBus.addListener(SideProxy::imcEnqueue);
         modEventBus.addListener(SideProxy::imcProcess);
-        modEventBus.addListener(SideProxy::gatherData);
 
-        modEventBus.addGenericListener(Item.class, ModItems::registerAll);
-        modEventBus.addGenericListener(IRecipeSerializer.class, ModRecipeStuff::registerRecipeSerializers);
 
         MinecraftForge.EVENT_BUS.addListener(SideProxy::serverAboutToStart);
         MinecraftForge.EVENT_BUS.addListener(SideProxy::serverStarted);
@@ -49,7 +47,6 @@ class SideProxy implements IProxy {
 //        Network.init();
 
 //        ModLootStuff.init();
-        ModRecipeStuff.init();
     }
 
     private static void commonSetup(FMLCommonSetupEvent event) {
@@ -72,12 +69,6 @@ class SideProxy implements IProxy {
 
     private static void serverStopping(FMLServerStoppingEvent event) {
         server = null;
-    }
-
-    private static void gatherData(GatherDataEvent event) {
-//        DataGenerator generator = event.getGenerator();
-//        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-//        generator.addProvider(new DataGenModels(generator, existingFileHelper));
     }
 
     @Nullable

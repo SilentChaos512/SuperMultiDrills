@@ -14,9 +14,9 @@ import net.silentchaos512.utils.Color;
 public class ColorHandlers {
     public static void onItemColors(ColorHandlerEvent.Item event) {
         ItemColors colors = event.getItemColors();
-        colors.register(ColorHandlers::getDrillColor, ModItems.drill);
-        colors.register(ColorHandlers::getDrillHeadColor, ModItems.drillHead);
-        colors.register((stack, tintIndex) -> DrillChassisItem.getColor(stack), ModItems.drillChassis);
+        colors.register(ColorHandlers::getDrillColor, ModItems.DRILL);
+        colors.register(ColorHandlers::getDrillHeadColor, ModItems.DRILL_HEAD);
+        colors.register((stack, tintIndex) -> DrillChassisItem.getColor(stack), ModItems.DRILL_CHASSIS);
     }
 
     private static int getDrillColor(ItemStack stack, int tintIndex) {

@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.silentchaos512.gear.api.parts.PartDataList;
@@ -13,21 +12,18 @@ import net.silentchaos512.gear.api.parts.PartType;
 import net.silentchaos512.gear.util.GearData;
 import net.silentchaos512.lib.collection.StackList;
 import net.silentchaos512.lib.crafting.recipe.ExtendedShapelessRecipe;
-import net.silentchaos512.supermultidrills.SuperMultiDrills;
+import net.silentchaos512.supermultidrills.init.ModRecipes;
 import net.silentchaos512.supermultidrills.item.DrillHeadItem;
 import net.silentchaos512.supermultidrills.item.DrillItem;
 
 public class DrillHeadSwapRecipe extends ExtendedShapelessRecipe {
-    public static final ResourceLocation NAME = SuperMultiDrills.getId("drill_head_swap");
-    public static final Serializer<DrillHeadSwapRecipe> SERIALIZER = Serializer.basic(DrillHeadSwapRecipe::new);
-
-    private DrillHeadSwapRecipe(ShapelessRecipe recipe) {
+    public DrillHeadSwapRecipe(ShapelessRecipe recipe) {
         super(recipe);
     }
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return ModRecipes.DRILL_HEAD_SWAP.get();
     }
 
     @Override

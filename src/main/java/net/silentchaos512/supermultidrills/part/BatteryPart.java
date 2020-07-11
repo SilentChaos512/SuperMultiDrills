@@ -7,6 +7,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.silentchaos512.gear.api.item.GearType;
 import net.silentchaos512.gear.api.item.ICoreItem;
 import net.silentchaos512.gear.api.parts.IPartPosition;
 import net.silentchaos512.gear.api.parts.IPartSerializer;
@@ -16,10 +17,12 @@ import net.silentchaos512.gear.parts.AbstractGearPart;
 import net.silentchaos512.gear.parts.PartData;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.capability.EnergyStorageItemImpl;
-import net.silentchaos512.supermultidrills.init.ModItems;
+import net.silentchaos512.supermultidrills.init.Registration;
+import net.silentchaos512.supermultidrills.item.DrillBatteryItem;
 import net.silentchaos512.supermultidrills.item.DrillItem;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BatteryPart extends AbstractGearPart implements IUpgradePart {
     private static final ResourceLocation TYPE_ID = SuperMultiDrills.getId("battery");
@@ -108,10 +111,11 @@ public class BatteryPart extends AbstractGearPart implements IUpgradePart {
     }
 
     @Override
-    public PartData randomizeData() {
-        int batteriesCount = ModItems.BATTERIES.size();
-        int index = MathHelper.clamp(1 + SuperMultiDrills.random.nextInt(batteriesCount), 2, batteriesCount - 1);
-        ItemStack stack = new ItemStack(ModItems.BATTERIES.get(index));
+    public PartData randomizeData(GearType gearType, int tier) {
+        List<DrillBatteryItem> batteries = Registration.getItems(DrillBatteryItem.class);
+        int batteriesCount = batteries.size();
+        int index = MathHelper.clamp(1 + SuperMultiDrills.random.nextInt(batteriesCount), tier, batteriesCount - 1);
+        ItemStack stack = new ItemStack(batteries.get(index));
         stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> {
             if (e instanceof EnergyStorageItemImpl) {
                 ((EnergyStorageItemImpl) e).setEnergyStored(e.getMaxEnergyStored());

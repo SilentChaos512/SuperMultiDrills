@@ -10,7 +10,6 @@ buildscript {
 }
 
 plugins {
-    id 'io.franzbecker.gradle-lombok' version '2.0'
     id 'maven'
     id 'maven-publish'
     id "com.jfrog.bintray" version "1.8.5"
@@ -27,11 +26,6 @@ repositories {
     }
     mavenLocal()
     jcenter()
-}
-
-lombok {
-    version = '1.18.4'
-    sha256 = ""
 }
 
 tasks.withType(JavaCompile) {
@@ -58,37 +52,54 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
+            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                silentgems {
+                supermultidrills {
                     source sourceSets.main
                 }
             }
         }
+
         server {
             workingDirectory project.file('run')
 
+            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                silentgems {
+                supermultidrills {
                     source sourceSets.main
                 }
             }
         }
-        data = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
 
-            args '--mod', project.mod_id, 'all', 'output', file ('src/generated/resources')
+        data {
+            workingDirectory project.file('run')
 
-            source sourceSets.main
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', project.mod_id, '--all',
+                    '--existing', file('src/main/resources').toString(),
+                    '--existing', file('src/generated/resources').toString(),
+                    '--output', file('src/generated/resources/')
+
+            mods {
+                supermultidrills {
+                    source sourceSets.main
+                }
+            }
         }
     }
 }
@@ -119,6 +130,10 @@ repositories {
     }
 }
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 configurations {
     // Dependencies to pack into the jar
     extraLibs
@@ -136,6 +151,8 @@ dependencies {
         exclude module: 'forge'
         exclude module: 'jei-1.15.2'
         exclude module: 'silent-lib-1.15.2'
+        exclude module: 'Bookshelf-1.15.2'
+        exclude module: 'GameStages-1.15.2'
     }
 
     runtimeOnly("net.silentchaos512:silents-mechanisms-${project.mc_version}:0.+") {

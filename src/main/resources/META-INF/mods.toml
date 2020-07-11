@@ -33,12 +33,12 @@ authors="SilentChaos512"
 [[dependencies.supermultidrills]]
     modId="silentlib"
     mandatory=true
-    versionRange="[4,)"
+    versionRange="[4.6.5,)"
     ordering = "NONE"
     side = "BOTH"
 [[dependencies.supermultidrills]]
     modId="silentgear"
     mandatory=true
-    versionRange="[1.6,)"
+    versionRange="[1.9,)"
     ordering="AFTER"
     side="BOTH"

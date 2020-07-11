@@ -54,7 +54,7 @@ public class SuperMultiDrills {
     public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
         @Override
         public ItemStack createIcon() {
-            return GearGenerator.create(ModItems.drill, 3);
+            return GearGenerator.create(ModItems.DRILL.get(), 3);
         }
     };
 }

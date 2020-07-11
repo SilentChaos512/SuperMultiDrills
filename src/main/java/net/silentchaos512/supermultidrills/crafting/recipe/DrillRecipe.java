@@ -5,14 +5,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.ShapelessRecipe;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.silentchaos512.gear.parts.PartData;
 import net.silentchaos512.gear.util.GearData;
 import net.silentchaos512.lib.collection.StackList;
 import net.silentchaos512.lib.crafting.recipe.ExtendedShapelessRecipe;
-import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.init.ModItems;
+import net.silentchaos512.supermultidrills.init.ModRecipes;
 import net.silentchaos512.supermultidrills.item.DrillHeadItem;
 import net.silentchaos512.supermultidrills.item.DrillItem;
 
@@ -22,16 +21,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DrillRecipe extends ExtendedShapelessRecipe {
-    public static final ResourceLocation NAME = SuperMultiDrills.getId("drill_crafting");
-    public static final Serializer<DrillRecipe> SERIALIZER = Serializer.basic(DrillRecipe::new);
-
-    private DrillRecipe(ShapelessRecipe recipe) {
+    public DrillRecipe(ShapelessRecipe recipe) {
         super(recipe);
     }
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
+        return ModRecipes.DRILL_CRAFTING.get();
     }
 
     @Override
@@ -42,7 +38,7 @@ public class DrillRecipe extends ExtendedShapelessRecipe {
 
     @Override
     public ItemStack getCraftingResult(CraftingInventory inv) {
-        return ModItems.drill.construct(getParts(inv));
+        return ModItems.DRILL.get().construct(getParts(inv));
     }
 
     private static Collection<PartData> getParts(IInventory inv) {

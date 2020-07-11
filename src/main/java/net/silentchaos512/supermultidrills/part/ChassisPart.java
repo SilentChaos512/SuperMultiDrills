@@ -6,6 +6,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.silentchaos512.gear.SilentGear;
+import net.silentchaos512.gear.api.item.GearType;
 import net.silentchaos512.gear.api.item.ICoreItem;
 import net.silentchaos512.gear.api.parts.IPartPosition;
 import net.silentchaos512.gear.api.parts.IPartSerializer;
@@ -89,9 +90,9 @@ public class ChassisPart extends AbstractGearPart implements IUpgradePart {
     }
 
     @Override
-    public PartData randomizeData() {
+    public PartData randomizeData(GearType gearType, int tier) {
         // Add a random color to the chassis
-        ItemStack chassis = ModItems.drillChassis.getStack(getRandomColor());
+        ItemStack chassis = ModItems.DRILL_CHASSIS.get().getStack(getRandomColor());
         return PartData.of(this, chassis);
     }
 
