@@ -2,10 +2,10 @@
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/super-multi-drills",
     "changelog": "https://github.com/SilentChaos512/SuperMultiDrills/blob/1.15/CHANGELOG.md",
     "1.15.2": {
-        "2.0.1": "See changelog on GitHub"
+        "2.1.0": "See changelog on GitHub"
     },
     "promos": {
-        "1.15.2-latest": "2.0.1",
-        "1.15.2-recommended": "2.0.1"
+        "1.15.2-latest": "2.1.0",
+        "1.15.2-recommended": "2.1.0"
     }
 }
