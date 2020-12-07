@@ -3,6 +3,9 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2020-12-07
+- Updated for Silent Gear 2.4.x (required) and Silent Lib 4.9.x (required)
+
 ## [2.1.0] - 2020-07-11
 - Updated for Silent Gear 1.9.x (required) and Silent Lib 4.6.5 (required)
 - Currently drill item colors are broken, will debug for next update
