@@ -9,7 +9,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.silentchaos512.gear.gear.part.PartSerializers;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
+import net.silentchaos512.supermultidrills.part.BatteryPart;
+import net.silentchaos512.supermultidrills.part.ChassisPart;
+import net.silentchaos512.supermultidrills.part.MotorPart;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -26,8 +30,12 @@ public final class Registration {
         ITEMS.register(modEventBus);
         RECIPE_SERIALIZERS.register(modEventBus);
 
-        ModItems.register();
-        ModRecipes.register();
+        SmdItems.register();
+        SmdRecipes.register();
+
+        PartSerializers.register(BatteryPart.SERIALIZER);
+        PartSerializers.register(ChassisPart.SERIALIZER);
+        PartSerializers.register(MotorPart.SERIALIZER);
     }
 
     @SuppressWarnings("unchecked")
@@ -47,6 +55,6 @@ public final class Registration {
     }
 
     private static <T extends IForgeRegistryEntry<T>> DeferredRegister<T> create(IForgeRegistry<T> registry) {
-        return new DeferredRegister<>(registry, SuperMultiDrills.MOD_ID);
+        return DeferredRegister.create(registry, SuperMultiDrills.MOD_ID);
     }
 }

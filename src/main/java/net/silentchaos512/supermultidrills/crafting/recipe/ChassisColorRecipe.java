@@ -1,18 +1,15 @@
 package net.silentchaos512.supermultidrills.crafting.recipe;
 
-import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.silentchaos512.lib.collection.StackList;
-import net.silentchaos512.supermultidrills.init.ModItems;
-import net.silentchaos512.supermultidrills.init.ModRecipes;
+import net.silentchaos512.supermultidrills.init.SmdItems;
+import net.silentchaos512.supermultidrills.init.SmdRecipes;
 import net.silentchaos512.supermultidrills.item.DrillChassisItem;
 
 import javax.annotation.Nonnull;
@@ -43,7 +40,7 @@ public class ChassisColorRecipe extends SpecialRecipe {
     }
 
     private static boolean isDrillChassis(ItemStack stack) {
-        return stack.getItem() == ModItems.DRILL_CHASSIS.get();
+        return stack.getItem() == SmdItems.DRILL_CHASSIS.get();
     }
 
     // Largely copied from RecipesArmorDyes
@@ -105,28 +102,11 @@ public class ChassisColorRecipe extends SpecialRecipe {
     @Nonnull
     @Override
     public ItemStack getRecipeOutput() {
-        return new ItemStack(ModItems.DRILL_CHASSIS);
+        return new ItemStack(SmdItems.DRILL_CHASSIS);
     }
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipes.CHASSIS_COLOR.get();
-    }
-
-    public static final class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ChassisColorRecipe> {
-        public Serializer() {}
-
-        @Override
-        public ChassisColorRecipe read(ResourceLocation recipeId, JsonObject json) {
-            return new ChassisColorRecipe(recipeId);
-        }
-
-        @Override
-        public ChassisColorRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-            return new ChassisColorRecipe(recipeId);
-        }
-
-        @Override
-        public void write(PacketBuffer buffer, ChassisColorRecipe recipe) {}
+        return SmdRecipes.CHASSIS_COLOR.get();
     }
 }

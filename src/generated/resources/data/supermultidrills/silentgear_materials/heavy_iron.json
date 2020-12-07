@@ -1,0 +1,41 @@
+{
+  "availability": {
+    "tier": 2,
+    "visible": true,
+    "gear_blacklist": [],
+    "can_salvage": true
+  },
+  "crafting_items": {
+    "subs": {
+      "rod": {
+        "tag": "forge:rods/heavy_iron"
+      }
+    }
+  },
+  "name": {
+    "translate": "material.supermultidrills.heavy_iron"
+  },
+  "stats": {
+    "rod": {
+      "durability": {
+        "mul2": 0.25
+      },
+      "enchantability": {
+        "add": -5.0
+      },
+      "rarity": 25.0
+    }
+  },
+  "traits": {
+    "rod": [
+      {
+        "name": "silentgear:malleable",
+        "level": 2
+      },
+      {
+        "name": "silentgear:magnetic",
+        "level": 3
+      }
+    ]
+  }
+}

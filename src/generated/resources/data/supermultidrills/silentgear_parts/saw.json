@@ -1,0 +1,11 @@
+{
+  "type": "silentgear:misc_upgrade",
+  "gear_type": "drill",
+  "part_type": "silentgear:misc_upgrade",
+  "crafting_item": {
+    "item": "supermultidrills:saw_upgrade"
+  },
+  "name": {
+    "translate": "part.supermultidrills.saw"
+  }
+}

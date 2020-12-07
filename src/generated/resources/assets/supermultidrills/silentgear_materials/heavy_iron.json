@@ -1,0 +1,12 @@
+{
+  "rod/all": [
+    {
+      "texture": "silentgear:rod_generic_hc"
+    }
+  ],
+  "rod/part": [
+    {
+      "texture": "silentgear:rod"
+    }
+  ]
+}

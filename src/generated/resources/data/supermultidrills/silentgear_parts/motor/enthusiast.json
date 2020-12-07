@@ -1,0 +1,34 @@
+{
+  "type": "supermultidrills:motor",
+  "gear_type": "drill",
+  "part_type": "supermultidrills:motor",
+  "crafting_item": {
+    "item": "supermultidrills:enthusiast_motor"
+  },
+  "name": {
+    "translate": "part.supermultidrills.motor.enthusiast"
+  },
+  "stats": {
+    "durability": {
+      "mul2": 0.2
+    },
+    "harvest_level": {
+      "max": 3.0
+    },
+    "harvest_speed": {
+      "mul2": 0.4
+    },
+    "melee_damage": {
+      "add": 3.0
+    },
+    "rarity": {
+      "add": 20.0
+    }
+  },
+  "traits": [
+    {
+      "name": "supermultidrills:strong_flux",
+      "level": 2
+    }
+  ]
+}

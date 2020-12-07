@@ -11,6 +11,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -31,17 +32,16 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.silentchaos512.gear.api.item.GearType;
 import net.silentchaos512.gear.api.item.ICoreTool;
-import net.silentchaos512.gear.api.parts.PartType;
+import net.silentchaos512.gear.api.part.PartType;
 import net.silentchaos512.gear.api.stats.ItemStat;
 import net.silentchaos512.gear.api.stats.ItemStats;
-import net.silentchaos512.gear.api.stats.StatInstance;
 import net.silentchaos512.gear.client.util.GearClientHelper;
-import net.silentchaos512.gear.parts.PartData;
+import net.silentchaos512.gear.gear.part.PartData;
 import net.silentchaos512.gear.util.GearData;
 import net.silentchaos512.gear.util.GearHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.capability.EnergyStorageItemImpl;
-import net.silentchaos512.supermultidrills.lib.Constants;
+import net.silentchaos512.supermultidrills.lib.SmdConst;
 import net.silentchaos512.supermultidrills.part.BatteryPart;
 import net.silentchaos512.supermultidrills.part.ChassisPart;
 import net.silentchaos512.supermultidrills.part.MotorPart;
@@ -53,7 +53,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class DrillItem extends PickaxeItem implements ICoreTool {
@@ -197,7 +196,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     public static boolean hasSaw(ItemStack stack) {
-        return GearData.hasPart(stack, Constants.SAW_UPGRADE);
+        return GearData.hasPart(stack, SmdConst.Parts.SAW_UPGRADE.get());
     }
 
     //endregion
@@ -209,34 +208,41 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         return GEAR_TYPE;
     }
 
-    @Override
-    public Optional<StatInstance> getBaseStatModifier(ItemStat stat) {
-        if (stat == ItemStats.MELEE_DAMAGE)
-            return Optional.of(StatInstance.makeBaseMod(0));
-        if (stat == ItemStats.ATTACK_SPEED)
-            return Optional.of(StatInstance.makeBaseMod(-2.0f));
-        if (stat == ItemStats.REPAIR_EFFICIENCY)
-            return Optional.of(StatInstance.makeBaseMod(1));
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<StatInstance> getStatModifier(ItemStat stat) {
-        if (stat == ItemStats.ENCHANTABILITY)
-            return Optional.of(StatInstance.makeGearMod(-0.5f));
-        return Optional.empty();
-    }
+    private static final Set<ItemStat> RELEVANT_STATS = ImmutableSet.of(
+            ItemStats.HARVEST_LEVEL,
+            ItemStats.HARVEST_SPEED,
+            ItemStats.MELEE_DAMAGE,
+            ItemStats.ATTACK_SPEED,
+            ItemStats.ENCHANTABILITY,
+            ItemStats.RARITY
+    );
 
     @Override
     public Set<ItemStat> getRelevantStats(@Nonnull ItemStack stack) {
-        return ImmutableSet.of(
-                ItemStats.HARVEST_LEVEL,
-                ItemStats.HARVEST_SPEED,
-                ItemStats.MELEE_DAMAGE,
-                ItemStats.ATTACK_SPEED,
-                ItemStats.ENCHANTABILITY,
-                ItemStats.RARITY
-        );
+        return RELEVANT_STATS;
+    }
+
+    private static final Set<PartType> BLACKLISTED_PARTS = ImmutableSet.of(
+            PartType.BINDING,
+            PartType.GRIP
+    );
+
+    @Override
+    public boolean supportsPart(ItemStack gear, PartData part) {
+        return !BLACKLISTED_PARTS.contains(part.getType()) && ICoreTool.super.supportsPart(gear, part);
+    }
+
+    private static final Collection<PartType> RENDER_PARTS = ImmutableList.of(
+            ChassisPart.TYPE,
+            BatteryPart.TYPE,
+            PartType.MAIN,
+            PartType.COATING,
+            PartType.TIP
+    );
+
+    @Override
+    public Collection<PartType> getRenderParts() {
+        return RENDER_PARTS;
     }
 
     //endregion
@@ -277,7 +283,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         return GearHelper.getAttributeModifiers(slot, stack);
     }
 

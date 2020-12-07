@@ -1,5 +1,6 @@
 package net.silentchaos512.supermultidrills.crafting.ingredient;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -20,7 +21,7 @@ public final class BatteryIngredient extends Ingredient {
 
     private static ItemStack[] MATCHING_STACKS;
 
-    private BatteryIngredient() {
+    public BatteryIngredient() {
         super(Stream.of());
     }
 
@@ -57,6 +58,13 @@ public final class BatteryIngredient extends Ingredient {
     @Override
     public boolean isSimple() {
         return false;
+    }
+
+    @Override
+    public JsonElement serialize() {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", NAME.toString());
+        return json;
     }
 
     @Override

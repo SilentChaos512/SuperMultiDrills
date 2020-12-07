@@ -1,0 +1,13 @@
+{
+  "type": "silentgear:simple_trait",
+  "max_level": 5,
+  "name": {
+    "translate": "trait.supermultidrills.strong_flux"
+  },
+  "description": {
+    "translate": "trait.supermultidrills.strong_flux.desc"
+  },
+  "cancels_with": [
+    "supermultidrills:weak_flux"
+  ]
+}

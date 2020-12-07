@@ -2,7 +2,8 @@
   "type": "silentgear:compound_part",
   "ingredients": [
     {
-      "tag": "supermultidrills:blueprints/drill"
+      "type": "silentgear:blueprint",
+      "gear_type": "drill"
     },
     {
       "type": "silentgear:material",

@@ -1,0 +1,34 @@
+{
+  "type": "supermultidrills:motor",
+  "gear_type": "drill",
+  "part_type": "supermultidrills:motor",
+  "crafting_item": {
+    "item": "supermultidrills:performant_motor"
+  },
+  "name": {
+    "translate": "part.supermultidrills.motor.performant"
+  },
+  "stats": {
+    "durability": {
+      "mul2": 0.1
+    },
+    "harvest_level": {
+      "max": 2.0
+    },
+    "harvest_speed": {
+      "mul2": 0.2
+    },
+    "melee_damage": {
+      "add": 1.0
+    },
+    "rarity": {
+      "add": 10.0
+    }
+  },
+  "traits": [
+    {
+      "name": "supermultidrills:weak_flux",
+      "level": 1
+    }
+  ]
+}

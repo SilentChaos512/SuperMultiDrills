@@ -8,7 +8,7 @@ import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.silentchaos512.gear.util.GearGenerator;
-import net.silentchaos512.supermultidrills.init.ModItems;
+import net.silentchaos512.supermultidrills.init.SmdItems;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +17,6 @@ import java.util.Random;
 
 @Mod(SuperMultiDrills.MOD_ID)
 public class SuperMultiDrills {
-
     public static final String MOD_ID = "supermultidrills";
     public static final String MOD_NAME = "Super Multi-Drills";
 
@@ -27,10 +26,9 @@ public class SuperMultiDrills {
     public static SuperMultiDrills INSTANCE;
     public static IProxy PROXY;
 
-    @SuppressWarnings("Convert2MethodRef")
     public SuperMultiDrills() {
         INSTANCE = this;
-        PROXY = DistExecutor.runForDist(() -> () -> new SideProxy.Client(), () -> () -> new SideProxy.Server());
+        PROXY = DistExecutor.safeRunForDist(() -> SideProxy.Client::new, () -> SideProxy.Server::new);
     }
 
     public static String getVersion() {
@@ -54,7 +52,7 @@ public class SuperMultiDrills {
     public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
         @Override
         public ItemStack createIcon() {
-            return GearGenerator.create(ModItems.DRILL.get(), 3);
+            return GearGenerator.create(SmdItems.DRILL.get(), 3);
         }
     };
 }

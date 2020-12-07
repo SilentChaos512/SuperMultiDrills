@@ -5,6 +5,10 @@
     "supermultidrills:small_battery",
     "supermultidrills:medium_battery",
     "supermultidrills:large_battery",
-    "supermultidrills:extreme_battery"
+    "supermultidrills:extreme_battery",
+    {
+      "id": "silents_mechanisms:battery",
+      "required": false
+    }
   ]
 }

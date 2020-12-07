@@ -1,0 +1,11 @@
+{
+  "type": "supermultidrills:battery",
+  "gear_type": "drill",
+  "part_type": "supermultidrills:battery",
+  "crafting_item": {
+    "type": "supermultidrills:battery"
+  },
+  "name": {
+    "translate": "part.supermultidrills.battery"
+  }
+}

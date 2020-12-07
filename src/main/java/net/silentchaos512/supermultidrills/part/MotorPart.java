@@ -4,31 +4,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.silentchaos512.gear.api.item.ICoreItem;
-import net.silentchaos512.gear.api.parts.IPartPosition;
-import net.silentchaos512.gear.api.parts.IPartSerializer;
-import net.silentchaos512.gear.api.parts.IUpgradePart;
-import net.silentchaos512.gear.api.parts.PartType;
-import net.silentchaos512.gear.parts.AbstractGearPart;
-import net.silentchaos512.gear.parts.PartData;
+import net.silentchaos512.gear.api.part.IPartSerializer;
+import net.silentchaos512.gear.api.part.IUpgradePart;
+import net.silentchaos512.gear.api.part.PartType;
+import net.silentchaos512.gear.gear.part.AbstractGearPart;
+import net.silentchaos512.gear.gear.part.PartData;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.item.DrillItem;
+import net.silentchaos512.utils.Color;
 
 import javax.annotation.Nullable;
 
 public class MotorPart extends AbstractGearPart implements IUpgradePart {
     private static final ResourceLocation TYPE_ID = SuperMultiDrills.getId("motor");
-    public static final PartType TYPE = PartType.create(TYPE_ID, new Serializer<>(TYPE_ID, MotorPart::new));
-    public static final IPartPosition POSITION = new IPartPosition() {
-        @Override
-        public String getTexturePrefix() {
-            return "motor";
-        }
-
-        @Override
-        public String getModelIndex() {
-            return "motor";
-        }
-    };
+    public static final IPartSerializer<MotorPart> SERIALIZER = new Serializer<>(TYPE_ID, MotorPart::new);
+    public static final PartType TYPE = PartType.create(PartType.Builder.builder(TYPE_ID));
 
     public MotorPart(ResourceLocation partId) {
         super(partId);
@@ -40,13 +30,13 @@ public class MotorPart extends AbstractGearPart implements IUpgradePart {
     }
 
     @Override
-    public IPartPosition getPartPosition() {
-        return POSITION;
+    public IPartSerializer<?> getSerializer() {
+        return SERIALIZER;
     }
 
     @Override
-    public IPartSerializer<?> getSerializer() {
-        return TYPE.getSerializer();
+    public int getColor(PartData part, ItemStack gear, int layer, int animationFrame) {
+        return Color.VALUE_WHITE;
     }
 
     @Override
@@ -62,5 +52,10 @@ public class MotorPart extends AbstractGearPart implements IUpgradePart {
     @Override
     public ITextComponent getDisplayNamePrefix(@Nullable PartData part, ItemStack gear) {
         return super.getDisplayNamePrefix(part, gear);
+    }
+
+    @Override
+    public boolean canAddToGear(ItemStack gear, PartData part) {
+        return gear.getItem() instanceof DrillItem;
     }
 }

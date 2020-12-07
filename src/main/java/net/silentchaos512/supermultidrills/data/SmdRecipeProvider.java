@@ -1,18 +1,23 @@
 package net.silentchaos512.supermultidrills.data;
 
-import net.minecraft.data.*;
+import net.minecraft.data.CustomRecipeBuilder;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.data.RecipeProvider;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
-import net.silentchaos512.gear.api.parts.PartType;
+import net.silentchaos512.gear.api.part.PartType;
+import net.silentchaos512.gear.crafting.ingredient.BlueprintIngredient;
 import net.silentchaos512.gear.crafting.ingredient.GearPartIngredient;
 import net.silentchaos512.gear.crafting.ingredient.PartMaterialIngredient;
-import net.silentchaos512.gear.crafting.recipe.ShapelessCompoundPartRecipe;
-import net.silentchaos512.gear.crafting.recipe.ShapelessGearRecipe;
+import net.silentchaos512.gear.init.ModRecipes;
 import net.silentchaos512.gear.init.ModTags;
 import net.silentchaos512.lib.data.ExtendedShapedRecipeBuilder;
 import net.silentchaos512.lib.data.ExtendedShapelessRecipeBuilder;
-import net.silentchaos512.supermultidrills.init.ModItems;
+import net.silentchaos512.supermultidrills.SuperMultiDrills;
+import net.silentchaos512.supermultidrills.init.SmdItems;
+import net.silentchaos512.supermultidrills.init.SmdRecipes;
 import net.silentchaos512.supermultidrills.init.SmdTags;
 import net.silentchaos512.supermultidrills.item.CraftingItems;
 import net.silentchaos512.supermultidrills.part.BatteryPart;
@@ -33,21 +38,23 @@ public class SmdRecipeProvider extends RecipeProvider {
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        ExtendedShapelessRecipeBuilder.builder(ShapelessCompoundPartRecipe.SERIALIZER, ModItems.DRILL_HEAD)
-                .addIngredient(ModItems.DRILL_BLUEPRINT.get().getItemTag())
+        CustomRecipeBuilder.customRecipe(SmdRecipes.CHASSIS_COLOR.get()).build(consumer, SuperMultiDrills.getId("color_chassis").toString());
+
+        ExtendedShapelessRecipeBuilder.builder(ModRecipes.COMPOUND_PART.get(), SmdItems.DRILL_HEAD)
+                .addIngredient(BlueprintIngredient.of(SmdItems.DRILL_BLUEPRINT.get()))
                 .addIngredient(PartMaterialIngredient.of(PartType.MAIN), 5)
                 .build(consumer);
 
-        ExtendedShapelessRecipeBuilder.builder(ShapelessGearRecipe.SERIALIZER, ModItems.DRILL)
-                .addIngredient(ModItems.DRILL_HEAD)
+        ExtendedShapelessRecipeBuilder.builder(ModRecipes.SHAPELESS_GEAR.get(), SmdItems.DRILL)
+                .addIngredient(SmdItems.DRILL_HEAD)
                 .addIngredient(GearPartIngredient.of(PartType.ROD))
                 .addIngredient(GearPartIngredient.of(MotorPart.TYPE))
                 .addIngredient(GearPartIngredient.of(BatteryPart.TYPE))
                 .addIngredient(GearPartIngredient.of(ChassisPart.TYPE))
                 .build(consumer);
 
-        ExtendedShapedRecipeBuilder.vanillaBuilder(ModItems.DRILL_BLUEPRINT)
-                .key('#', ModTags.Items.PAPER_BLUEPRINT)
+        ExtendedShapedRecipeBuilder.vanillaBuilder(SmdItems.DRILL_BLUEPRINT)
+                .key('#', ModTags.Items.BLUEPRINT_PAPER)
                 .key('/', Tags.Items.RODS_WOODEN)
                 .key('R', SmdTags.Items.INGOTS_REDSTONE_ALLOY)
                 .patternLine(" # ")
@@ -55,7 +62,7 @@ public class SmdRecipeProvider extends RecipeProvider {
                 .patternLine("#R#")
                 .build(consumer);
 
-        ExtendedShapedRecipeBuilder.vanillaBuilder(ModItems.DRILL_CHASSIS)
+        ExtendedShapedRecipeBuilder.vanillaBuilder(SmdItems.DRILL_CHASSIS)
                 .key('#', Tags.Items.INGOTS_IRON)
                 .key('G', CraftingItems.BATTERY_GAUGE)
                 .patternLine("###")

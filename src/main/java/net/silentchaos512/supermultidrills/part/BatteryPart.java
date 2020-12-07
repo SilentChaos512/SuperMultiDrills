@@ -9,35 +9,25 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.silentchaos512.gear.api.item.GearType;
 import net.silentchaos512.gear.api.item.ICoreItem;
-import net.silentchaos512.gear.api.parts.IPartPosition;
-import net.silentchaos512.gear.api.parts.IPartSerializer;
-import net.silentchaos512.gear.api.parts.IUpgradePart;
-import net.silentchaos512.gear.api.parts.PartType;
-import net.silentchaos512.gear.parts.AbstractGearPart;
-import net.silentchaos512.gear.parts.PartData;
+import net.silentchaos512.gear.api.part.IPartSerializer;
+import net.silentchaos512.gear.api.part.IUpgradePart;
+import net.silentchaos512.gear.api.part.PartType;
+import net.silentchaos512.gear.gear.part.AbstractGearPart;
+import net.silentchaos512.gear.gear.part.PartData;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.capability.EnergyStorageItemImpl;
 import net.silentchaos512.supermultidrills.init.Registration;
 import net.silentchaos512.supermultidrills.item.DrillBatteryItem;
 import net.silentchaos512.supermultidrills.item.DrillItem;
+import net.silentchaos512.utils.Color;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class BatteryPart extends AbstractGearPart implements IUpgradePart {
     private static final ResourceLocation TYPE_ID = SuperMultiDrills.getId("battery");
-    public static final PartType TYPE = PartType.create(TYPE_ID, new Serializer<>(TYPE_ID, BatteryPart::new));
-    public static final IPartPosition POSITION = new IPartPosition() {
-        @Override
-        public String getTexturePrefix() {
-            return "battery";
-        }
-
-        @Override
-        public String getModelIndex() {
-            return "battery";
-        }
-    };
+    public static final IPartSerializer<BatteryPart> SERIALIZER = new Serializer<>(TYPE_ID, BatteryPart::new);
+    public static final PartType TYPE = PartType.create(PartType.Builder.builder(TYPE_ID));
 
     public BatteryPart(ResourceLocation partId) {
         super(partId);
@@ -49,13 +39,13 @@ public class BatteryPart extends AbstractGearPart implements IUpgradePart {
     }
 
     @Override
-    public IPartPosition getPartPosition() {
-        return POSITION;
+    public IPartSerializer<?> getSerializer() {
+        return SERIALIZER;
     }
 
     @Override
-    public IPartSerializer<?> getSerializer() {
-        return TYPE.getSerializer();
+    public int getColor(PartData part, ItemStack gear, int layer, int animationFrame) {
+        return Color.VALUE_WHITE;
     }
 
     @Override
@@ -122,5 +112,10 @@ public class BatteryPart extends AbstractGearPart implements IUpgradePart {
             }
         });
         return PartData.of(this, stack);
+    }
+
+    @Override
+    public boolean canAddToGear(ItemStack gear, PartData part) {
+        return gear.getItem() instanceof DrillItem;
     }
 }

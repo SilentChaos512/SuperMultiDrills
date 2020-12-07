@@ -1,0 +1,11 @@
+{
+  "type": "supermultidrills:chassis",
+  "gear_type": "drill",
+  "part_type": "supermultidrills:chassis",
+  "crafting_item": {
+    "item": "supermultidrills:drill_chassis"
+  },
+  "name": {
+    "translate": "part.supermultidrills.chassis"
+  }
+}

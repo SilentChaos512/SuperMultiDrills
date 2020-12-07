@@ -14,9 +14,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.silentchaos512.supermultidrills.client.ColorHandlers;
 import net.silentchaos512.supermultidrills.data.SmdDataGenerators;
 import net.silentchaos512.supermultidrills.init.Registration;
-import net.silentchaos512.supermultidrills.part.BatteryPart;
-import net.silentchaos512.supermultidrills.part.ChassisPart;
-import net.silentchaos512.supermultidrills.part.MotorPart;
 
 import javax.annotation.Nullable;
 
@@ -24,11 +21,6 @@ class SideProxy implements IProxy {
     @Nullable private static MinecraftServer server;
 
     SideProxy() {
-        // Just need to class-load part types to register them
-        SuperMultiDrills.LOGGER.info("Register part type: {}", BatteryPart.TYPE);
-        SuperMultiDrills.LOGGER.info("Register part type: {}", ChassisPart.TYPE);
-        SuperMultiDrills.LOGGER.info("Register part type: {}", MotorPart.TYPE);
-
         Registration.register();
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
