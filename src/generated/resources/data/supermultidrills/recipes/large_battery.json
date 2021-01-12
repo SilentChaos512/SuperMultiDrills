@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iri",
+    "/r/",
+    "iri"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/crimson_steel"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "/": {
+      "tag": "forge:ingots/redstone_alloy"
+    }
+  },
+  "result": {
+    "item": "supermultidrills:large_battery"
+  }
+}

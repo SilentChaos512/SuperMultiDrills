@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ici",
+    "/e/",
+    "iei"
+  ],
+  "key": {
+    "c": {
+      "item": "minecraft:popped_chorus_fruit"
+    },
+    "i": {
+      "tag": "forge:ingots/azure_electrum"
+    },
+    "e": {
+      "tag": "forge:ender_pearls"
+    },
+    "/": {
+      "tag": "forge:ingots/redstone_alloy"
+    }
+  },
+  "result": {
+    "item": "supermultidrills:extreme_battery"
+  }
+}

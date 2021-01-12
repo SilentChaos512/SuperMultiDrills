@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " i ",
+    "p/p",
+    " i "
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:nuggets/iron"
+    },
+    "p": {
+      "tag": "forge:crops/potato"
+    },
+    "/": {
+      "tag": "forge:string"
+    }
+  },
+  "result": {
+    "item": "supermultidrills:tater_battery"
+  }
+}

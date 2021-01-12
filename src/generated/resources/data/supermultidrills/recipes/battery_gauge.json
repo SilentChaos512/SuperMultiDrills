@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rgb",
+    "#/#"
+  ],
+  "key": {
+    "r": {
+      "tag": "forge:dyes/red"
+    },
+    "g": {
+      "tag": "forge:dyes/green"
+    },
+    "b": {
+      "tag": "forge:dyes/blue"
+    },
+    "#": {
+      "tag": "forge:glass/colorless"
+    },
+    "/": {
+      "tag": "forge:ingots/gold"
+    }
+  },
+  "result": {
+    "item": "supermultidrills:battery_gauge"
+  }
+}

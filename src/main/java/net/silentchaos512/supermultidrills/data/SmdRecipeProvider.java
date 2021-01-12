@@ -70,6 +70,62 @@ public class SmdRecipeProvider extends RecipeProvider {
                 .patternLine(" G ")
                 .build(consumer);
 
+        ExtendedShapedRecipeBuilder.vanillaBuilder(CraftingItems.BATTERY_GAUGE)
+                .key('r', Tags.Items.DYES_RED)
+                .key('g', Tags.Items.DYES_GREEN)
+                .key('b', Tags.Items.DYES_BLUE)
+                .key('#', Tags.Items.GLASS_COLORLESS)
+                .key('/', Tags.Items.INGOTS_GOLD)
+                .patternLine("rgb")
+                .patternLine("#/#")
+                .build(consumer);
+
+        ExtendedShapedRecipeBuilder.vanillaBuilder(SmdItems.TATER_BATTERY)
+                .key('i', Tags.Items.NUGGETS_IRON)
+                .key('p', Tags.Items.CROPS_POTATO)
+                .key('/', Tags.Items.STRING)
+                .patternLine(" i ")
+                .patternLine("p/p")
+                .patternLine(" i ")
+                .build(consumer);
+
+        ExtendedShapedRecipeBuilder.vanillaBuilder(SmdItems.SMALL_BATTERY)
+                .key('i', Tags.Items.INGOTS_IRON)
+                .key('r', Tags.Items.DUSTS_REDSTONE)
+                .key('/', SmdTags.Items.INGOTS_REDSTONE_ALLOY)
+                .patternLine(" i ")
+                .patternLine("r/r")
+                .patternLine("iii")
+                .build(consumer);
+
+        ExtendedShapedRecipeBuilder.vanillaBuilder(SmdItems.MEDIUM_BATTERY)
+                .key('i', Tags.Items.INGOTS_GOLD)
+                .key('r', Tags.Items.DUSTS_REDSTONE)
+                .key('/', SmdTags.Items.INGOTS_REDSTONE_ALLOY)
+                .patternLine("rir")
+                .patternLine("/ /")
+                .patternLine("iii")
+                .build(consumer);
+
+        ExtendedShapedRecipeBuilder.vanillaBuilder(SmdItems.LARGE_BATTERY)
+                .key('i', ModTags.Items.INGOTS_CRIMSON_STEEL)
+                .key('r', Tags.Items.DUSTS_REDSTONE)
+                .key('/', SmdTags.Items.INGOTS_REDSTONE_ALLOY)
+                .patternLine("iri")
+                .patternLine("/r/")
+                .patternLine("iri")
+                .build(consumer);
+
+        ExtendedShapedRecipeBuilder.vanillaBuilder(SmdItems.EXTREME_BATTERY)
+                .key('c', Items.POPPED_CHORUS_FRUIT)
+                .key('i', ModTags.Items.INGOTS_AZURE_ELECTRUM)
+                .key('e', Tags.Items.ENDER_PEARLS)
+                .key('/', SmdTags.Items.INGOTS_REDSTONE_ALLOY)
+                .patternLine("ici")
+                .patternLine("/e/")
+                .patternLine("iei")
+                .build(consumer);
+
         //region CraftingItems
 
         ExtendedShapedRecipeBuilder.vanillaBuilder(CraftingItems.HEAVY_IRON_ROD)
