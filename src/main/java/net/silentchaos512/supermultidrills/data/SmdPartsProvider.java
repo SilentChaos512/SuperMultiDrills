@@ -47,10 +47,10 @@ public class SmdPartsProvider extends PartsProvider {
 
         ret.add(drillPart("battery", BatteryPart.TYPE, new BatteryIngredient())
                 .serializerType(BatteryPart.SERIALIZER)
-                .display(DrillItem.GEAR_TYPE, new MaterialLayer(SuperMultiDrills.getId("battery_gauge"), Color.VALUE_WHITE)));
+                .display(DrillItem.GEAR_TYPE, BatteryPart.TYPE, new MaterialLayer(SuperMultiDrills.getId("battery_gauge"), Color.VALUE_WHITE)));
         ret.add(drillPart("chassis", ChassisPart.TYPE, SmdItems.DRILL_CHASSIS)
                 .serializerType(ChassisPart.SERIALIZER)
-                .display(DrillItem.GEAR_TYPE, new MaterialLayer(SuperMultiDrills.getId("chassis"), 0))); // 0 fixes part color being ignored
+                .display(DrillItem.GEAR_TYPE, ChassisPart.TYPE, new MaterialLayer(SuperMultiDrills.getId("chassis"), 0))); // 0 fixes part color being ignored
         ret.add(drillPart("saw", PartType.MISC_UPGRADE, CraftingItems.SAW_UPGRADE)
                 .serializerType(PartSerializers.UPGRADE_PART));
 

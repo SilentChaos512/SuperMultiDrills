@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2021-01-12
+### Added
+- Missing recipes for batteries and battery gauge [#22]
+### Fixed
+- Missing textures for chassis and battery gauge on complete drills
+
 ## [2.2.0] - 2020-12-07
 - Updated for Silent Gear 2.4.x (required) and Silent Lib 4.9.x (required)
 
