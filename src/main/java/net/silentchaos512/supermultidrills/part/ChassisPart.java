@@ -44,13 +44,13 @@ public class ChassisPart extends AbstractGearPart {
 
     @Override
     public void onAddToGear(ItemStack gear, PartData part) {
-        int color = DrillChassisItem.getColor(part.getCraftingItem());
+        int color = DrillChassisItem.getColor(part.getItem());
         DrillItem.setChassisColor(gear, color);
     }
 
     @Override
     public String getModelKey(PartData part) {
-        int color = DrillChassisItem.getColor(part.getCraftingItem());
+        int color = DrillChassisItem.getColor(part.getItem());
         return super.getModelKey(part) + "#" + Color.format(color);
     }
 

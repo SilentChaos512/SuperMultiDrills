@@ -40,6 +40,6 @@ authors="SilentChaos512"
 [[dependencies.supermultidrills]]
     modId="silentgear"
     mandatory=true
-    versionRange="[2.4,)"
+    versionRange="[2.5,)"
     ordering="AFTER"
     side="BOTH"
