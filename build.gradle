@@ -177,7 +177,6 @@ dependencies {
 }
 
 jar {
-    appendix = "${project.mc_version}"
     manifest {
         attributes(["Specification-Title"     : project.mod_id,
                     "Specification-Vendor"    : "SilentChaos512",

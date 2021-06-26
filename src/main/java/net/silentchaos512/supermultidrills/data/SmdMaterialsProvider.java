@@ -9,6 +9,7 @@ import net.silentchaos512.gear.data.material.MaterialBuilder;
 import net.silentchaos512.gear.data.material.MaterialsProvider;
 import net.silentchaos512.gear.gear.part.PartTextureSet;
 import net.silentchaos512.gear.util.Const;
+import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.init.SmdTags;
 import net.silentchaos512.supermultidrills.lib.SmdConst;
 import net.silentchaos512.utils.Color;
@@ -18,7 +19,7 @@ import java.util.Collection;
 
 public class SmdMaterialsProvider extends MaterialsProvider {
     public SmdMaterialsProvider(DataGenerator generator) {
-        super(generator);
+        super(generator, SuperMultiDrills.MOD_ID);
     }
 
     @Override

@@ -124,7 +124,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     private static IEnergyStorage getBatteryCapability(ItemStack stack) {
         PartData part = GearData.getPartOfType(stack, BatteryPart.TYPE);
         if (part != null) {
-            ItemStack battery = part.getCraftingItem();
+            ItemStack battery = part.getItem();
             SuperMultiDrills.LOGGER.debug("getBatteryCapability: {}", battery);
             LazyOptional<IEnergyStorage> optional = battery.getCapability(CapabilityEnergy.ENERGY);
             return optional.orElse(new EnergyStorageItemImpl(battery, 1_000_000, 1000, 1000));
