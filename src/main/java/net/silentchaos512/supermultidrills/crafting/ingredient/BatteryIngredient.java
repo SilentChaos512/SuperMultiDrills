@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.silentchaos512.lib.util.TagUtils;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.init.SmdTags;
 
@@ -42,7 +43,7 @@ public final class BatteryIngredient extends Ingredient {
     }
 
     private static boolean isDrillBattery(ItemStack stack) {
-        return stack.getItem().isIn(SmdTags.Items.DRILL_BATTERIES) && stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
+        return TagUtils.containsSafe(SmdTags.Items.DRILL_BATTERIES, stack) && stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
     }
 
     @Override
