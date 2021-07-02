@@ -196,7 +196,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     public static boolean hasSaw(ItemStack stack) {
-        return GearData.hasPart(stack, SmdConst.Parts.SAW_UPGRADE.get());
+        return SmdConst.Parts.SAW_UPGRADE.isPresent() && GearData.hasPart(stack, SmdConst.Parts.SAW_UPGRADE.get());
     }
 
     //endregion
