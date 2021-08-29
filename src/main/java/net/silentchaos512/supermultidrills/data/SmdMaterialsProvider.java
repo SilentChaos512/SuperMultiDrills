@@ -1,7 +1,7 @@
 package net.silentchaos512.supermultidrills.data;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.silentchaos512.gear.api.part.PartType;
 import net.silentchaos512.gear.api.stats.ItemStats;
 import net.silentchaos512.gear.api.stats.StatInstance;

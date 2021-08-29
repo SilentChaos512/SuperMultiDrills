@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[34,)"
+loaderVersion="[37,)"
 license="MIT"
 issueTrackerURL="https://github.com/SilentChaos512/SuperMultiDrills/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/super-multi-drills"
 #logoFile="examplemod.png" #optional
 credits=""
-authors="SilentChaos512"
+authors="SilentChaos512, LegibleSleet827"
 
 [[mods]]
     modId="supermultidrills"
@@ -22,24 +22,24 @@ authors="SilentChaos512"
 [[dependencies.supermultidrills]]
     modId="forge"
     mandatory=true
-    versionRange="[34,)"
+    versionRange="[37,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.supermultidrills]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3,1.17)"
+    versionRange="[1.17.1,1.18)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.supermultidrills]]
     modId="silentlib"
     mandatory=true
-    versionRange="[4,)"
+    versionRange="[5,)"
     ordering = "NONE"
     side = "BOTH"
 [[dependencies.supermultidrills]]
     modId="silentgear"
     mandatory=true
-    versionRange="[2.5,)"
+    versionRange="[2,)"
     ordering="AFTER"
     side="BOTH"

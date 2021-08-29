@@ -1,9 +1,9 @@
 package net.silentchaos512.supermultidrills.part;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -21,6 +21,8 @@ import net.silentchaos512.utils.Color;
 
 import javax.annotation.Nullable;
 import java.util.List;
+
+import net.silentchaos512.gear.gear.part.AbstractGearPart.Serializer;
 
 public class BatteryPart extends AbstractGearPart {
     private static final ResourceLocation TYPE_ID = SuperMultiDrills.getId("battery");
@@ -47,9 +49,9 @@ public class BatteryPart extends AbstractGearPart {
     }
 
     @Override
-    public ITextComponent getDisplayName(@Nullable PartData part, ItemStack gear) {
+    public Component getDisplayName(@Nullable PartData part, ItemStack gear) {
         if (part != null) {
-            return part.getItem().getDisplayName();
+            return part.getItem().getHoverName();
         }
         return super.getDisplayName(null, gear);
     }
@@ -92,7 +94,7 @@ public class BatteryPart extends AbstractGearPart {
     public PartData randomizeData(GearType gearType, int tier) {
         List<DrillBatteryItem> batteries = Registration.getItems(DrillBatteryItem.class);
         int batteriesCount = batteries.size();
-        int index = MathHelper.clamp(1 + SuperMultiDrills.random.nextInt(batteriesCount), tier, batteriesCount - 1);
+        int index = Mth.clamp(1 + SuperMultiDrills.random.nextInt(batteriesCount), tier, batteriesCount - 1);
         ItemStack stack = new ItemStack(batteries.get(index));
         stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> {
             if (e instanceof EnergyStorageItemImpl) {

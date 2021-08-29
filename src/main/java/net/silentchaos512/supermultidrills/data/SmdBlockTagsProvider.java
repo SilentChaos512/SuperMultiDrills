@@ -1,6 +1,6 @@
 package net.silentchaos512.supermultidrills.data;
 
-import net.minecraft.data.BlockTagsProvider;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
@@ -11,6 +11,6 @@ public class SmdBlockTagsProvider extends BlockTagsProvider {
     }
 
     @Override
-    protected void registerTags() {
+    protected void addTags() {
     }
 }

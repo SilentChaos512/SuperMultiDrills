@@ -1,12 +1,12 @@
 package net.silentchaos512.supermultidrills.crafting.recipe;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.silentchaos512.lib.collection.StackList;
 import net.silentchaos512.supermultidrills.init.SmdItems;
 import net.silentchaos512.supermultidrills.init.SmdRecipes;
@@ -16,13 +16,13 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Optional;
 
-public class ChassisColorRecipe extends SpecialRecipe {
+public class ChassisColorRecipe extends CustomRecipe {
     public ChassisColorRecipe(ResourceLocation recipeId) {
         super(recipeId);
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World worldIn) {
+    public boolean matches(CraftingContainer inv, Level worldIn) {
         StackList list = StackList.from(inv);
         ItemStack chassis = list.uniqueMatch(ChassisColorRecipe::isDrillChassis);
         Collection<ItemStack> dyes = list.allMatches(s -> getDyeColor(s).isPresent());
@@ -31,7 +31,7 @@ public class ChassisColorRecipe extends SpecialRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingContainer inv) {
         StackList list = StackList.from(inv);
         ItemStack chassis = list.uniqueMatch(ChassisColorRecipe::isDrillChassis).copy();
         Collection<ItemStack> dyes = list.allMatches(s -> getDyeColor(s).isPresent());
@@ -64,7 +64,7 @@ public class ChassisColorRecipe extends SpecialRecipe {
         for (ItemStack dye : dyes) {
             float[] componentValues = getDyeColor(dye)
                     .orElse(DyeColor.WHITE)
-                    .getColorComponentValues();
+                    .getTextureDiffuseColors();
             int r = (int) (componentValues[0] * 255.0F);
             int g = (int) (componentValues[1] * 255.0F);
             int b = (int) (componentValues[2] * 255.0F);
@@ -95,18 +95,18 @@ public class ChassisColorRecipe extends SpecialRecipe {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 2;
     }
 
     @Nonnull
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return new ItemStack(SmdItems.DRILL_CHASSIS);
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return SmdRecipes.CHASSIS_COLOR.get();
     }
 }

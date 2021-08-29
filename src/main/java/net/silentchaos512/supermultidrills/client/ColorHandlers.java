@@ -1,8 +1,8 @@
 package net.silentchaos512.supermultidrills.client;
 
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.item.Item;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.silentchaos512.lib.registry.ItemRegistryObject;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
@@ -22,7 +22,7 @@ public class ColorHandlers {
         register(colors, (stack, tintIndex) -> DrillChassisItem.getColor(stack), SmdItems.DRILL_CHASSIS);
     }
 
-    private static void register(ItemColors colors, IItemColor itemColor, ItemRegistryObject<? extends Item> item) {
+    private static void register(ItemColors colors, ItemColor itemColor, ItemRegistryObject<? extends Item> item) {
         if (item.isPresent()) {
             colors.register(itemColor, item);
         } else {

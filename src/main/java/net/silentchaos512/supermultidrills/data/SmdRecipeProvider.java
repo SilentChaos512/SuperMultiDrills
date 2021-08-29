@@ -1,10 +1,10 @@
 package net.silentchaos512.supermultidrills.data;
 
-import net.minecraft.data.CustomRecipeBuilder;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.item.Items;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.world.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.silentchaos512.gear.api.part.PartType;
@@ -37,8 +37,8 @@ public class SmdRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        CustomRecipeBuilder.customRecipe(SmdRecipes.CHASSIS_COLOR.get()).build(consumer, SuperMultiDrills.getId("color_chassis").toString());
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+        SpecialRecipeBuilder.special(SmdRecipes.CHASSIS_COLOR.get()).save(consumer, SuperMultiDrills.getId("color_chassis").toString());
 
         ExtendedShapelessRecipeBuilder.builder(ModRecipes.COMPOUND_PART.get(), SmdItems.DRILL_HEAD)
                 .addIngredient(BlueprintIngredient.of(SmdItems.DRILL_BLUEPRINT.get()))

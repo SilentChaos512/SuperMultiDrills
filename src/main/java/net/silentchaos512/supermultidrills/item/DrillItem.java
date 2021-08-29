@@ -3,28 +3,28 @@ package net.silentchaos512.supermultidrills.item;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -57,35 +57,32 @@ import java.util.Set;
 
 public class DrillItem extends PickaxeItem implements ICoreTool {
     public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(
-            Material.ANVIL,
+            Material.HEAVY_METAL,
             Material.CLAY,
-            Material.EARTH,
+            Material.DIRT,
             Material.GLASS,
             Material.ICE,
-            Material.IRON,
-            Material.MISCELLANEOUS,
-            Material.ORGANIC,
-            Material.PACKED_ICE,
+            Material.METAL,
+            Material.DECORATION,
+            Material.GRASS,
+            Material.ICE_SOLID,
             Material.PISTON,
-            Material.REDSTONE_LIGHT,
-            Material.ROCK,
+            Material.BUILDABLE_GLASS,
+            Material.STONE,
             Material.SAND,
-            Material.SNOW,
-            Material.SNOW_BLOCK
+            Material.TOP_SNOW,
+            Material.SNOW
     );
     public static final Set<Material> EXTRA_MATERIALS = ImmutableSet.of(
             Material.BAMBOO,
-            Material.GOURD,
+            Material.VEGETABLE,
             Material.LEAVES,
-            Material.PLANTS,
-            Material.TALL_PLANTS,
+            Material.PLANT,
+            Material.REPLACEABLE_PLANT,
             Material.WOOD,
             Material.WOOL
     );
     public static final GearType GEAR_TYPE = GearType.getOrCreate("drill", GearType.HARVEST_TOOL);
-
-    public static final ImmutableSet<ToolType> TOOL_TYPES = ImmutableSet.of(ToolType.PICKAXE, ToolType.SHOVEL);
-    public static final ImmutableSet<ToolType> TOOL_TYPES_WITH_SAW = ImmutableSet.of(ToolType.PICKAXE, ToolType.SHOVEL, ToolType.AXE);
 
     /*
      * NBT keys
@@ -94,7 +91,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     public static final String NBT_CHASSIS_COLOR = "SMD.ChassisColor";
 
     public DrillItem() {
-        super(ItemTier.DIAMOND, 0, 0, GearHelper.getBuilder(ToolType.PICKAXE).addToolType(ToolType.SHOVEL, 3).group(SuperMultiDrills.ITEM_GROUP));
+        super(Tiers.DIAMOND, 0, 0, new Item.Properties().tab(SuperMultiDrills.ITEM_GROUP));
     }
 
     @Override
@@ -106,7 +103,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new ICapabilityProvider() {
             @Nonnull
             @Override
@@ -133,7 +130,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     public static int getBatteryCapacity(ItemStack stack) {
-        CompoundNBT tag = stack.getOrCreateTag();
+        CompoundTag tag = stack.getOrCreateTag();
         if (tag.contains(NBT_BATTERY_CAPACITY)) {
             return tag.getInt(NBT_BATTERY_CAPACITY);
         }
@@ -163,9 +160,9 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     public static int getBaseEnergyCost(ItemStack stack) {
-        int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack);
-        int silkTouchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack);
-        int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
+        int efficiencyLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, stack);
+        int silkTouchLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack);
+        int fortuneLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack);
         float durability = GearData.getStat(stack, ItemStats.DURABILITY);
 
         // FIXME
@@ -250,40 +247,45 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     //region Harvest tool overrides
 
     @Override
-    public boolean canHarvestBlock(ItemStack stack, BlockState state) {
+    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
         // Forge ItemStack-sensitive version
         int harvestLevel = getStatInt(stack, ItemStats.HARVEST_LEVEL);
         // Wrong harvest level?
-        if (state.getBlock().getHarvestLevel(state) > harvestLevel)
+        if ((state.is(Tags.Blocks.NEEDS_WOOD_TOOL) && harvestLevel > 0)
+                || (state.is(BlockTags.NEEDS_STONE_TOOL) && harvestLevel > 1)
+                || (state.is(BlockTags.NEEDS_IRON_TOOL) && harvestLevel > 2)
+                || (state.is(Tags.Blocks.NEEDS_GOLD_TOOL) && harvestLevel > 0)
+                || (state.is(BlockTags.NEEDS_DIAMOND_TOOL) && harvestLevel > 3)
+                || (state.is(Tags.Blocks.NEEDS_NETHERITE_TOOL) && harvestLevel > 4))
             return false;
         // Included in base or extra materials?
         Material material = state.getMaterial();
         if (EFFECTIVE_MATERIALS.contains(material) || (hasSaw(stack) && EXTRA_MATERIALS.contains(material)))
             return true;
-        return super.canHarvestBlock(stack, state);
+        return super.isCorrectToolForDrops(stack, state);
     }
 
     @Deprecated
     @Override
-    public boolean canHarvestBlock(BlockState state) {
+    public boolean isCorrectToolForDrops(BlockState state) {
         // Vanilla version... Not good because we can't get the actual harvest level.
         Material material = state.getMaterial();
-        return EFFECTIVE_MATERIALS.contains(material) || super.canHarvestBlock(state);
+        return EFFECTIVE_MATERIALS.contains(material) || super.isCorrectToolForDrops(state);
     }
     //endregion
 
     //region Standard tool overrides
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         TextUtil.addEnergyInfo(stack, tooltip);
-        tooltip.add(new TranslationTextComponent("item.supermultidrills.drill.energyPerUse", getBaseEnergyCost(stack)));
+        tooltip.add(new TranslatableComponent("item.supermultidrills.drill.energyPerUse", getBaseEnergyCost(stack)));
 
         GearClientHelper.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         return GearHelper.getAttributeModifiers(slot, stack);
     }
 
@@ -292,18 +294,13 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
         if (optional.isPresent()) {
             IEnergyStorage energy = optional.orElseThrow(IllegalStateException::new);
-            boolean canHarvest = this.canHarvestBlock(stack, state);
+            boolean canHarvest = this.isCorrectToolForDrops(stack, state);
             // Just assume hardness of 1, since we don't have a World object
             boolean hasEnoughPower = energy.getEnergyStored() > getEnergyToBreakBlock(stack, state, 1);
 
             return canHarvest && hasEnoughPower ? GearHelper.getDestroySpeed(stack, state, EXTRA_MATERIALS) : 1.0f;
         }
         return GearHelper.getDestroySpeed(stack, state, EXTRA_MATERIALS);
-    }
-
-    @Override
-    public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
-        return GearHelper.getHarvestLevel(stack, tool, blockState, EXTRA_MATERIALS);
     }
 
 //    @Override
@@ -313,7 +310,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 //    }
 
     @Override
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
         return GearHelper.getIsRepairable(toRepair, repair);
     }
 
@@ -323,7 +320,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
+    public Component getName(ItemStack stack) {
         return GearHelper.getDisplayName(stack);
     }
 
@@ -338,25 +335,25 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack) {
+    public boolean isFoil(ItemStack stack) {
         return GearClientHelper.hasEffect(stack);
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        int cost = getEnergyToBreakBlock(stack, Blocks.STONE.getDefaultState(), 1);
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        int cost = getEnergyToBreakBlock(stack, Blocks.STONE.defaultBlockState(), 1);
         stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> EnergyUtil.drainEnergy(e, cost));
         return GearHelper.hitEntity(stack, target, attacker);
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
         GearHelper.fillItemGroup(this, group, items);
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        float hardness = state.getBlockHardness(worldIn, pos);
+    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        float hardness = state.getDestroySpeed(worldIn, pos);
         if (hardness != 0.0f) {
             int cost = getEnergyToBreakBlock(stack, state, hardness);
             SuperMultiDrills.LOGGER.debug("onBlockDestroyed {} (h={})", cost, hardness);
@@ -372,7 +369,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         GearHelper.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
@@ -382,14 +379,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     @Override
-    public Set<ToolType> getToolTypes(ItemStack stack) {
-        if (hasSaw(stack))
-            return TOOL_TYPES_WITH_SAW;
-        return TOOL_TYPES;
-    }
-
-    @Override
-    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
+    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, Player player) {
         boolean canceled = super.onBlockStartBreak(stack, pos, player);
 
         if (!canceled) {
@@ -420,13 +410,13 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     @Override
     public int getRGBDurabilityForDisplay(ItemStack stack) {
-        return MathHelper.hsvToRGB((1 + getChargeRatio(stack)) / 3.0F, 1.0F, 1.0F);
+        return Mth.hsvToRgb((1 + getChargeRatio(stack)) / 3.0F, 1.0F, 1.0F);
     }
 
     @Override
     public int getDamage(ItemStack stack) {
         int value = (int) (100 * this.getDurabilityForDisplay(stack));
-        return MathHelper.clamp(value, 0, 99);
+        return Mth.clamp(value, 0, 99);
     }
 
     //endregion

@@ -1,8 +1,8 @@
 package net.silentchaos512.supermultidrills;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
@@ -49,9 +49,9 @@ public class SuperMultiDrills {
         return new ResourceLocation(MOD_ID, path);
     }
 
-    public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
+    public static final CreativeModeTab ITEM_GROUP = new CreativeModeTab(MOD_ID) {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return GearGenerator.create(SmdItems.DRILL.get(), 3);
         }
     };
