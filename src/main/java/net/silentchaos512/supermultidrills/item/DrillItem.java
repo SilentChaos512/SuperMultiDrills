@@ -25,6 +25,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -37,6 +39,7 @@ import net.silentchaos512.gear.api.stats.ItemStat;
 import net.silentchaos512.gear.api.stats.ItemStats;
 import net.silentchaos512.gear.client.util.GearClientHelper;
 import net.silentchaos512.gear.gear.part.PartData;
+import net.silentchaos512.gear.item.gear.GearDiggerItem;
 import net.silentchaos512.gear.util.GearData;
 import net.silentchaos512.gear.util.GearHelper;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
@@ -55,7 +58,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class DrillItem extends PickaxeItem implements ICoreTool {
+public class DrillItem extends GearDiggerItem {
     public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(
             Material.HEAVY_METAL,
             Material.CLAY,
@@ -82,7 +85,8 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
             Material.WOOD,
             Material.WOOL
     );
-    public static final GearType GEAR_TYPE = GearType.getOrCreate("drill", GearType.HARVEST_TOOL);
+    public static final GearType GEAR_TYPE = GearType.getOrCreate("drill", GearType.HARVEST_TOOL, b ->
+            b.toolActions(ToolActions.PICKAXE_DIG, ToolActions.SHOVEL_DIG));
 
     /*
      * NBT keys
@@ -91,7 +95,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     public static final String NBT_CHASSIS_COLOR = "SMD.ChassisColor";
 
     public DrillItem() {
-        super(Tiers.DIAMOND, 0, 0, new Item.Properties().tab(SuperMultiDrills.ITEM_GROUP));
+        super(GEAR_TYPE, BlockTags.MINEABLE_WITH_PICKAXE, EFFECTIVE_MATERIALS, new Item.Properties().tab(SuperMultiDrills.ITEM_GROUP));
     }
 
     @Override
@@ -200,25 +204,6 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     //region Gear properties
 
-    @Override
-    public GearType getGearType() {
-        return GEAR_TYPE;
-    }
-
-    private static final Set<ItemStat> RELEVANT_STATS = ImmutableSet.of(
-            ItemStats.HARVEST_LEVEL,
-            ItemStats.HARVEST_SPEED,
-            ItemStats.MELEE_DAMAGE,
-            ItemStats.ATTACK_SPEED,
-            ItemStats.ENCHANTABILITY,
-            ItemStats.RARITY
-    );
-
-    @Override
-    public Set<ItemStat> getRelevantStats(@Nonnull ItemStack stack) {
-        return RELEVANT_STATS;
-    }
-
     private static final Set<PartType> BLACKLISTED_PARTS = ImmutableSet.of(
             PartType.BINDING,
             PartType.GRIP
@@ -226,7 +211,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     @Override
     public boolean supportsPart(ItemStack gear, PartData part) {
-        return !BLACKLISTED_PARTS.contains(part.getType()) && ICoreTool.super.supportsPart(gear, part);
+        return !BLACKLISTED_PARTS.contains(part.getType()) && super.supportsPart(gear, part);
     }
 
     private static final Collection<PartType> RENDER_PARTS = ImmutableList.of(
@@ -248,33 +233,28 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     @Override
     public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
-        // Forge ItemStack-sensitive version
-        int harvestLevel = getStatInt(stack, ItemStats.HARVEST_LEVEL);
-        // Wrong harvest level?
-        if ((state.is(Tags.Blocks.NEEDS_WOOD_TOOL) && harvestLevel > 0)
-                || (state.is(BlockTags.NEEDS_STONE_TOOL) && harvestLevel > 1)
-                || (state.is(BlockTags.NEEDS_IRON_TOOL) && harvestLevel > 2)
-                || (state.is(Tags.Blocks.NEEDS_GOLD_TOOL) && harvestLevel > 0)
-                || (state.is(BlockTags.NEEDS_DIAMOND_TOOL) && harvestLevel > 3)
-                || (state.is(Tags.Blocks.NEEDS_NETHERITE_TOOL) && harvestLevel > 4))
-            return false;
-        // Included in base or extra materials?
-        Material material = state.getMaterial();
-        if (EFFECTIVE_MATERIALS.contains(material) || (hasSaw(stack) && EXTRA_MATERIALS.contains(material)))
-            return true;
-        return super.isCorrectToolForDrops(stack, state);
+        boolean pickaxeOrShovelDrops = GearHelper.isCorrectToolForDrops(stack, state, BlockTags.MINEABLE_WITH_PICKAXE, EFFECTIVE_MATERIALS)
+                || GearHelper.isCorrectToolForDrops(stack, state, BlockTags.MINEABLE_WITH_SHOVEL, EFFECTIVE_MATERIALS);
+
+        if (!pickaxeOrShovelDrops && hasSaw(stack)) {
+            return GearHelper.isCorrectToolForDrops(stack, state, BlockTags.MINEABLE_WITH_AXE, EXTRA_MATERIALS);
+        }
+
+        return pickaxeOrShovelDrops;
     }
 
-    @Deprecated
-    @Override
-    public boolean isCorrectToolForDrops(BlockState state) {
-        // Vanilla version... Not good because we can't get the actual harvest level.
-        Material material = state.getMaterial();
-        return EFFECTIVE_MATERIALS.contains(material) || super.isCorrectToolForDrops(state);
-    }
     //endregion
 
     //region Standard tool overrides
+
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        if (hasSaw(stack) && !GearHelper.isBroken(stack) && toolAction == ToolActions.AXE_DIG) {
+            return true;
+        }
+        return super.canPerformAction(stack, toolAction);
+    }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
@@ -282,11 +262,6 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         tooltip.add(new TranslatableComponent("item.supermultidrills.drill.energyPerUse", getBaseEnergyCost(stack)));
 
         GearClientHelper.addInformation(stack, worldIn, tooltip, flagIn);
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        return GearHelper.getAttributeModifiers(slot, stack);
     }
 
     @Override
@@ -303,52 +278,11 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
         return GearHelper.getDestroySpeed(stack, state, EXTRA_MATERIALS);
     }
 
-//    @Override
-//    public void setHarvestLevel(String toolClass, int level) {
-//        super.setHarvestLevel(toolClass, level);
-//        GearHelper.setHarvestLevel(this, toolClass, level, this.toolClasses);
-//    }
-
-    @Override
-    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-        return GearHelper.getIsRepairable(toRepair, repair);
-    }
-
-    @Override
-    public int getItemEnchantability(ItemStack stack) {
-        return GearData.getStatInt(stack, ItemStats.ENCHANTABILITY);
-    }
-
-    @Override
-    public Component getName(ItemStack stack) {
-        return GearHelper.getDisplayName(stack);
-    }
-
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return GearData.getStatInt(stack, ItemStats.DURABILITY);
-    }
-
-    @Override
-    public Rarity getRarity(ItemStack stack) {
-        return GearHelper.getRarity(stack);
-    }
-
-    @Override
-    public boolean isFoil(ItemStack stack) {
-        return GearClientHelper.hasEffect(stack);
-    }
-
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         int cost = getEnergyToBreakBlock(stack, Blocks.STONE.defaultBlockState(), 1);
         stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> EnergyUtil.drainEnergy(e, cost));
         return GearHelper.hitEntity(stack, target, attacker);
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-        GearHelper.fillItemGroup(this, group, items);
     }
 
     @Override
@@ -369,16 +303,6 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        GearHelper.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
-    }
-
-    @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return GearClientHelper.shouldCauseReequipAnimation(oldStack, newStack, slotChanged);
-    }
-
-    @Override
     public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, Player player) {
         boolean canceled = super.onBlockStartBreak(stack, pos, player);
 
@@ -396,6 +320,7 @@ public class DrillItem extends PickaxeItem implements ICoreTool {
 
     @Override
     public void setDamage(ItemStack stack, int damage) {
+        // Intentional NO-OP, drills use power instead of durability
     }
 
     @Override

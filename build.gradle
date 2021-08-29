@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -10,6 +9,7 @@ buildscript {
 }
 
 plugins {
+    id 'maven-publish'
     id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
@@ -45,10 +45,10 @@ def gpr_creds = { // Credentials for GitHub Packages, since this is used multipl
     password = property('gpr.token')
 }
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '16' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-    mappings channel: project.mappings_channel.toString(), version: project.mappings_version.toString()
+    mappings channel: 'official', version: mc_version
 
     runs {
         client {
@@ -92,7 +92,6 @@ minecraft {
 }
 
 repositories {
-    jcenter()
     mavenLocal()
     // Silent Lib
     maven {
@@ -201,7 +200,7 @@ artifacts {
     archives javadocJar
 }
 
-/* curseforge {
+ curseforge {
     if (project.hasProperty('cf_project_id') && project.hasProperty('cf_release_type') && project.hasProperty('cf_changelog_filename') &&
             ((project.cf_release_type == 'alpha') || (project.cf_release_type == 'beta') || (project.cf_release_type == 'release'))) {
         apiKey = property('curseforge.apiKey')
@@ -220,11 +219,11 @@ artifacts {
             }
         }
     }
-} */
+}
 
 // GPR/Maven publishing
 
-/* publishing {
+ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
@@ -239,7 +238,7 @@ artifacts {
             artifact javadocJar
         }
     }
-} */
+}
 
 // Version stuff
 
