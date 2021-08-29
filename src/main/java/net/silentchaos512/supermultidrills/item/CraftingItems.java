@@ -1,14 +1,14 @@
 package net.silentchaos512.supermultidrills.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.silentchaos512.lib.registry.ItemRegistryObject;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
 import net.silentchaos512.supermultidrills.init.Registration;
 
 import java.util.Locale;
 
-public enum CraftingItems implements IItemProvider {
+public enum CraftingItems implements ItemLike {
     HEAVY_IRON_ROD,
     BATTERY_GAUGE,
     REDSTONE_ALLOY_INGOT,
@@ -26,7 +26,7 @@ public enum CraftingItems implements IItemProvider {
     public static void register() {
         for (CraftingItems item : values()) {
             item.item = new ItemRegistryObject<>(Registration.ITEMS.register(item.getName(), () ->
-                    new Item(new Item.Properties().group(SuperMultiDrills.ITEM_GROUP))));
+                    new Item(new Item.Properties().tab(SuperMultiDrills.ITEM_GROUP))));
         }
     }
 

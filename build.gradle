@@ -5,13 +5,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
 plugins {
-    id 'maven'
-    id 'maven-publish'
     id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
@@ -47,10 +45,10 @@ def gpr_creds = { // Credentials for GitHub Packages, since this is used multipl
     password = property('gpr.token')
 }
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '16' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: project.mcp_channel.toString(), version: project.mcp_mappings.toString()
+    mappings channel: project.mappings_channel.toString(), version: project.mappings_version.toString()
 
     runs {
         client {
@@ -140,7 +138,7 @@ dependencies {
 
     extraLibs "com.udojava:EvalEx:2.1"
 
-    compile fg.deobf("net.silentchaos512:silent-lib:${project.sl_version}") {
+    implementation fg.deobf("net.silentchaos512:silent-lib:${project.sl_version}") {
         exclude module: "forge"
     }
 
@@ -150,13 +148,13 @@ dependencies {
         compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
     }
 
-    compile("net.silentchaos512:silent-gear:${project.sgear_version}") {
+    implementation("net.silentchaos512:silent-gear:${project.sgear_version}") {
         exclude module: 'forge'
-        exclude module: 'jei-1.16.3'
-        exclude module: 'silent-lib-1.16.3'
-        exclude module: 'silents-mechanisms-1.16.3'
+        exclude module: 'jei-1.17.1'
+        exclude module: 'silent-lib-1.17.1'
+        exclude module: 'silents-mechanisms-1.17.1'
         exclude module: 'Patchouli'
-//        exclude module: 'curios-forge'
+        exclude module: 'curios-forge'
     }
 
 //    runtimeOnly fg.deobf("net.silentchaos512:silents-mechanisms-${project.mc_version}:0.+") {
@@ -203,7 +201,7 @@ artifacts {
     archives javadocJar
 }
 
-curseforge {
+/* curseforge {
     if (project.hasProperty('cf_project_id') && project.hasProperty('cf_release_type') && project.hasProperty('cf_changelog_filename') &&
             ((project.cf_release_type == 'alpha') || (project.cf_release_type == 'beta') || (project.cf_release_type == 'release'))) {
         apiKey = property('curseforge.apiKey')
@@ -222,11 +220,11 @@ curseforge {
             }
         }
     }
-}
+} */
 
 // GPR/Maven publishing
 
-publishing {
+/* publishing {
     repositories {
         maven {
             name = "GitHubPackages"
@@ -241,7 +239,7 @@ publishing {
             artifact javadocJar
         }
     }
-}
+} */
 
 // Version stuff
 

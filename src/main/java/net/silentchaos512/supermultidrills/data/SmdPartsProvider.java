@@ -1,9 +1,9 @@
 package net.silentchaos512.supermultidrills.data;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.silentchaos512.gear.api.material.MaterialLayer;
 import net.silentchaos512.gear.api.part.PartType;
 import net.silentchaos512.gear.api.stats.ItemStats;
@@ -101,12 +101,12 @@ public class SmdPartsProvider extends PartsProvider {
         return ret;
     }
 
-    private static PartBuilder drillPart(String name, PartType partType, IItemProvider item) {
-        return drillPart(name, partType, Ingredient.fromItems(item));
+    private static PartBuilder drillPart(String name, PartType partType, ItemLike item) {
+        return drillPart(name, partType, Ingredient.of(item));
     }
 
     private static PartBuilder drillPart(String name, PartType partType, Ingredient ingredient) {
         return new PartBuilder(SuperMultiDrills.getId(name), DrillItem.GEAR_TYPE, partType, ingredient)
-                .name(new TranslationTextComponent("part.supermultidrills." + name.replace('/', '.')));
+                .name(new TranslatableComponent("part.supermultidrills." + name.replace('/', '.')));
     }
 }

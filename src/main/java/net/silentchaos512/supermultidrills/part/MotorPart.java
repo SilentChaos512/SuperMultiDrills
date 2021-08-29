@@ -1,8 +1,8 @@
 package net.silentchaos512.supermultidrills.part;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.silentchaos512.gear.api.part.IPartSerializer;
 import net.silentchaos512.gear.api.part.PartType;
 import net.silentchaos512.gear.gear.part.AbstractGearPart;
@@ -12,6 +12,8 @@ import net.silentchaos512.supermultidrills.item.DrillItem;
 import net.silentchaos512.utils.Color;
 
 import javax.annotation.Nullable;
+
+import net.silentchaos512.gear.gear.part.AbstractGearPart.Serializer;
 
 public class MotorPart extends AbstractGearPart {
     private static final ResourceLocation TYPE_ID = SuperMultiDrills.getId("motor");
@@ -38,7 +40,7 @@ public class MotorPart extends AbstractGearPart {
     }
 
     @Override
-    public ITextComponent getDisplayNamePrefix(@Nullable PartData part, ItemStack gear) {
+    public Component getDisplayNamePrefix(@Nullable PartData part, ItemStack gear) {
         return super.getDisplayNamePrefix(part, gear);
     }
 

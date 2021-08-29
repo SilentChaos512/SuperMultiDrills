@@ -2,10 +2,10 @@ package net.silentchaos512.supermultidrills.crafting.ingredient;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,7 +27,7 @@ public final class BatteryIngredient extends Ingredient {
     }
 
     @Override
-    public ItemStack[] getMatchingStacks() {
+    public ItemStack[] getItems() {
         determineMatchingStacks();
         //noinspection AssignmentOrReturnOfFieldWithMutableType
         return MATCHING_STACKS;
@@ -52,7 +52,7 @@ public final class BatteryIngredient extends Ingredient {
     }
 
     @Override
-    public boolean hasNoMatchingItems() {
+    public boolean isEmpty() {
         return false;
     }
 
@@ -62,7 +62,7 @@ public final class BatteryIngredient extends Ingredient {
     }
 
     @Override
-    public JsonElement serialize() {
+    public JsonElement toJson() {
         JsonObject json = new JsonObject();
         json.addProperty("type", NAME.toString());
         return json;
@@ -75,7 +75,7 @@ public final class BatteryIngredient extends Ingredient {
 
     public static final class Serializer implements IIngredientSerializer<BatteryIngredient> {
         @Override
-        public BatteryIngredient parse(PacketBuffer buffer) {
+        public BatteryIngredient parse(FriendlyByteBuf buffer) {
             return new BatteryIngredient();
         }
 
@@ -85,7 +85,7 @@ public final class BatteryIngredient extends Ingredient {
         }
 
         @Override
-        public void write(PacketBuffer buffer, BatteryIngredient ingredient) {
+        public void write(FriendlyByteBuf buffer, BatteryIngredient ingredient) {
         }
     }
 }

@@ -1,16 +1,16 @@
 package net.silentchaos512.supermultidrills;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.*;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartedEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStoppingEvent;
 import net.silentchaos512.supermultidrills.client.ColorHandlers;
 import net.silentchaos512.supermultidrills.data.SmdDataGenerators;
 import net.silentchaos512.supermultidrills.init.Registration;
@@ -65,7 +65,7 @@ class SideProxy implements IProxy {
 
     @Nullable
     @Override
-    public PlayerEntity getClientPlayer() {
+    public Player getClientPlayer() {
         return null;
     }
 
@@ -86,7 +86,7 @@ class SideProxy implements IProxy {
 
         @Nullable
         @Override
-        public PlayerEntity getClientPlayer() {
+        public Player getClientPlayer() {
             return Minecraft.getInstance().player;
         }
     }

@@ -1,15 +1,15 @@
 package net.silentchaos512.supermultidrills.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -23,12 +23,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class DrillBatteryItem extends Item {
     private final int capacity;
     private final int transferRate;
 
     public DrillBatteryItem(int capacity, int transferRate) {
-        super(new Properties().group(SuperMultiDrills.ITEM_GROUP).maxStackSize(1));
+        super(new Properties().tab(SuperMultiDrills.ITEM_GROUP).stacksTo(1));
         this.capacity = capacity;
         this.transferRate = transferRate;
     }
@@ -44,7 +46,7 @@ public class DrillBatteryItem extends Item {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new ICapabilityProvider() {
             @Nonnull
             @Override
@@ -57,13 +59,13 @@ public class DrillBatteryItem extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         TextUtil.addEnergyInfo(stack, tooltip);
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (this.isInGroup(group)) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+        if (this.allowdedIn(group)) {
             ItemStack full = new ItemStack(this);
             full.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> {
                 if (e instanceof EnergyStorageItemImpl) {
@@ -88,6 +90,6 @@ public class DrillBatteryItem extends Item {
 
     @Override
     public int getRGBDurabilityForDisplay(ItemStack stack) {
-        return MathHelper.hsvToRGB((1 + getChargeRatio(stack)) / 3.0F, 1.0F, 1.0F);
+        return Mth.hsvToRgb((1 + getChargeRatio(stack)) / 3.0F, 1.0F, 1.0F);
     }
 }

@@ -1,10 +1,10 @@
 package net.silentchaos512.supermultidrills.part;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
 import net.silentchaos512.gear.api.item.GearType;
 import net.silentchaos512.gear.api.part.IPartSerializer;
 import net.silentchaos512.gear.api.part.PartType;
@@ -17,6 +17,8 @@ import net.silentchaos512.supermultidrills.item.DrillItem;
 import net.silentchaos512.utils.Color;
 
 import javax.annotation.Nullable;
+
+import net.silentchaos512.gear.gear.part.AbstractGearPart.Serializer;
 
 public class ChassisPart extends AbstractGearPart {
     private static final ResourceLocation TYPE_ID = SuperMultiDrills.getId("chassis");
@@ -55,13 +57,13 @@ public class ChassisPart extends AbstractGearPart {
     }
 
     @Override
-    public ITextComponent getDisplayName(@Nullable PartData part, ItemStack gear) {
+    public Component getDisplayName(@Nullable PartData part, ItemStack gear) {
         int color = DrillItem.getChassisColor(gear);
         if (color != Color.VALUE_WHITE) { // This gets called twice for some reason? First time also returns #FFFFFF
             // Append the chassis color for convenience
-            return super.getDisplayName(part, gear).deepCopy()
-                    .append(new StringTextComponent(" (" + Color.format(color) + ")")
-                            .mergeStyle(TextFormatting.DARK_GRAY));
+            return super.getDisplayName(part, gear).copy()
+                    .append(new TextComponent(" (" + Color.format(color) + ")")
+                            .withStyle(ChatFormatting.DARK_GRAY));
         }
         return super.getDisplayName(part, gear);
     }

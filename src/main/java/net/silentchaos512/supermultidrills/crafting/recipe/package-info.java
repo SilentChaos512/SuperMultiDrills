@@ -2,6 +2,7 @@
 @MethodsReturnNonnullByDefault
 package net.silentchaos512.supermultidrills.crafting.recipe;
 
-import mcp.MethodsReturnNonnullByDefault;
+
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;
