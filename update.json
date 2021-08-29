@@ -5,13 +5,16 @@
         "2.1.0": "See changelog on GitHub"
     },
     "promos": {
-        "1.16.5-latest": "2.2.4",
-        "1.16.5-recommended": "2.2.4"
+        "1.17.1-latest": "2.3.0",
+        "1.17.1-recommended": "2.3.0"
     },
     "1.16.3": {
         "2.2.2": "See changelog on GitHub"
     },
     "1.16.5": {
         "2.2.4": "See changelog on GitHub"
+    },
+    "1.17.1": {
+        "2.3.0": "See changelog on GitHub"
     }
 }
