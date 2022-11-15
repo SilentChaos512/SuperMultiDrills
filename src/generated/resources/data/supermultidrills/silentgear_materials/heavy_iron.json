@@ -1,4 +1,6 @@
 {
+  "type": "silentgear:standard",
+  "simple": true,
   "availability": {
     "tier": 2,
     "visible": true,
@@ -35,6 +37,18 @@
       {
         "name": "silentgear:magnetic",
         "level": 3
+      }
+    ]
+  },
+  "model": {
+    "rod/all": [
+      {
+        "texture": "silentgear:rod_generic_hc"
+      }
+    ],
+    "rod/part": [
+      {
+        "texture": "silentgear:rod"
       }
     ]
   }

@@ -45,7 +45,7 @@ def gpr_creds = { // Credentials for GitHub Packages, since this is used multipl
     password = property('gpr.token')
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     mappings channel: 'official', version: mc_version
@@ -149,10 +149,10 @@ dependencies {
 
     implementation("net.silentchaos512:silent-gear:${project.sgear_version}") {
         exclude module: 'forge'
-        exclude module: 'jei-1.17.1'
-        exclude module: 'silent-lib-1.17.1'
-        exclude module: 'silents-mechanisms-1.17.1'
-        exclude module: 'Patchouli'
+        exclude module: 'jei-1.18.2'
+        exclude module: 'silent-lib-1.18.2'
+//        exclude module: 'silents-mechanisms-1.18.2'
+//        exclude module: 'Patchouli'
         exclude module: 'curios-forge'
     }
 
@@ -213,6 +213,7 @@ artifacts {
 //                displayName = "$project.description $display_version"
                 relations {
                     requiredDependency 'silent-lib'
+                    requiredDependency 'silent-gear'
                 }
             }
         }

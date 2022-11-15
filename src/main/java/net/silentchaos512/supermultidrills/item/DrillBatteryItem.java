@@ -39,9 +39,9 @@ public class DrillBatteryItem extends Item {
         LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
         if (optional.isPresent()) {
             IEnergyStorage energyStorage = optional.orElseThrow(IllegalStateException::new);
-            return (float) energyStorage.getEnergyStored() / energyStorage.getMaxEnergyStored();
+            return 1f - (float) energyStorage.getEnergyStored() / energyStorage.getMaxEnergyStored();
         }
-        return 0;
+        return 1f;
     }
 
     @Nullable
@@ -78,18 +78,20 @@ public class DrillBatteryItem extends Item {
         }
     }
 
+
+
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(ItemStack stack) {
         return true;
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        return 1 - getChargeRatio(stack);
+    public int getBarWidth(ItemStack stack) {
+        return Math.round(13f * (1 - getChargeRatio(stack)));
     }
 
     @Override
-    public int getRGBDurabilityForDisplay(ItemStack stack) {
+    public int getBarColor(ItemStack stack) {
         return Mth.hsvToRgb((1 + getChargeRatio(stack)) / 3.0F, 1.0F, 1.0F);
     }
 }

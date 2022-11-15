@@ -1,7 +1,7 @@
 package net.silentchaos512.supermultidrills.init;
 
 import net.minecraft.world.item.Item;
-import net.silentchaos512.gear.item.ToolHeadItem;
+import net.silentchaos512.gear.item.MainPartItem;
 import net.silentchaos512.gear.item.blueprint.GearBlueprintItem;
 import net.silentchaos512.lib.registry.ItemRegistryObject;
 import net.silentchaos512.supermultidrills.SuperMultiDrills;
@@ -16,8 +16,8 @@ public final class SmdItems {
     public static final ItemRegistryObject<GearBlueprintItem> DRILL_BLUEPRINT = register("drill_blueprint", () ->
             new GearBlueprintItem(DrillItem.GEAR_TYPE, false, baseProps()));
     public static final ItemRegistryObject<DrillItem> DRILL = register("drill", DrillItem::new);
-    public static final ItemRegistryObject<ToolHeadItem> DRILL_HEAD = register("drill_head", () ->
-            new ToolHeadItem(DrillItem.GEAR_TYPE, baseProps().stacksTo(1)));
+    public static final ItemRegistryObject<MainPartItem> DRILL_HEAD = register("drill_head", () ->
+            new MainPartItem(DrillItem.GEAR_TYPE, baseProps().stacksTo(1)));
     public static final ItemRegistryObject<DrillChassisItem> DRILL_CHASSIS = register("drill_chassis", DrillChassisItem::new);
 
     public static final ItemRegistryObject<DrillBatteryItem> TATER_BATTERY = register("tater_battery", () ->

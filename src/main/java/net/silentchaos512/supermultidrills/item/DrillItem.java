@@ -154,9 +154,9 @@ public class DrillItem extends GearDiggerItem {
         LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
         if (optional.isPresent()) {
             IEnergyStorage energyStorage = optional.orElseThrow(IllegalStateException::new);
-            return (float) energyStorage.getEnergyStored() / energyStorage.getMaxEnergyStored();
+            return 1f - (float) energyStorage.getEnergyStored() / energyStorage.getMaxEnergyStored();
         }
-        return 0;
+        return 1f;
     }
 
     public static int getEnergyToBreakBlock(ItemStack stack, BlockState state, float hardness) {
@@ -247,7 +247,6 @@ public class DrillItem extends GearDiggerItem {
 
     //region Standard tool overrides
 
-
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
         if (hasSaw(stack) && !GearHelper.isBroken(stack) && toolAction == ToolActions.AXE_DIG) {
@@ -324,23 +323,23 @@ public class DrillItem extends GearDiggerItem {
     }
 
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(ItemStack stack) {
         return true;
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        return 1 - getChargeRatio(stack);
+    public int getBarWidth(ItemStack stack) {
+        return Math.round(13f * (1 - getChargeRatio(stack)));
     }
 
     @Override
-    public int getRGBDurabilityForDisplay(ItemStack stack) {
+    public int getBarColor(ItemStack stack) {
         return Mth.hsvToRgb((1 + getChargeRatio(stack)) / 3.0F, 1.0F, 1.0F);
     }
 
     @Override
     public int getDamage(ItemStack stack) {
-        int value = (int) (100 * this.getDurabilityForDisplay(stack));
+        int value = 100 * this.getBarWidth(stack) / 13;
         return Mth.clamp(value, 0, 99);
     }
 

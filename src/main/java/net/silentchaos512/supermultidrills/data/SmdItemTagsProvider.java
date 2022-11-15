@@ -3,6 +3,7 @@ package net.silentchaos512.supermultidrills.data;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.level.ItemLike;
@@ -36,7 +37,7 @@ public class SmdItemTagsProvider extends ItemTagsProvider {
                 .addOptional(new ResourceLocation("silents_mechanisms", "battery"));
     }
 
-    private TagAppender<Item> builder(Tag.Named<Item> tag, Iterable<? extends ItemLike> items) {
+    private TagAppender<Item> builder(TagKey<Item> tag, Iterable<? extends ItemLike> items) {
         TagAppender<Item> builder = tag(tag);
         items.forEach(item -> builder.add(item.asItem()));
         return builder;

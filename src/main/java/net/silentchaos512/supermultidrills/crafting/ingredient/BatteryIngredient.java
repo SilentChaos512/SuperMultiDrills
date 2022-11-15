@@ -43,7 +43,7 @@ public final class BatteryIngredient extends Ingredient {
     }
 
     private static boolean isDrillBattery(ItemStack stack) {
-        return TagUtils.containsSafe(SmdTags.Items.DRILL_BATTERIES, stack) && stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
+        return TagUtils.contains(SmdTags.Items.DRILL_BATTERIES, stack) && stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
     }
 
     @Override
